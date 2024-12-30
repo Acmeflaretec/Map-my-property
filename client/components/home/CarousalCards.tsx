@@ -20,7 +20,7 @@ const carousalCards: JSX.Element[] = [
         Read more
       </button>
     </div>
-    <div className="absolute w-full h-full pb-6 px-5 flex items-end justify-center text-white leading-tight text-lg">
+    <div className="absolute w-full h-full pb-6 px-5 flex items-end justify-center text-white leading-tight text-sm md:text-lg">
       <h1>Is It the Right Time to Buy Property in India?</h1>
     </div>
     <Image
@@ -32,35 +32,18 @@ const carousalCards: JSX.Element[] = [
     />
   </div>,
   <div
-    className="w-full h-40 bg-[#95bfd9cf] border-2 rounded-3xl relative"
+    className="relative flex flex-col w-full h-52 overflow-hidden items-end bg-[#C2D4E5] border-2 rounded-3xl"
     key="2"
   >
-    <h1 className="leading-tight font-semibold text-start text-gray-900 absolute p-3.5 md:p-5">
+    <h1 className="z-20 leading-tight text-sm md:text-base font-semibold text-start text-gray-900 absolute p-3.5 md:p-5">
       Success Stories: How Buyers Found Their Perfect Home with Map My
       Properties
     </h1>
     <Image
-      width={100}
-      height={100}
-      className="w-full h-full rounded-3xl"
-      src={"/assets/landing/popper.gif"}
-      alt="..."
-    />
-  </div>,
-  <div
-    className="w-full h-52 md:h-60 bg-primary100 border-2 rounded-3xl"
-    key="3"
-  >
-    <div className="absolute w-full h-full pt-5  flex items-start justify-center">
-      <button className="bg-gray-600 text-xs md:text-sm text-white  px-2 md:px-5 py-[2px] rounded-md">
-        Top Interior Trends
-      </button>
-    </div>
-    <Image
-      width={100}
-      height={100}
-      className="w-full h-full rounded-3xl"
-      src={"/assets/landing/powertool.jpg"}
+      width={500}
+      height={500}
+      className="absolute w-full h-full object-cover -bottom-12"
+      src={"/assets/banner.png"}
       alt="..."
     />
   </div>,
@@ -95,7 +78,7 @@ const carousalCards: JSX.Element[] = [
     />
   </div>,
   <div
-    className="w-full h-60 bg-[#95bfd9cf] border-2 rounded-2xl md:rounded-3xl py-3 md:py-6 md:px-5 px-3"
+    className="w-full h-40 bg-[#95bfd9cf] border-2 rounded-2xl md:rounded-3xl py-3 md:py-6 md:px-5 px-3"
     key="3"
   >
     <h1 className=" leading-tight text-sm md:text-md font-semibold text-start text-gray-900">

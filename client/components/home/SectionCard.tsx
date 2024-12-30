@@ -29,7 +29,7 @@ const SectionCard: React.FC<{ data: SectionItem }> = ({ data }) => {
               <p className="text-[10px]">{data?.builder_helpertext}</p>
             </div>
           </div>
-          <button className="bg-[#0C0E0D] flex items-center z-50 h-fit text-[10px] text-white p-[2px] pl-3 pr-1 rounded-lg">
+          <button className="bg-[#0C0E0D] flex items-center z-30 h-fit text-[10px] text-white p-[2px] pl-3 pr-1 rounded-lg">
             Detailed View
             <Icons.rightArrow />
           </button>

@@ -41,6 +41,22 @@ export const Icons = {
       />
     </svg>
   ),
+  menu: (props: IconProps) => (
+    <svg
+      {...props}
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+        d="M5 7h14M5 12h14M5 17h14"
+      />
+    </svg>
+  ),
   upload: (props: IconProps) => (
     <svg
       {...props}
@@ -358,9 +374,8 @@ export const Icons = {
   loading: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-6 w-6 inline text-gray-600 animate-spin fill-gray-300${
-        props.className || ""
-      }`}
+      className={`h-6 w-6 inline text-gray-600 animate-spin fill-gray-300${props.className || ""
+        }`}
       aria-hidden="true"
       viewBox="0 0 100 101"
       fill="none"

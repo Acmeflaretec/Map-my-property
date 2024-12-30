@@ -5,7 +5,7 @@ import React from "react";
 
 const Categories: React.FC = () => {
   return (
-    <div className="flex flex-col items-center text-gray-800 gap-8 lg:gap-12 mt-28 px-2 md:px-8">
+    <div className="flex flex-col items-center text-gray-800 gap-8 lg:gap-12 mt-16 md:mt-28 px-2 md:px-8">
       <p className="text-sm md:text-base max-w-md font-normal text-center">
         Explore the best properties with ease - personalized searches, real-time
         updates, and expert guidance all in one place.
@@ -28,7 +28,7 @@ const Categories: React.FC = () => {
               height={100}
               width={100}
               alt={item?.title}
-              className={cn("absolute z-0", item.className)}
+              className={cn("absolute z-0 bottom-0", item.className)}
             />
           </div>
         ))}

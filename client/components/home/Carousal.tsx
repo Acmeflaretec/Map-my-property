@@ -50,7 +50,7 @@ const Carousal: React.FC = () => {
             1280: { slidesPerView: 5, spaceBetween: 10 },
             990: { slidesPerView: 4, spaceBetween: 10 },
             760: { slidesPerView: 3, spaceBetween: 10 },
-            300: { slidesPerView: 2, spaceBetween: 2 },
+            300: { slidesPerView: 3, spaceBetween: 2 },
           }}
           autoHeight={true}
           modules={[Navigation, Autoplay]}
@@ -68,7 +68,7 @@ const Carousal: React.FC = () => {
                     position: "relative",
                     top: `${top[pos]}px`,
                   }}
-                  className="min-h-[400px] md:min-h-[470px] w-60"
+                  className="min-h-[400px] md:min-h-[470px]"
                 >
                   {item}
                 </div>

@@ -2,14 +2,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import CustomButton from "../ui/CustomButton";
 import { usePathname } from "next/navigation";
 import { Icons } from "./Icons";
 
 interface CustomLinkProps {
   path: string;
   children: React.ReactNode;
-  dark?: boolean;
 }
 
 const navLinks = [
@@ -30,14 +28,11 @@ const helperLinks = [
   { path: "/projects", label: "Farm Plots" },
 ];
 
-const CustomLink: React.FC<CustomLinkProps> = ({ path, children, dark }) => {
+const CustomLink: React.FC<CustomLinkProps> = ({ path, children }) => {
   const pathname = usePathname();
   return (
     <Link
-      className={`
-      ${pathname === path && (dark ? "text-black" : "text-stone-300")}
-      ${dark ? "hover:text-black" : "hover:text-stone-300"}
-      `}
+      className={`hover:text-black ${pathname === path && "text-black"}`}
       href={path}
     >
       {children}
@@ -50,9 +45,9 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
-    <header className="fixed top-0 z-50 font-bricolage bg-white backdrop-blur-lg flex flex-col items-center w-full bg-opacity-55 ">
+    <header className="fixed top-0 z-50 bg-white backdrop-blur-lg flex flex-col items-center w-full bg-opacity-55">
       <div className="flex h-16 px-4 md:px-8 xl:max-w-screen-xl justify-between w-full items-center border-b">
-        <Link href={"/"} className="flex items-center">
+        <Link href={"/"} className="flex items-center w-3/4 md:w-1/3">
           <Image
             src="/logo.svg"
             alt="logo"
@@ -61,48 +56,44 @@ const Header: React.FC = () => {
             className="w-full h-10"
           />
         </Link>
-        <nav className="hidden lg:flex gap-8 text-base text-stone-500">
-          {navLinks.slice(0, 5).map(({ path, label }, idx) => (
-            <CustomLink key={idx} path={path} dark>
+        <nav className="hidden md:flex gap-8 text-sm text-stone-500">
+          {navLinks.map(({ path, label }, idx) => (
+            <CustomLink key={idx} path={path}>
               {label}
             </CustomLink>
           ))}
         </nav>
-        <Image
-          src="/assets/login.svg"
-          width={40}
-          height={40}
-          alt="menu"
-          className="w-10 h-10 lg:hidden cursor-pointer"
+        <Icons.menu
+          className="md:hidden w-6 h-6 cursor-pointer"
           onClick={toggleMenu}
         />
       </div>
-      <div className="hidden md:flex px-4 md:px-8 gap-8 border-b py-1 text-xs lg:text-base text-stone-500 xl:max-w-screen-xl justify-end w-full items-center">
+      <div className="hidden md:flex px-4 md:px-8 gap-8 border-b py-1 text-xs lg:text-sm text-stone-500 xl:max-w-screen-xl justify-end w-full items-center">
         {helperLinks.map(({ path, label }, idx) => (
-          <CustomLink key={idx} path={path} dark>
+          <CustomLink key={idx} path={path}>
             {label}
           </CustomLink>
         ))}
       </div>
       {isMenuOpen && (
-        <div className="fixed bg-gradient-to-r from-[#0C3E54] to-[#1B89BA] text-white top-0 right-0 w-64 xs:w-72 sm:w-80 md:w-96 lg:w-104 backdrop-blur-lg overflow-hidden rounded-l-2xl p-2 shadow-md">
+        <div className="fixed bg-white z-50 bg-opacity-95 top-0 right-0 w-64 xs:w-72 sm:w-80 md:w-96 lg:w-104 backdrop-blur-3xl overflow-hidden rounded-l-2xl p-2 shadow-md">
           <div className="flex justify-between p-8">
             <h2 className="text-sm font-semibold">Quick Links</h2>
             <button onClick={toggleMenu} aria-label="Close Menu">
               <Icons.close />
             </button>
           </div>
-          <nav className="relative flex flex-col justify-center pb-20 px-8 gap-3 text-base font-bricolage">
-            {navLinks.map(({ path, label }) => (
-              <CustomLink key={path} path={path}>
+          <nav className="relative flex flex-col justify-center pb-20 px-8 gap-3 text-base text-stone-600">
+            {navLinks.map(({ path, label }, idx) => (
+              <CustomLink key={idx} path={path}>
                 {label}
               </CustomLink>
             ))}
           </nav>
-          <p className="text-xs text-center p-4 text-stone-300">
+          <p className="text-xs text-center p-4 text-stone-600">
             © {new Date().getFullYear()}{" "}
             <Link href="/companies" className="hover:underline">
-              Infinite Group of Companies
+              Map My Property
             </Link>
             . All Rights Reserved.
           </p>
