@@ -1,0 +1,210 @@
+export interface SectionItem {
+  title: string;
+  image: string;
+  price: string;
+  desc: string;
+  location: string;
+  builder_image: string;
+  builder_name: string;
+  builder_helpertext: string;
+  href: string;
+}
+
+interface SectionData {
+  title: string;
+  projects: SectionItem[];
+}
+
+export const sectionData: SectionData[] = [
+  {
+    title: "Fast-Moving Properties",
+    projects: [
+      {
+        title: "Subha Belgravia Villas at Subha Ecocity",
+        image: "/assets/properties/image-1.png",
+        price: "INR 2.35 Cr to 6.85 Cr",
+        desc: "2, 3, 4 BHK Flats | 750 Sq. Ft. to 2000 Sq. Ft. (Carpet)",
+        location: "Chandapura, Bangalore",
+        builder_image: "/assets/properties/image-2.png",
+        builder_name: "Shuba",
+        builder_helpertext: "Quality Home Builders",
+        href: "/projects",
+      },
+      {
+        title: "Godrej Splendour",
+        image: "/assets/properties/image-2.png",
+        price: "INR 1.2 Cr Onwards",
+        desc: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
+        location: "Whitefield, Bangalore",
+        builder_image: "/assets/properties/image-3.png",
+        builder_name: "Godrej Properties",
+        builder_helpertext: "Trusted Real Estate",
+        href: "/projects/godrej-splendour",
+      },
+      {
+        title: "Prestige Lakeside Habitat",
+        image: "/assets/properties/image-4.png",
+        price: "INR 1.8 Cr Onwards",
+        desc: "2, 3, 4 BHK Apartments | 1000 Sq. Ft. Onwards",
+        location: "Varthur Road, Bangalore",
+        builder_image: "/assets/properties/image-1.png",
+        builder_name: "Prestige Group",
+        builder_helpertext: "Luxury Living Spaces",
+        href: "/projects/prestige-lakeside-habitat",
+      },
+      {
+        title: "Sobha Sentosa",
+        image: "/assets/properties/image-1.png",
+        price: "INR 4 Cr Onwards",
+        desc: "4, 5 BHK Villas | 3000 Sq. Ft. Onwards",
+        location: "Electronic City, Bangalore",
+        builder_image: "/assets/properties/image-2.png",
+        builder_name: "Sobha",
+        builder_helpertext: "Luxury Homes Built",
+        href: "/projects/sobha-sentosa",
+      },
+      {
+        title: "Salarpuria Sattva Serene",
+        image: "/assets/properties/image-3.png",
+        price: "INR 3.5 Cr Onwards",
+        desc: "4, 5 BHK Villas | 4000 Sq. Ft. Onwards",
+        location: "Sarjapur Road, Bangalore",
+        builder_image: "/assets/properties/image-4.png",
+        builder_name: "Salarpuria Sattva",
+        builder_helpertext: "Lifestyle Creators",
+        href: "/projects/salarpuria-sattva-serene",
+      },
+      {
+        title: "Purvankara Provident Park",
+        image: "/assets/properties/image-4.png",
+        price: "INR 40 Lakhs Onwards",
+        desc: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
+        location: "Whitefield, Bangalore",
+        builder_image: "/assets/properties/image-1.png",
+        builder_name: "Purvankara",
+        builder_helpertext: "Building Trust Since",
+        href: "/projects/purvankara-provident-park",
+      },
+      {
+        title: "Brigade Meadows",
+        image: "/assets/properties/image-2.png",
+        price: "INR 55 Lakhs Onwards",
+        desc: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
+        location: "Hosur Road, Bangalore",
+        builder_image: "/assets/properties/image-3.png",
+        builder_name: "Brigade Group",
+        builder_helpertext: "Urban Living Defined",
+        href: "/projects/brigade-meadows",
+      },
+    ],
+  },
+  {
+    title: "Luxury Properties",
+    projects: [
+      {
+        title: "Mantri Alpyra",
+        image: "/assets/properties/image-1.png",
+        price: "INR 5 Cr Onwards",
+        desc: "4, 5 BHK Villas | 5000 Sq. Ft. Onwards",
+        location: "Bannerghatta Road, Bangalore",
+        builder_image: "/assets/properties/image-1.png",
+        builder_name: "Mantri Developers",
+        builder_helpertext: "Luxury Living Experts",
+        href: "/projects/mantri-alpyra",
+      },
+      {
+        title: "Prestige Golfshire Estates",
+        image: "/assets/properties/image-2.png",
+        price: "INR 8 Cr Onwards",
+        desc: "5, 6 BHK Villas | 8000 Sq. Ft. Onwards",
+        location: "Off Sarjapur Road, Bangalore",
+        builder_image: "/assets/properties/image-2.png",
+        builder_name: "Prestige Group",
+        builder_helpertext: "Luxury Living Spaces",
+        href: "/projects/prestige-golfshire-estates",
+      },
+      {
+        title: "Sobha Windsor",
+        image: "/assets/properties/image-3.png",
+        price: "INR 6 Cr Onwards",
+        desc: "4, 5 BHK Villas | 6000 Sq. Ft. Onwards",
+        location: "Bannerghatta Road, Bangalore",
+        builder_image: "/assets/properties/image-3.png",
+        builder_name: "Sobha",
+        builder_helpertext: "Luxury Homes Built",
+        href: "/projects/sobha-windsor",
+      },
+      {
+        title: "L&T Raintree Boulevard",
+        image: "/assets/properties/image-4.png",
+        price: "INR 7 Cr Onwards",
+        desc: "5, 6 BHK Villas | 7000 Sq. Ft. Onwards",
+        location: "Varthur Road, Bangalore",
+        builder_image: "/assets/properties/image-4.png",
+        builder_name: "L&T Realty",
+        builder_helpertext: "Engineering Excellence",
+        href: "/projects/lnt-raintree-boulevard",
+      },
+      {
+        title: "DLF Park Place",
+        image: "/assets/properties/image-1.png",
+        price: "INR 10 Cr Onwards",
+        desc: "5, 6 BHK Villas | 10000 Sq. Ft. Onwards",
+        location: "Begur Road, Bangalore",
+        builder_image: "/assets/properties/image-1.png",
+        builder_name: "DLF Limited",
+        builder_helpertext: "World-Class Living",
+        href: "/projects/dlf-park-place",
+      },
+      {
+        title: "Mahindra Lifespaces Luminare",
+        image: "/assets/properties/image-2.png",
+        price: "INR 4.5 Cr Onwards",
+        desc: "4, 5 BHK Villas | 4500 Sq. Ft. Onwards",
+        location: "Kanakapura Road, Bangalore",
+        builder_image: "/assets/properties/image-2.png",
+        builder_name: "Mahindra Lifespaces",
+        builder_helpertext: "Rise. Reimagine. Live.",
+        href: "/projects/mahindra-lifespaces-luminare",
+      },
+      {
+        title: "Tata Promont",
+        image: "/assets/properties/image-3.png",
+        price: "INR 9 Cr Onwards",
+        desc: "6, 7 BHK Villas | 12000 Sq. Ft. Onwards",
+        location: "Electronic City, Bangalore",
+        builder_image: "/assets/properties/image-3.png",
+        builder_name: "Tata Housing",
+        builder_helpertext: "Innovation in Living",
+        href: "/projects/tata-promont",
+      },
+    ],
+  },
+  {
+    title: "Affordable Homes",
+    projects: [
+      {
+        title: "Purvankara Provident Park",
+        image: "/assets/properties/image-4.png",
+        price: "INR 40 Lakhs Onwards",
+        desc: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
+        location: "Whitefield, Bangalore",
+        builder_image: "/assets/properties/image-2.png",
+        builder_name: "Purvankara",
+        builder_helpertext: "Building Trust Since",
+        href: "/projects/purvankara-provident-park",
+      },
+      {
+        title: "Brigade Meadows",
+        image: "/assets/properties/image-2.png",
+        price: "INR 55 Lakhs Onwards",
+        desc: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
+        location: "Hosur Road, Bangalore",
+        builder_image: "/assets/properties/image-4.png",
+        builder_name: "Brigade Group",
+        builder_helpertext: "Urban Living Defined",
+        href: "/projects/brigade-meadows",
+      },
+    ],
+  },
+];
