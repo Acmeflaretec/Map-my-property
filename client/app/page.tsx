@@ -1,6 +1,7 @@
 import Carousal from "@/components/home/Carousal";
 import Categories from "@/components/home/Categories";
 import HeroSection from "@/components/home/HeroSection";
+import HomeLoanSection from "@/components/home/HomeLoanSection";
 import Sections from "@/components/home/Sections";
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
       <Categories />
       <Carousal />
       <Sections />
+      <HomeLoanSection />
     </main>
   );
 }
