@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";
@@ -113,7 +114,9 @@ const Calculator: React.FC = () => {
             </div>
           </div>
           <div className="flex justify-between items-center py-6">
-            <p className="text-sm md:text-base">Search Properties Based on Calculated Loan</p>
+            <p className="text-sm md:text-base">
+              Search Properties Based on Calculated Loan
+            </p>
             <CustomButton type="primary">
               Search <Icons.search />
             </CustomButton>
@@ -132,7 +135,9 @@ const Calculator: React.FC = () => {
               <span className="flex w-3 h-3 me-3 bg-gray-200 border-2 border-gray-400 rounded-full"></span>
               Total Amount
             </p>
-            <p className="w-1/3 text-right">{(interest + amount).toLocaleString()}</p>
+            <p className="w-1/3 text-right">
+              {(interest + amount).toLocaleString()}
+            </p>
           </div>
           <div className="flex flex-row gap-4">
             <p className="flex items-center w-2/3">

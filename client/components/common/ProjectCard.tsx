@@ -1,12 +1,14 @@
 import Image from "next/image";
 import React from "react";
-import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";
-import { SectionItem } from "@/data/sectionData";
+import { ProjectData } from "@/data/projectData";
 
-const SectionCard: React.FC<{ data: SectionItem }> = ({ data }) => {
+const ProjectCard: React.FC<{ data: ProjectData }> = ({ data }) => {
   return (
-    <div key={data?.title} className="rounded-3xl p-1 border-2">
+    <div
+      key={data?.title}
+      className="flex flex-col items-center rounded-3xl p-1 border-2"
+    >
       <div className="h-48 w-[16.5rem] rounded-3xl overflow-hidden border-2">
         <Image
           src={data?.image}
@@ -51,4 +53,4 @@ const SectionCard: React.FC<{ data: SectionItem }> = ({ data }) => {
   );
 };
 
-export default SectionCard;
+export default ProjectCard;
