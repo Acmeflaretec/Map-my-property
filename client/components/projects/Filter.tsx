@@ -13,7 +13,7 @@ const Filter: React.FC = () => {
     resident_type: "villas",
   });
   return (
-    <div className="flex h-fit flex-col border border-stone-300 rounded-xl p-6 py-8 gap-6">
+    <div className="flex h-fit flex-col border border-stone-300 rounded-xl p-2 xl:p-6 py-8 gap-6">
       <h1 className="flex gap-3 uppercase font-bold">
         <Icons.filter />
         Filter
