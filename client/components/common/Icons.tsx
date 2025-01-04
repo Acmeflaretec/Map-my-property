@@ -76,7 +76,7 @@ export const Icons = {
   phone: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-5 w-5 ${props.className || ""}`}
+      className={`h-4 w-4 ${props.className || ""}`}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
@@ -86,7 +86,7 @@ export const Icons = {
   email: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-6 w-5 ${props.className || ""}`}
+      className={`h-4 w-4 ${props.className || ""}`}
       width="26"
       height="19"
       viewBox="0 0 26 19"
@@ -100,18 +100,8 @@ export const Icons = {
     <svg
       {...props}
       className={`h-6 w-6 ${props.className || ""}`}
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fillRule="evenodd"
-        d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z"
-        clipRule="evenodd"
-      />
+      xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50">
+      <path d="M25,3C12.85,3,3,12.85,3,25c0,11.03,8.125,20.137,18.712,21.728V30.831h-5.443v-5.783h5.443v-3.848 c0-6.371,3.104-9.168,8.399-9.168c2.536,0,3.877,0.188,4.512,0.274v5.048h-3.612c-2.248,0-3.033,2.131-3.033,4.533v3.161h6.588 l-0.894,5.783h-5.694v15.944C38.716,45.318,47,36.137,47,25C47,12.85,37.15,3,25,3z"></path>
     </svg>
   ),
   twitter: (props: IconProps) => (
@@ -135,7 +125,7 @@ export const Icons = {
   google: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-6 w-6 ${props.className || ""}`}
+      className={`h-5 w-5 ${props.className || ""}`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -463,9 +453,8 @@ export const Icons = {
   loading: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-6 w-6 inline text-gray-600 animate-spin fill-gray-300${
-        props.className || ""
-      }`}
+      className={`h-6 w-6 inline text-gray-600 animate-spin fill-gray-300${props.className || ""
+        }`}
       aria-hidden="true"
       viewBox="0 0 100 101"
       fill="none"
