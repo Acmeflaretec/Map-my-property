@@ -2,10 +2,12 @@ import Image from "next/image";
 import React from "react";
 import { Icons } from "../common/Icons";
 import { ProjectData } from "@/data/projectData";
+import Link from "next/link";
 
 const ProjectCard: React.FC<{ data: ProjectData }> = ({ data }) => {
   return (
-    <div
+    <Link
+      href={data?.href}
       key={data?.title}
       className="flex flex-col items-center rounded-2xl md:rounded-3xl p-1 border-2"
     >
@@ -49,7 +51,7 @@ const ProjectCard: React.FC<{ data: ProjectData }> = ({ data }) => {
           {data?.location}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -12,20 +12,20 @@ interface CustomLinkProps {
 
 const navLinks = [
   { path: "/", label: "Home" },
-  { path: "/projects", label: "Search" },
+  { path: "/property", label: "Search" },
   { path: "/blogs", label: "Blogs" },
   { path: "/#emi-calculator", label: "EMI Calculator" },
   { path: "/contact", label: "Connect Us" },
 ];
 const helperLinks = [
-  { path: "/projects", label: "Upcomming Projects" },
-  { path: "/projects", label: "Cities" },
-  { path: "/projects", label: "New Launch" },
-  { path: "/projects", label: "Luxury Homes" },
-  { path: "/projects", label: "Apartments" },
-  { path: "/projects", label: "Villas" },
-  { path: "/projects", label: "Plots" },
-  { path: "/projects", label: "Farm Plots" },
+  { path: "/property", label: "Upcomming Projects" },
+  { path: "/property", label: "Cities" },
+  { path: "/property", label: "New Launch" },
+  { path: "/property", label: "Luxury Homes" },
+  { path: "/property", label: "Apartments" },
+  { path: "/property", label: "Villas" },
+  { path: "/property", label: "Plots" },
+  { path: "/property", label: "Farm Plots" },
 ];
 
 const CustomLink: React.FC<CustomLinkProps> = ({ path, children }) => {

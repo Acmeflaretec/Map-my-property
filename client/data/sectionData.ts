@@ -28,7 +28,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Shuba",
         builder_helpertext: "Quality Home Builders",
-        href: "/projects",
+        href: "/property",
       },
       {
         title: "Godrej Splendour",
@@ -39,7 +39,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Godrej Properties",
         builder_helpertext: "Trusted Real Estate",
-        href: "/projects/godrej-splendour",
+        href: "/property/godrej-splendour",
       },
       {
         title: "Prestige Lakeside Habitat",
@@ -50,7 +50,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-1.png",
         builder_name: "Prestige Group",
         builder_helpertext: "Luxury Living Spaces",
-        href: "/projects/prestige-lakeside-habitat",
+        href: "/property/prestige-lakeside-habitat",
       },
       {
         title: "Sobha Sentosa",
@@ -61,7 +61,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Sobha",
         builder_helpertext: "Luxury Homes Built",
-        href: "/projects/sobha-sentosa",
+        href: "/property/sobha-sentosa",
       },
       {
         title: "Salarpuria Sattva Serene",
@@ -72,7 +72,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-4.png",
         builder_name: "Salarpuria Sattva",
         builder_helpertext: "Lifestyle Creators",
-        href: "/projects/salarpuria-sattva-serene",
+        href: "/property/salarpuria-sattva-serene",
       },
       {
         title: "Purvankara Provident Park",
@@ -83,7 +83,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-1.png",
         builder_name: "Purvankara",
         builder_helpertext: "Building Trust Since",
-        href: "/projects/purvankara-provident-park",
+        href: "/property/purvankara-provident-park",
       },
       {
         title: "Brigade Meadows",
@@ -94,7 +94,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Brigade Group",
         builder_helpertext: "Urban Living Defined",
-        href: "/projects/brigade-meadows",
+        href: "/property/brigade-meadows",
       },
     ],
   },
@@ -110,7 +110,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-1.png",
         builder_name: "Mantri Developers",
         builder_helpertext: "Luxury Living Experts",
-        href: "/projects/mantri-alpyra",
+        href: "/property/mantri-alpyra",
       },
       {
         title: "Prestige Golfshire Estates",
@@ -121,7 +121,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Prestige Group",
         builder_helpertext: "Luxury Living Spaces",
-        href: "/projects/prestige-golfshire-estates",
+        href: "/property/prestige-golfshire-estates",
       },
       {
         title: "Sobha Windsor",
@@ -132,7 +132,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Sobha",
         builder_helpertext: "Luxury Homes Built",
-        href: "/projects/sobha-windsor",
+        href: "/property/sobha-windsor",
       },
       {
         title: "L&T Raintree Boulevard",
@@ -143,7 +143,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-4.png",
         builder_name: "L&T Realty",
         builder_helpertext: "Engineering Excellence",
-        href: "/projects/lnt-raintree-boulevard",
+        href: "/property/lnt-raintree-boulevard",
       },
       {
         title: "DLF Park Place",
@@ -154,7 +154,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-1.png",
         builder_name: "DLF Limited",
         builder_helpertext: "World-Class Living",
-        href: "/projects/dlf-park-place",
+        href: "/property/dlf-park-place",
       },
       {
         title: "Mahindra Lifespaces Luminare",
@@ -165,7 +165,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Mahindra Lifespaces",
         builder_helpertext: "Rise. Reimagine. Live.",
-        href: "/projects/mahindra-lifespaces-luminare",
+        href: "/property/mahindra-lifespaces-luminare",
       },
       {
         title: "Tata Promont",
@@ -176,7 +176,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Tata Housing",
         builder_helpertext: "Innovation in Living",
-        href: "/projects/tata-promont",
+        href: "/property/tata-promont",
       },
     ],
   },
@@ -192,7 +192,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Purvankara",
         builder_helpertext: "Building Trust Since",
-        href: "/projects/purvankara-provident-park",
+        href: "/property/purvankara-provident-park",
       },
       {
         title: "Brigade Meadows",
@@ -203,7 +203,7 @@ export const sectionData: SectionData[] = [
         builder_image: "/assets/properties/image-4.png",
         builder_name: "Brigade Group",
         builder_helpertext: "Urban Living Defined",
-        href: "/projects/brigade-meadows",
+        href: "/property/brigade-meadows",
       },
     ],
   },

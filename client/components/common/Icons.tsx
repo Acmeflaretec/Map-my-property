@@ -6,38 +6,36 @@ export const Icons = {
   rightArrow: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-5 w-5 ${props.className || ""}`}
+      className={`h-4 w-4 ${props.className || ""}`}
+      aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
       fill="none"
+      viewBox="0 0 6 10"
     >
       <path
-        d="M5.99984 4.00012L10 8.00029L5.99748 12.0028"
         stroke="currentColor"
-        strokeWidth="1.6"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="2"
+        d="m1 9 4-4-4-4"
       />
     </svg>
   ),
   leftArrow: (props: IconProps) => (
     <svg
       {...props}
-      className={`h-5 w-5 ${props.className || ""}`}
+      className={`h-4 w-4 ${props.className || ""}`}
+      aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
       fill="none"
+      viewBox="0 0 6 10"
     >
       <path
-        d="M10.0002 11.9999L6 7.99971L10.0025 3.99719"
         stroke="currentColor"
-        strokeWidth="1.6"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 1 1 5l4 4"
       />
     </svg>
   ),

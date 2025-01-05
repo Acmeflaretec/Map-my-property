@@ -13,7 +13,7 @@ const questrial = Questrial({
 
 export const metadata: Metadata = {
   title: "Map My Property",
-  description: "Map My Property",
+  description: "Unlocking Your Properties Full Potential | Map My Property",
 };
 
 export default function RootLayout({
