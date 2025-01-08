@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose')   
 
 const tagSchema = mongoose.Schema({
     title: {
@@ -12,7 +12,7 @@ const tagSchema = mongoose.Schema({
     projects: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'projects',
+          ref: 'Projects',
           required: true,
         },
       ],

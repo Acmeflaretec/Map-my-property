@@ -5,16 +5,16 @@ import toast from "react-hot-toast";
 import Input from "components/Input";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEditTags, useGetTagsById, useDeleteTags } from "queries/StoreQuery";
-import { useGetTagProducts } from 'queries/ProductQuery'
+import { useGetSelectProjects } from 'queries/ProductQuery'
 
 const EditTag = () => {
    const { id } = useParams();
-   const [product, setProduct] = useState([])
+   const [projects, setProjects] = useState([])
    const navigate = useNavigate()
    const { data: res, isLoading } = useGetTagsById({ id });
-   const { data:respo } = useGetTagProducts({ pageNo: 1, pageCount: 100 });
+   const { data:respo } = useGetSelectProjects({ pageNo: 1, pageCount: 100 });
    useEffect(() => {
-      res?.data?.product && setProduct(res?.data?.product)
+      res?.data?.projects && setProjects(res?.data?.projects)
       setData(res?.data)
    }, [res])
    const [data, setData] = useState({})
@@ -54,8 +54,8 @@ const EditTag = () => {
          if (!data?.subtitle) {
             return toast.error("subtitle is required")
          }
-         if (!product.length) {
-            return toast.error("product is required")
+         if (!projects.length) {
+            return toast.error("projects is required")
          }
          if (!data?.description) {
             return toast.error("description is required")
@@ -65,11 +65,11 @@ const EditTag = () => {
          }
          const formData = new FormData();
          for (const key in data) {
-            if (data.hasOwnProperty(key) && key !== "image" &&  key !== "product") {
+            if (data.hasOwnProperty(key) && key !== "image" &&  key !== "projects") {
                formData.append(key, data[key]);
             }
          }
-         product.forEach((product) => formData.append('product', product._id));
+         projects.forEach((projects) => formData.append('projects', projects._id));
          typeof (data.image) == 'object' && formData.append("image", data.image, data?.image?.name);
          editTags(formData)
             .then((res) => {
@@ -123,12 +123,12 @@ const EditTag = () => {
                </Grid>
                <Grid item xs={12} sm={8}>
                   <Autocomplete
-                     id="Product-select"
+                     id="Projects-select"
                      multiple
                      options={respo?.data || []}
-                     value={product}
+                     value={projects}
                      onChange={(event, newValue) => {
-                        setProduct(newValue);
+                        setProjects(newValue);
                      }}
                      autoHighlight
                      getOptionLabel={(option) => option.name}
@@ -151,7 +151,7 @@ const EditTag = () => {
                      renderInput={(params) => (
                         <TextField
                            {...params}
-                           placeholder="Choose a product"
+                           placeholder="Choose a Projects"
                            inputProps={{
                               ...params.inputProps,
                            }}
