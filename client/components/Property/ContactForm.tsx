@@ -119,10 +119,10 @@ const ContactForm: React.FC = () => {
          <div className="flex h-full items-end pt-16">
             <div className="flex gap-2 justify-around w-full border-t pt-4">
                <CustomButton type="secondary">
-                  Get Appoinment <Icons.phone />
+                  Get Enquired <Icons.phone />
                </CustomButton>
                <CustomButton type="primary">
-                  Send Message <Icons.rightArrow />
+                  Book Now <Icons.rightArrow />
                </CustomButton>
             </div>
          </div>
