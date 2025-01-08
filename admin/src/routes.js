@@ -12,6 +12,7 @@ import Profile from "layouts/profile";
 import Box from "components/Box";
 import Blogs from "pages/Blogs";
 import Sections from "pages/Sections";
+import Tags from "pages/Tags";
 
 
 const routes = [
@@ -78,6 +79,14 @@ const routes = [
     route: "/banners",
     icon: <Box component="i" color="warning" fontSize="14px" className="ni ni-album-2" />,
     component: <Banner />,
+  },
+  {
+    type: "route",
+    name: "Tags",
+    key: "tags",
+    route: "/tags",
+    icon: <Box component="i" color="primary" fontSize="14px" className="ni ni-book-bookmark" />,
+    component: <Tags />,
   },
   {
     type: "route",

@@ -35,6 +35,8 @@ import EditBanner from "pages/Banner/EditBanner";
 import EditBlog from "pages/Blogs/EditBlog";
 import AddSection from "pages/Sections/AddSection";
 import EditSection from "pages/Sections/EditSection";
+import AddTag from "pages/Tags/AddTag";
+import EditTag from "pages/Tags/EditTag";
 
 export default function App() {
   const [controller, dispatch] = useController();
@@ -125,6 +127,8 @@ export default function App() {
                 <Route path="/sections/editSection/:id" element={<EditSection />} />
                 <Route path="/banners/addBanner" element={<AddBanner />} />
                 <Route path="/banners/editBanner/:id" element={<EditBanner />} />
+                <Route path="/tags/addTags" element={<AddTag />} />
+                <Route path="/tags/editTags/:id" element={<EditTag />} />
                 <Route path="*" element={<Navigate to="/projects" />} />
               </Routes>
               <Footer />
@@ -165,6 +169,8 @@ export default function App() {
               <Route path="/sections/editSection/:id" element={<EditSection />} />
               <Route path="/banners/addBanner" element={<AddBanner />} />
               <Route path="/banners/editBanner/:id" element={<EditBanner />} />
+              <Route path="/tags/addTags" element={<AddTag />} />
+              <Route path="/tags/editTags/:id" element={<EditTag />} />
               <Route path="*" element={<Navigate to="/projects" />} />
             </Routes>
             <Footer />

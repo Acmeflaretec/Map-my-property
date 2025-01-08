@@ -5,12 +5,12 @@ import toast from "react-hot-toast";
 import Input from "components/Input";
 import { useAddTags } from "queries/StoreQuery";
 import { useNavigate } from "react-router-dom";
-import { useGetTagProducts } from 'queries/ProductQuery'
+import { useGetSelectProjects } from 'queries/ProductQuery'
 
 const AddTag = () => {
    const [datas, setData] = useState({})
-   const { data, isLoading } = useGetTagProducts({ pageNo: 1, pageCount: 100 });
-   const [product, setProduct] = useState([])
+   const { data, isLoading } = useGetSelectProjects({ pageNo: 1, pageCount: 100 });
+   const [projects, setProjects] = useState([])
    const navigate = useNavigate()
    const fileInputRef = React.useRef(null);
    const handleFileSelect = () => {
@@ -35,8 +35,8 @@ const AddTag = () => {
          if (!datas?.subtitle) {
             return toast.error("subtitle is required")
          }
-         if (!product.length) {
-            return toast.error("product is required")
+         if (!projects.length) {
+            return toast.error("projects is required")
          }
          if (!datas?.description) {
             return toast.error("description is required")
@@ -51,7 +51,7 @@ const AddTag = () => {
             }
          }
          typeof (datas.image) == 'object' && formData.append("image", datas?.image, datas?.image?.name);
-         product.forEach((product) => formData.append('product', product._id));
+         projects.forEach((projects) => formData.append('projects', projects._id));
          addTags(formData)
             .then((res) => {
                if (res) {
@@ -106,12 +106,12 @@ const AddTag = () => {
 
                <Grid item xs={12} sm={8}>
                   <Autocomplete
-                     id="Product-select"
+                     id="Projects-select"
                      multiple
                      options={data?.data || []}
-                     value={product}
+                     value={projects}
                      onChange={(event, newValue) => {
-                        setProduct(newValue);
+                        setProjects(newValue);
                      }}
                      autoHighlight
                      getOptionLabel={(option) => option.name}
@@ -134,7 +134,7 @@ const AddTag = () => {
                      renderInput={(params) => (
                         <TextField
                            {...params}
-                           placeholder="Choose a product"
+                           placeholder="Choose a Projects"
                            inputProps={{
                               ...params.inputProps,
                            }}
