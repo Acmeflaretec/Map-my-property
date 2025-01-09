@@ -42,7 +42,18 @@ const projectsSchema = new mongoose.Schema({
     },
     configurations: [{
         configuration: String,
-        details: String
+        details: String,
+        icon: String,
+    }],
+    ApartmentAmenities: [{
+        text: String,
+        helpertext: String,
+        icon: String,
+    }],
+    LocationAdvantages: [{
+        text: String,
+        helpertext: String,
+        icon: String,
     }],
     faqs: [{
         questions: String,
@@ -50,11 +61,13 @@ const projectsSchema = new mongoose.Schema({
     }],
     unit: [{
         unitType: String,
-        configurationSize: String
+        configurationSize: String,
+        icon: String,
     }],
     Spec: [{
         Specifications: String,
-        SpecificationsDetails: String
+        SpecificationsDetails: String,
+        icon: String,
     }],
     image: {
         type: Array,
