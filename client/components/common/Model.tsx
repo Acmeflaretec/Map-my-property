@@ -15,7 +15,7 @@ const Model: React.FC<{
           aria-labelledby="popup-modal"
           aria-hidden={!isModalOpen}
         >
-          <div className="relative h-full md:h-fit max-w-[100vw] md:max-w-4xl">
+          <div className="relative h-full md:h-fit max-w-[100vw] md:max-w-5xl">
             <div className="relative rounded-3xl h-full bg-white md:max-h-[75vh] overflow-y-scroll pt-20 md:pt-0">
               <button
                 onClick={toggleModal}

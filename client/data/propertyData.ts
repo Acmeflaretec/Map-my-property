@@ -29,9 +29,14 @@ export interface PlanType {
   desc: string;
   image: string;
 }
+export interface BannerType {
+  title: string;
+  desc: string;
+  src: string;
+}
 export interface PropertyData {
   title: string;
-  images: string[];
+  images: BannerType[];
   price: string;
   desc: string;
   features: Feature[];
@@ -49,9 +54,87 @@ export interface PropertyData {
 export const propertyData: PropertyData = {
   title: "Subha Belgravia Villas at Subha Ecocity",
   images: [
-    "/assets/banner.png",
-    "/assets/properties/image-2.png",
-    "/assets/properties/image-3.png",
+    {
+      title: "Subha Belgravia - Front Faceing View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-1.png",
+    },
+    {
+      title: "Subha Belgravia - Rear Entrance View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-3.png",
+    },
+    {
+      title: "Subha Belgravia - Lakeside View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-4.png",
+    },
+    {
+      title: "Subha Belgravia - Master Plan",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area.",
+      src: "/assets/master-plan.png",
+    },
+    {
+      title: "Subha Belgravia - Front Faceing View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-1.png",
+    },
+    {
+      title: "Subha Belgravia - Rear Entrance View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-3.png",
+    },
+    {
+      title: "Subha Belgravia - Lakeside View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-4.png",
+    },
+    {
+      title: "Subha Belgravia - Master Plan",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area.",
+      src: "/assets/properties/image-2.png",
+    },
+    {
+      title: "Subha Belgravia - Rear Entrance View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-3.png",
+    },
+    {
+      title: "Subha Belgravia - Lakeside View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-4.png",
+    },
+    {
+      title: "Subha Belgravia - Front Faceing View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-1.png",
+    },
+    {
+      title: "Subha Belgravia - Rear Entrance View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-3.png",
+    },
+    {
+      title: "Subha Belgravia - Lakeside View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-4.png",
+    },
+    {
+      title: "Subha Belgravia - Master Plan",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area.",
+      src: "/assets/master-plan.png",
+    },
+    {
+      title: "Subha Belgravia - Rear Entrance View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-3.png",
+    },
+    {
+      title: "Subha Belgravia - Lakeside View",
+      desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
+      src: "/assets/properties/image-4.png",
+    },
+
   ],
   price: "INR 2.35 Cr to 6.85 Cr",
   desc: "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
