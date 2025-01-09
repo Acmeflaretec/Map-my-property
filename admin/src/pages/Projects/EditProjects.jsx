@@ -7,13 +7,17 @@ import toast from 'react-hot-toast';
 import { useGetProjectsById, useUpdateProjects, useDeleteProjects } from 'queries/ProductQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImageList from './ImageList';
-import { Delete } from '@mui/icons-material';
+import { Delete ,Add} from '@mui/icons-material';
+import { Icons } from 'components/Property/Icons.tsx'
+import IconPickerPopup from './IconPickerPopup'
 
 const EditProjects = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState({});
   const { data, isLoading } = useGetProjectsById({ id });
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
+  const [selectedIconField, setSelectedIconField] = useState(null);
 
 
   useEffect(() => {
@@ -30,8 +34,7 @@ const EditProjects = () => {
   };
 
   const handleSubmit = () => {
-    console.log('details',details);
-    
+
     try {
       const formData = new FormData();
       const image = details?.image?.filter((image) => typeof (image) === 'string');
@@ -42,7 +45,7 @@ const EditProjects = () => {
         }
       });
       for (const key in details) {
-        if (details.hasOwnProperty(key) && key !== "image" && key !== "Spec" && key !== "configurations" && key !== "faqs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews") {
+        if (details.hasOwnProperty(key) && key !== "image" && key !== "Spec" && key !== "configurations" && key !== "faqs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews" && key !== "ApartmentAmenities" && key !== "LocationAdvantages") {
           formData.append(key, details[key]);
         }
       }
@@ -60,6 +63,27 @@ const EditProjects = () => {
         } else {
           formData.append('configuration', si.configuration);
           formData.append('configurationDetails', si.details);
+          formData.append('configurationIcon', si.icon);
+        }
+
+      });
+      details?.ApartmentAmenities?.forEach(si => {
+        if (si.text === '') {
+
+        } else {
+          formData.append('ApartmentText', si.text);
+          formData.append('ApartmentHelpertext', si.helpertext);
+          formData.append('ApartmentIcon', si.icon);
+        }
+
+      });
+      details?.LocationAdvantages?.forEach(si => {
+        if (si.text === '') {
+
+        } else {
+          formData.append('LocationText', si.text);
+          formData.append('LocationHelpertext', si.helpertext);
+          formData.append('LocationIcon', si.icon);
         }
 
       });
@@ -78,6 +102,7 @@ const EditProjects = () => {
         } else {
           formData.append('unitType', si.unitType);
           formData.append('configurationSize', si.configurationSize);
+          formData.append('unitIcon', si.icon);
         }
       });
       details?.Spec?.forEach(specif => {
@@ -86,6 +111,7 @@ const EditProjects = () => {
         } else {
           formData.append('Specifications', specif.Specifications);
           formData.append('SpecificationsDetails', specif.SpecificationsDetails);
+          formData.append('SpecificationsIcon', specif.icon);
         }
       });
       details?.reviews?.forEach(review => {
@@ -156,7 +182,35 @@ const EditProjects = () => {
     setDetails(prevData => ({ ...prevData, configurations: newconfiguration }));
   };
 
+  const handleApartmentAmenities = () => {
+    setDetails(prevData => ({ ...prevData, ApartmentAmenities: [...prevData.ApartmentAmenities, { text: '', helpertext: '' }] }));
+  };
+  const handleApartmentAmenitiesChange = (index, field, value) => {
+    const newApartmentAmenities = [...details.ApartmentAmenities];
+    newApartmentAmenities[index] = { ...newApartmentAmenities[index], [field]: value };;
+    setDetails(prevData => ({ ...prevData, ApartmentAmenities: newApartmentAmenities }));
+  };
 
+  const handleRemoveApartmentAmenities = (index) => {
+    const newApartmentAmenities = details.ApartmentAmenities.filter((_, i) => i !== index);
+    setDetails(prevData => ({ ...prevData, ApartmentAmenities: newApartmentAmenities }));
+  };
+
+
+
+  const handleLocationAdvantages = () => {
+    setDetails(prevData => ({ ...prevData, LocationAdvantages: [...prevData.LocationAdvantages, { text: '', helpertext: '' }] }));
+  };
+  const handleLocationAdvantagesChange = (index, field, value) => {
+    const newLocationAdvantages = [...details.LocationAdvantages];
+    newLocationAdvantages[index] = { ...newLocationAdvantages[index], [field]: value };;
+    setDetails(prevData => ({ ...prevData, LocationAdvantages: newLocationAdvantages }));
+  };
+
+  const handleRemoveLocationAdvantages = (index) => {
+    const newLocationAdvantages = details.LocationAdvantages.filter((_, i) => i !== index);
+    setDetails(prevData => ({ ...prevData, LocationAdvantages: newLocationAdvantages }));
+  };
 
 
   const handleAddFAQs = () => {
@@ -221,6 +275,24 @@ const EditProjects = () => {
     const newReviews = details.reviews.filter((_, i) => i !== reviewIndex);
     setDetails((prevData) => ({ ...prevData, reviews: newReviews }));
   };
+
+
+  const handleIconPickerOpen = (field, index) => {
+    setSelectedIconField({ field, index });
+    setIconPickerOpen(true);
+  };
+
+  const handleIconPickerClose = () => {
+    setIconPickerOpen(false);
+  };
+
+  const handleIconSelect = (iconName) => {
+    const { field, index } = selectedIconField;
+    const updatedData = [...details[field]];
+    updatedData[index] = { ...updatedData[index], icon: iconName };
+    setDetails(prevData => ({ ...prevData, [field]: updatedData }));
+    handleIconPickerClose();
+  };
   // useEffect(() => {
   //   if (isSingleType) {
   //     details?.stock && setDetails(prevData => ({ ...prevData, stock: '' }));
@@ -228,6 +300,7 @@ const EditProjects = () => {
   //     details?.sizes && setDetails(prevData => ({ ...prevData, sizes: [{ sizes: '', quantity: '' }] }));
   //   }
   // }, [isSingleType])
+  
   return (
     <PageLayout title={'Edit Projects'}>
       {isLoading ? <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography> :
@@ -243,7 +316,7 @@ const EditProjects = () => {
                 onChange={handleChange}
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <Input
                 required
@@ -281,6 +354,9 @@ const EditProjects = () => {
                 {details?.configurations?.map((configuration, index) => (
                   <Grid item xs={12} key={index}>
                     <Box key={index} display="flex" alignItems="center">
+                      <IconButton onClick={() => handleIconPickerOpen('configurations', index)}>
+                        {Icons[configuration.icon] ? Icons[configuration.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      </IconButton>
                       <TextField
                         placeholder={`Configuration ${index + 1}`}
                         value={configuration.configuration}
@@ -313,12 +389,97 @@ const EditProjects = () => {
             </Grid>
 
 
+            <Grid item xs={12} >
+              <Grid container direction="row">
+                {details?.ApartmentAmenities?.map((ApartmentAmenities, index) => (
+                  <Grid item xs={12} key={index}>
+                    <Box key={index} display="flex" alignItems="center">
+                      <IconButton onClick={() => handleIconPickerOpen('ApartmentAmenities', index)}>
+                        {Icons[ApartmentAmenities.icon] ? Icons[ApartmentAmenities.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      </IconButton>
+
+                      <TextField
+                        placeholder={`Apartment Amenities ${index + 1}`}
+                        value={ApartmentAmenities.text}
+                        onChange={(e) => handleApartmentAmenitiesChange(index, 'text', e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        required
+                        style={{ marginRight: '5px' }}
+                      />
+                      <TextField
+                        placeholder="details"
+                        value={ApartmentAmenities.helpertext}
+                        onChange={(e) => handleApartmentAmenitiesChange(index, 'helpertext', e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        required
+                      />
+                      {details.ApartmentAmenities.length > 1 && (
+                        <IconButton onClick={() => handleRemoveApartmentAmenities(index)}>
+                          <Delete />
+                        </IconButton>
+                      )}
+                    </Box>
+                  </Grid>
+                ))}
+                <Button onClick={handleApartmentAmenities} variant="contained" color="primary" fullWidth className="mt-4">
+                  Add Apartment Amenities
+                </Button>
+              </Grid>
+            </Grid>
+
+
+            <Grid item xs={12} >
+              <Grid container direction="row">
+                {details?.LocationAdvantages?.map((LocationAdvantages, index) => (
+                  <Grid item xs={12} key={index}>
+                    <Box key={index} display="flex" alignItems="center">
+                      <IconButton onClick={() => handleIconPickerOpen('LocationAdvantages', index)}>
+                        {Icons[LocationAdvantages.icon] ? Icons[LocationAdvantages.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      </IconButton>
+
+                      <TextField
+                        placeholder={`Location Advantages ${index + 1}`}
+                        value={LocationAdvantages.text}
+                        onChange={(e) => handleLocationAdvantagesChange(index, 'text', e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        required
+                        style={{ marginRight: '5px' }}
+                      />
+                      <TextField
+                        placeholder="details"
+                        value={LocationAdvantages.helpertext}
+                        onChange={(e) => handleLocationAdvantagesChange(index, 'helpertext', e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        required
+                      />
+                      {details.LocationAdvantages.length > 1 && (
+                        <IconButton onClick={() => handleRemoveLocationAdvantages(index)}>
+                          <Delete />
+                        </IconButton>
+                      )}
+                    </Box>
+                  </Grid>
+                ))}
+                <Button onClick={handleLocationAdvantages} variant="contained" color="primary" fullWidth className="mt-4">
+                  Add Location Advantages
+                </Button>
+              </Grid>
+            </Grid>
+
+
 
             <Grid item xs={12} >
               <Grid container direction="row">
                 {details?.unit?.map((unit, index) => (
                   <Grid item xs={12} key={index}>
                     <Box key={index} display="flex" alignItems="center">
+                      <IconButton onClick={() => handleIconPickerOpen('unit', index)}>
+                        {Icons[unit.icon] ? Icons[unit.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      </IconButton>
                       <TextField
                         placeholder={`Unit Type ${index + 1}`}
                         value={unit.unitType}
@@ -366,6 +527,9 @@ const EditProjects = () => {
                 {details?.Spec?.map((spec, index) => (
                   <Grid item xs={12} key={index}>
                     <Box key={index} display="flex" alignItems="center">
+                      <IconButton onClick={() => handleIconPickerOpen('Spec', index)}>
+                        {Icons[spec.icon] ? Icons[spec.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      </IconButton>
                       <TextField
                         placeholder={`Specifications Type ${index + 1}`}
                         value={spec.Specifications}
@@ -579,6 +743,11 @@ const EditProjects = () => {
             </Grid>
           </Grid>
         </Grid>}
+      <IconPickerPopup
+        open={iconPickerOpen}
+        onClose={handleIconPickerClose}
+        onSelectIcon={handleIconSelect}
+      />
     </PageLayout>
   );
 };

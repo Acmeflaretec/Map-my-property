@@ -39,18 +39,48 @@ const addprojects = async (req, res) => {
   try {
     const { name, subheading, category, location, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
       configuration, configurationDetails, questions, answer, unitType, configurationSize, Specifications, SpecificationsDetails,
-      reviewsName, reviewsRating, reviewsReview } = req?.body;
+      reviewsName, reviewsRating, reviewsReview, configurationIcon, unitIcon, SpecificationsIcon,
+      ApartmentText, ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon } = req?.body;
 
 
     let configurationValue = [];
     if (configuration) {
       const configurationArray = Array.isArray(configuration) ? configuration : [configuration];
       const DetailsArray = Array.isArray(configurationDetails) ? configurationDetails : [configurationDetails];
+      const iconsArray = Array.isArray(configurationIcon) ? configurationIcon : [configurationIcon];
       const configurationInside = configurationArray.map((configuration, index) => ({
         configuration,
-        details: DetailsArray[index]
+        details: DetailsArray[index],
+        icon: iconsArray[index]
       }));
       configurationValue = configurationInside[0]?.configuration ? configurationInside : undefined;
+    }
+
+    let ApartmentValue = [];
+    if (ApartmentText) {
+      const ApartmentArray = Array.isArray(ApartmentText) ? ApartmentText : [ApartmentText];
+      const DetailsArray = Array.isArray(ApartmentHelpertext) ? ApartmentHelpertext : [ApartmentHelpertext];
+      const iconsArray = Array.isArray(ApartmentIcon) ? ApartmentIcon : [ApartmentIcon];
+      const ApartmentInside = ApartmentArray.map((text, index) => ({
+        text,
+        helpertext: DetailsArray[index],
+        icon: iconsArray[index]
+      }));
+      ApartmentValue = ApartmentInside[0]?.text ? ApartmentInside : undefined;
+    }
+
+
+    let LocationValue = [];
+    if (LocationText) {
+      const LocationArray = Array.isArray(LocationText) ? LocationText : [LocationText];
+      const DetailsArray = Array.isArray(LocationHelpertext) ? LocationHelpertext : [LocationHelpertext];
+      const iconsArray = Array.isArray(LocationIcon) ? LocationIcon : [LocationIcon];
+      const LocationInside = LocationArray.map((text, index) => ({
+        text,
+        helpertext: DetailsArray[index],
+        icon: iconsArray[index]
+      }));
+      LocationValue = LocationInside[0]?.text ? LocationInside : undefined;
     }
 
 
@@ -70,21 +100,23 @@ const addprojects = async (req, res) => {
     if (unitType) {
       const unitTypeArray = Array.isArray(unitType) ? unitType : [unitType];
       const configurationSizeArray = Array.isArray(configurationSize) ? configurationSize : [configurationSize];
+      const iconsArray = Array.isArray(unitIcon) ? unitIcon : [unitIcon];
       const configurationInside = unitTypeArray.map((unitType, index) => ({
         unitType,
-        configurationSize: configurationSizeArray[index]
+        configurationSize: configurationSizeArray[index],
+        icon: iconsArray[index]
       }));
       unitValue = configurationInside[0]?.unitType ? configurationInside : undefined;
     }
-
-
     let spacunitValue = [];
     if (Specifications) {
       const SpecificationsArray = Array.isArray(Specifications) ? Specifications : [Specifications];
       const SpecificationsDetailsArray = Array.isArray(SpecificationsDetails) ? SpecificationsDetails : [SpecificationsDetails];
+      const iconsArray = Array.isArray(SpecificationsIcon) ? SpecificationsIcon : [SpecificationsIcon];
       const configurationInside = SpecificationsArray.map((Specifications, index) => ({
         Specifications,
-        SpecificationsDetails: SpecificationsDetailsArray[index]
+        SpecificationsDetails: SpecificationsDetailsArray[index],
+        icon: iconsArray[index]
       }));
       spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
     }
@@ -108,7 +140,7 @@ const addprojects = async (req, res) => {
       const projects = new Projects({
         name, subheading, category, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
         configurations: configurationValue, faqs: faqsValue, unit: unitValue, Spec: spacunitValue, reviews: reviewValue,
-        image: req.files.map((x) => x.filename),
+        ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,image: req.files.map((x) => x.filename),
       });
       await projects.save();
 
@@ -132,18 +164,48 @@ const updateprojects = async (req, res) => {
   try {
     const { _id, image, isAvailable, name, subheading, location, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
       configuration, configurationDetails, questions, answer, unitType, configurationSize, Specifications, SpecificationsDetails,
-      reviewsName, reviewsRating, reviewsReview } = req?.body
+      reviewsName, reviewsRating, reviewsReview, configurationIcon, unitIcon, SpecificationsIcon, ApartmentText,
+      ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon } = req?.body
 
-    let configurationValue = [];
-    if (configuration) {
-      const configurationArray = Array.isArray(configuration) ? configuration : [configuration];
-      const DetailsArray = Array.isArray(configurationDetails) ? configurationDetails : [configurationDetails];
-      const configurationInside = configurationArray.map((configuration, index) => ({
-        configuration,
-        details: DetailsArray[index]
-      }));
-      configurationValue = configurationInside[0]?.configuration ? configurationInside : undefined;
-    }
+      let configurationValue = [];
+      if (configuration) {
+        const configurationArray = Array.isArray(configuration) ? configuration : [configuration];
+        const DetailsArray = Array.isArray(configurationDetails) ? configurationDetails : [configurationDetails];
+        const iconsArray = Array.isArray(configurationIcon) ? configurationIcon : [configurationIcon];
+        const configurationInside = configurationArray.map((configuration, index) => ({
+          configuration,
+          details: DetailsArray[index],
+          icon: iconsArray[index]
+        }));
+        configurationValue = configurationInside[0]?.configuration ? configurationInside : undefined;
+      }
+  
+      let ApartmentValue = [];
+      if (ApartmentText) {
+        const ApartmentArray = Array.isArray(ApartmentText) ? ApartmentText : [ApartmentText];
+        const DetailsArray = Array.isArray(ApartmentHelpertext) ? ApartmentHelpertext : [ApartmentHelpertext];
+        const iconsArray = Array.isArray(ApartmentIcon) ? ApartmentIcon : [ApartmentIcon];
+        const ApartmentInside = ApartmentArray.map((text, index) => ({
+          text,
+          helpertext: DetailsArray[index],
+          icon: iconsArray[index]
+        }));
+        ApartmentValue = ApartmentInside[0]?.text ? ApartmentInside : undefined;
+      }
+  
+  
+      let LocationValue = [];
+      if (LocationText) {
+        const LocationArray = Array.isArray(LocationText) ? LocationText : [LocationText];
+        const DetailsArray = Array.isArray(LocationHelpertext) ? LocationHelpertext : [LocationHelpertext];
+        const iconsArray = Array.isArray(LocationIcon) ? LocationIcon : [LocationIcon];
+        const LocationInside = LocationArray.map((text, index) => ({
+          text,
+          helpertext: DetailsArray[index],
+          icon: iconsArray[index]
+        }));
+        LocationValue = LocationInside[0]?.text ? LocationInside : undefined;
+      }
 
 
     let faqsValue = [];
@@ -162,21 +224,23 @@ const updateprojects = async (req, res) => {
     if (unitType) {
       const unitTypeArray = Array.isArray(unitType) ? unitType : [unitType];
       const configurationSizeArray = Array.isArray(configurationSize) ? configurationSize : [configurationSize];
+      const iconsArray = Array.isArray(unitIcon) ? unitIcon : [unitIcon];
       const configurationInside = unitTypeArray.map((unitType, index) => ({
         unitType,
-        configurationSize: configurationSizeArray[index]
+        configurationSize: configurationSizeArray[index],
+        icon: iconsArray[index]
       }));
       unitValue = configurationInside[0]?.unitType ? configurationInside : undefined;
     }
-
-
     let spacunitValue = [];
     if (Specifications) {
       const SpecificationsArray = Array.isArray(Specifications) ? Specifications : [Specifications];
       const SpecificationsDetailsArray = Array.isArray(SpecificationsDetails) ? SpecificationsDetails : [SpecificationsDetails];
+      const iconsArray = Array.isArray(SpecificationsIcon) ? SpecificationsIcon : [SpecificationsIcon];
       const configurationInside = SpecificationsArray.map((Specifications, index) => ({
         Specifications,
-        SpecificationsDetails: SpecificationsDetailsArray[index]
+        SpecificationsDetails: SpecificationsDetailsArray[index],
+        icon: iconsArray[index]
       }));
       spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
     }
@@ -202,7 +266,8 @@ const updateprojects = async (req, res) => {
     await Projects.updateOne({ _id }, {
       $set: {
         isAvailable, image: images, name, subheading, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
-        configurations: configurationValue, faqs: faqsValue, unit: unitValue, Spec: spacunitValue, reviews: reviewValue
+        configurations: configurationValue, faqs: faqsValue, unit: unitValue, Spec: spacunitValue, reviews: reviewValue,
+        ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,
       }
     })
 
@@ -225,7 +290,7 @@ const deleteprojects = async (req, res) => {
 
 const getSelectprojects = async (req, res) => {
   try {
-    const data = await Projects.find({isAvailable:true})
+    const data = await Projects.find({ isAvailable: true })
     res.status(200).json({ data })
   } catch (error) {
     console.log(error);
