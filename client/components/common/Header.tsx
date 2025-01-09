@@ -45,8 +45,8 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
-    <header className="fixed top-0 z-50 bg-white backdrop-blur-lg flex flex-col items-center w-full bg-opacity-55">
-      <div className="flex h-16 px-4 md:px-8 xl:max-w-screen-xl justify-between w-full items-center border-b">
+    <header className="fixed top-0 z-50 bg-white backdrop-blur-lg flex flex-col items-center w-full bg-opacity-55 border">
+      <div className="flex h-16 px-4 md:px-8 xl:max-w-screen-xl justify-between w-full items-center">
         <Link href={"/"} className="flex items-center w-3/4 md:w-1/3">
           <Image
             src="/logo.svg"
@@ -68,7 +68,8 @@ const Header: React.FC = () => {
           onClick={toggleMenu}
         />
       </div>
-      <div className="hidden md:flex px-4 md:px-8 gap-8 border-b py-1 text-xs lg:text-sm text-stone-500 xl:max-w-screen-xl justify-end w-full items-center">
+      <div className="hidden md:flex w-full border-b"/>
+      <div className="hidden md:flex px-4 md:px-8 gap-8 py-1 text-xs lg:text-sm text-stone-500 xl:max-w-screen-xl justify-end w-full items-center">
         {helperLinks.map(({ path, label }, idx) => (
           <CustomLink key={idx} path={path}>
             {label}

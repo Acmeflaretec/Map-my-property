@@ -1,3 +1,5 @@
+import { builderData, BuilderType } from "./builderData";
+
 export interface TestimonialData {
   title: string;
   description: string;
@@ -17,18 +19,27 @@ export interface Feature {
   title: string;
   items: FeatureItem[];
 }
-
+export interface PricingType {
+  unit: string;
+  area: string;
+  price: string;
+}
+export interface PlanType {
+  title: string;
+  desc: string;
+  image: string;
+}
 export interface PropertyData {
   title: string;
   images: string[];
   price: string;
   desc: string;
   features: Feature[];
+  pricing: PricingType[];
+  masterPlan: PlanType;
+  plans: PlanType[];
   location: string;
-  builder_image: string;
-  builder_name: string;
-  builder_helpertext: string;
-  builder_bio: string;
+  builder: BuilderType;
   href: string;
   faqs: FaqData[];
   expertOpinions: string[];
@@ -101,11 +112,76 @@ export const propertyData: PropertyData = {
       ],
     },
   ],
-  builder_image: "/assets/properties/image-2.png",
-  builder_name: "Shuba",
-  builder_helpertext: "Quality Home Builders",
-  builder_bio:
-    "Built on innovation, leadership, and trust, the Subha Developers group is one of South India's leading developers and builders with property management which is mainly involved in infrastructure development with its philosophy.We came with a zeal to for quality among people. We build custom homes and custom home communities an conquer the hearts of millions by constructing quality residential",
+  pricing: [
+    {
+      unit: "3 BHK | Pooja Room | Family Room",
+      area: "1200 - 1500 sq/ft",
+      price: "Rs. 78 Lacs Onwards",
+    },
+    {
+      unit: "3 BHK | Pooja Room | Family Room",
+      area: "1200 - 1500 sq/ft",
+      price: "Rs. 78 Lacs Onwards",
+    },
+    {
+      unit: "3 BHK | Pooja Room | Family Room",
+      area: "1200 - 1500 sq/ft",
+      price: "Rs. 78 Lacs Onwards",
+    },
+    {
+      unit: "3 BHK | Pooja Room | Family Room | Garden",
+      area: "1200 - 1500 sq/ft",
+      price: "Rs. 78 Lacs Onwards",
+    },
+  ],
+  masterPlan: {
+    title: "Master Plan of Subha Belgravia Villas",
+    desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    image: "/assets/master-plan.png",
+  },
+  plans: [
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-1.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-2.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-1.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-2.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-1.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-2.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-1.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+    {
+      title: "1 BHK 1T Type 1A",
+      image: "/assets/plan-2.png",
+      desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
+    },
+  ],
+  builder: builderData,
   href: "/property/Subha-Belgravia-Villas",
   faqs: [
     {
