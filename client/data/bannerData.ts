@@ -1,23 +1,23 @@
-export interface BannerType {
-  text: string;
-  href: string;
-  image: string;
-}
+import { BannerType } from "@/utils/interface";
 
 export const bannerData: BannerType[] = [
   {
-    text: "Explore Your Best Property Journey with Us",
+    title:"Mapping Your Journey",
+    description: "Explore Your Best Property Journey with Us",
     href: "/property",
-    image: "/assets/banner.png",
+    src: "/assets/banner.png",
   },
   {
-    text: "Explore Your Best Property Journey with Us",
+    title:"Mapping Your Journey",
+    description: "Explore Your Best Property Journey with Us",
     href: "/property",
-    image: "/assets/banner.png",
+    src: "/assets/banner.png",
   },
   {
-    text: "Explore Your Best Property Journey with Us",
+    title:"Mapping Your Journey",
+    description: "Explore Your Best Property Journey with Us",
     href: "/property",
-    image: "/assets/banner.png",
+    src: "/assets/banner.png",
   },
 ];
+

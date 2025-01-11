@@ -1,15 +1,42 @@
 "use client";
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { Icons } from "../common/Icons";
-import Image from "next/image";
+// import Image from "next/image";
 import { SentenceAnimation } from "../ui/AnimationText";
 import { FlipWords } from "../ui/FlipWords";
 import CustomButton from "../ui/CustomButton";
 import { motion } from "framer-motion";
-import { BannerType } from "@/data/bannerData";
+import { bannerData } from "@/data/bannerData";
+import toast from "react-hot-toast";
+import { getBanner } from "@/utils/api";
+import { BannerType } from "@/utils/interface";
 
-const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
+const Banner: React.FC = () => {
+// const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [data, setData] = useState<BannerType[] | []>(bannerData);
+
+  const fetchData = async () => {
+    try {
+      const res = await getBanner({});
+      
+      const data = res?.data?.data || null;
+      const updatedData = data.map((item) => {
+        const newSrc = item.src ? `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/${item.src}` : "/assets/banner.png";
+        return { ...item, src: newSrc };
+      });
+  
+      setData(updatedData?.length>0 ? updatedData:bannerData);
+    } catch (error: any) {
+      toast.error(
+        error.message || "Something went wrong. Please try again later."
+      );
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? data?.length - 1 : prevIndex - 1
@@ -46,10 +73,10 @@ const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
             transition={{ duration: 0.7, ease: "easeInOut" }}
             className={`absolute inset-0 w-full h-full`}
           >
-            <Image
-              src={item?.image}
+            <img
+              src={item?.src}
               alt="banner-image"
-              layout="fill"
+              // layout="fill"
               className="object-cover"
             />
           </motion.div>
@@ -83,7 +110,7 @@ const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
             </span>
           </button>
           <p className="text-xs md:text-base max-w-md font-normal text-center">
-            {data[currentIndex]?.text}
+            {data[currentIndex]?.description}
           </p>
           <button
             className="flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
@@ -110,7 +137,7 @@ const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
           <CustomButton type="secondary" href="/contact">
             Get Enquired <Icons.phone />
           </CustomButton>
-          <CustomButton type="primary" href={data[currentIndex]?.href}>
+          <CustomButton type="primary" href={data[currentIndex]?.href?data[currentIndex]?.href :"/property"}>
             Explore Now <Icons.rightArrow />
           </CustomButton>
         </div>
@@ -120,3 +147,5 @@ const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
 };
 
 export default Banner;
+
+
