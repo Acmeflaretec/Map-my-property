@@ -20,9 +20,13 @@ const AddProjects = () => {
     ApartmentAmenities: [{ text: '', helpertext: '', icon: '' }],
     LocationAdvantages:  [{ text: '', helpertext: '', icon: '' }],
     FAQs: [{ questions: '', answer: '' }],
-    unit: [{ unitType: '', size: '', icon: '' }],
+    unit: [{ unitType: '', size: '', icon: '' }],  
     spec: [{ Specifications: '', details: '', icon: '' }],
     reviews: [{ name: '', rating: 0, review: '' }],
+    masterPlan: [{ title: '', desc: '', src: '' }],
+    imageGallery: [{ title: '', desc: '', src: '' }],
+    floorPlans: [{ title: '', desc: '', src: '' }],
+    accommodation: [{ unit: '', area: '', price: '' }],
   })
   const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
   const { mutateAsync: AddProjects, isLoading: loading } = useAddProjects()
@@ -66,7 +70,8 @@ const AddProjects = () => {
         formData.append('images', image, image.name);
       });
       for (const key in details) {
-        if (details.hasOwnProperty(key) && key !== "image" && key !== "spec" && key !== "configuration" && key !== "FAQs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews" && key !== "ApartmentAmenities" && key !== "LocationAdvantages") {
+        if (details.hasOwnProperty(key) && key !== "image" && key !== "spec" && key !== "configuration" && key !== "FAQs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews" && key !== "ApartmentAmenities" && key !== "LocationAdvantages"
+        && key !=='imageGallery' && key !=='floorPlans' && key !== 'accommodation' && key !=='masterPlan') {
           formData.append(key, details[key]);
         }
       }
@@ -145,6 +150,45 @@ const AddProjects = () => {
           formData.append(`reviewsReview`, review.review);
         }
       });
+      if (details?.masterPlan) {
+        if (details.masterPlan[0].title === '') {
+
+        } else {
+        formData.append(`masterPlan`, details.masterPlan[0].src);
+        formData.append(`masterPlanTitle`, details.masterPlan[0].title);
+        formData.append(`masterPlanDesc`, details.masterPlan[0].desc);
+        }
+      }
+      details?.imageGallery?.forEach(Gallery => {
+        if (Gallery.title === '') {
+
+        } else {
+          formData.append(`imageGallery`, Gallery.src);
+          formData.append(`imageGalleryTitle`, Gallery.title);
+          formData.append(`imageGalleryDesc`, Gallery.desc);
+        }
+      });
+      details?.floorPlans?.forEach(Plans => {
+        if (Plans.title === '') {
+
+        } else {
+          formData.append(`floorPlans`, Plans.src);
+          formData.append(`floorPlansTitle`, Plans.title);
+          formData.append(`floorPlansDesc`, Plans.desc);
+        }
+      });
+      details?.accommodation?.forEach(unit => {
+        if (unit.unit === '') {
+
+        } else {
+          formData.append(`accommodationUnit`, unit.unit);
+          formData.append(`accommodationArea`, unit.area);
+          formData.append(`accommodationPrice`, unit.price);
+        }
+      });
+
+     
+      
 
       AddProjects(formData)
         .then((res) => {
@@ -306,13 +350,31 @@ const AddProjects = () => {
     handleIconPickerClose();
   };
 
-  // useEffect(() => {
-  //   if (isSingleType) {
-  //     details?.stock && setDetails(prevData => ({ ...prevData, stock: '' }));
-  //   } else {
-  //     details?.configuration && setDetails(prevData => ({ ...prevData, configuration: [{ configuration: '', details: '' }] }));
-  //   }
-  // }, [isSingleType])
+  const handleNestedChange = (field, index, subField, value) => {
+    console.log('field',field);
+    const updated = [...details[field]];
+    updated[index][subField] = value;
+    setDetails((prev) => ({ ...prev, [field]: updated }));
+  };
+
+  const handleFileChange = (field, index, e) => {
+    const file = e.target.files[0];
+    handleNestedChange(field, index, 'src', file);
+  };
+
+  const handleAddField = (field) => {
+    const newItem = field === 'accommodation' ? { unit: '', area: '', price: '' } : { title: '', desc: '', src: '' };
+    setDetails((prev) => ({ ...prev, [field]: [...prev[field], newItem] }));
+  };
+
+  const handleRemoveField = (field, index) => {
+    const updated = details[field].filter((_, i) => i !== index);
+    setDetails((prev) => ({ ...prev, [field]: updated }));
+  };
+
+
+  console.log('details',details);
+  
   return (
     <PageLayout
       title={'Add Projects'}
@@ -385,6 +447,27 @@ const AddProjects = () => {
               onChange={handleChange}
               multiline
               rows={5}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Input
+              required
+              placeholder="Price"
+              id="price"
+              name="price"
+              value={details.price}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Input
+              required
+              placeholder="URL (href)"
+              id="href"
+              name="href"
+              value={details.href}
+              onChange={handleChange}
             />
           </Grid>
 
@@ -662,6 +745,90 @@ const AddProjects = () => {
               onChange={handleChange}
             />
           </Grid>
+
+
+
+
+
+
+
+
+
+
+
+          <Grid item xs={12}>
+          <Typography>Master Plan</Typography>
+          <TextField
+            placeholder="Title"
+            value={details.masterPlan.title}
+            // onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, title: e.target.value } }))}
+            onChange={(e) => handleNestedChange("masterPlan", 0, 'title', e.target.value)}
+          />
+          <TextField
+            placeholder="Description"
+            value={details.masterPlan.desc}
+            // onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, desc: e.target.value } }))}
+            onChange={(e) => handleNestedChange("masterPlan", 0, 'desc', e.target.value)}
+          />
+          <TextField
+            type="file"
+            onChange={(e) => handleFileChange('masterPlan', 0, e)}
+          />
+        </Grid>
+        {['imageGallery', 'floorPlans', 'accommodation'].map((field) => (
+          <Grid item xs={12} key={field}>
+            <Typography>{field.replace(/([A-Z])/g, ' $1').trim()}</Typography>
+            {details[field].map((item, index) => (
+              <Box key={index} display="flex" alignItems="center">
+                {field !== 'accommodation' && (
+                <TextField
+                  placeholder="Title"
+                  value={item.title}
+                  onChange={(e) => handleNestedChange(field, index, 'title', e.target.value)}
+                />
+              )}
+              {field !== 'accommodation' && (
+                <TextField
+                  placeholder="Description"
+                  value={item.desc}
+                  onChange={(e) => handleNestedChange(field, index, 'desc', e.target.value)}
+                />
+                )}
+                {field !== 'accommodation' && (
+                <TextField
+                  type="file"
+                  onChange={(e) => handleFileChange(field, index, e)}
+                />
+                )}
+                {field === 'accommodation' && (
+                  <TextField
+                    placeholder="Unit"
+                    value={item.unit}
+                    onChange={(e) => handleNestedChange(field, index, 'unit', e.target.value)}
+                  />
+                )}
+                {field === 'accommodation' && (
+                  <TextField
+                    placeholder="Area"
+                    value={item.area}
+                    onChange={(e) => handleNestedChange(field, index, 'area', e.target.value)}
+                  />
+                )}
+                {field === 'accommodation' && (
+                  <TextField
+                    placeholder="Price"
+                    value={item.price}
+                    onChange={(e) => handleNestedChange(field, index, 'price', e.target.value)}
+                  />
+                )}
+                <IconButton onClick={() => handleRemoveField(field, index)}>
+                  <Delete />
+                </IconButton>
+              </Box>
+            ))}
+            <Button onClick={() => handleAddField(field)}>Add {field}</Button>
+          </Grid>
+        ))}
 
 
 

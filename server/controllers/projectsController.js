@@ -6,15 +6,14 @@ const getAdminprojects = async (req, res) => {
   try {
     const { page = 1, perPage = 10, sortBy = 'createdAt', order = 'desc', search = '' } = req.query;
     const query = search ? { name: { $regex: search, $options: 'i' } } : {};
-
     const options = {
       page: parseInt(page, 10),
       limit: parseInt(perPage, 10),
       sort: { [sortBy]: order === 'desc' ? -1 : 1 }
-    };
+    };   
 
     const projects = await Projects.paginate(query, options);
-
+  
 
     res.status(200).json(projects);
   } catch (error) {
@@ -32,15 +31,16 @@ const getprojectsById = async (req, res) => {
     console.log(error.message);
     res.status(400).json({ message: error?.message ?? "Something went wrong !" });
   }
-}
+}   
 
 
 const addprojects = async (req, res) => {
   try {
     const { name, subheading, category, location, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
       configuration, configurationDetails, questions, answer, unitType, configurationSize, Specifications, SpecificationsDetails,
-      reviewsName, reviewsRating, reviewsReview, configurationIcon, unitIcon, SpecificationsIcon,
-      ApartmentText, ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon } = req?.body;
+      reviewsName, reviewsRating, reviewsReview, configurationIcon, unitIcon, SpecificationsIcon,price, href,
+      ApartmentText, ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon ,
+      masterPlanTitle,masterPlanDesc,imageGalleryTitle,imageGalleryDesc,floorPlansTitle,floorPlansDesc,accommodationUnit,accommodationArea,accommodationPrice} = req?.body;
 
 
     let configurationValue = [];
@@ -130,18 +130,54 @@ const addprojects = async (req, res) => {
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
       }));
-      console.log('configurationInside', configurationInside);
 
       reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
-      console.log('reviewValue', reviewValue);
-    }
+    }  
 
+    const masterPlan = {
+      title: masterPlanTitle,
+      desc: masterPlanDesc,
+      src: req.files.masterPlan && req.files.masterPlan[0].filename,
+    };
+    const imageGallery = Array.isArray(imageGalleryTitle)?( imageGalleryTitle.map((item, i) => ({
+      title: item,
+      desc: imageGalleryDesc[i],
+      src: req.files.imageGallery && req.files.imageGallery[i].filename ,
+    }))) :
+    ({
+      title: imageGalleryTitle,
+      desc: imageGalleryDesc,
+      src: req.files.imageGallery && req.files.imageGallery[0].filename ,
+    })
+
+    const floorPlans =  Array.isArray(floorPlansTitle)?( floorPlansTitle.map((item, i) => ({
+      title: item,
+      desc: floorPlansDesc[i],
+      src: req.files.floorPlans && req.files.floorPlans[i].filename ,
+    }))):
+    ({
+      title: floorPlansTitle,
+      desc: floorPlansDesc,
+      src: req.files.floorPlans && req.files.floorPlans[0].filename,
+    });
+    const accommodation =Array.isArray(accommodationUnit)?( accommodationUnit.map((item, i) => ({
+      unit: item,
+      area: accommodationArea[i],
+      price:accommodationPrice[i]
+    }))):
+    ({
+      unit: accommodationUnit,
+      area: accommodationArea,
+      price:accommodationPrice
+    }); 
     if (req.files.length != 0) {
       const projects = new Projects({
         name, subheading, category, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
         configurations: configurationValue, faqs: faqsValue, unit: unitValue, Spec: spacunitValue, reviews: reviewValue,
-        ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,image: req.files.map((x) => x.filename),
-      });
+        ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,image: req.files.images.map((x) => x.filename),
+        price,href,masterPlan:masterPlanTitle && masterPlan,imageGallery: imageGalleryTitle && imageGallery,floorPlans: floorPlansTitle && floorPlans ,
+        accommodation: accommodationUnit && accommodation
+      }); 
       await projects.save();
 
       if (projects) {
@@ -299,9 +335,9 @@ const getSelectprojects = async (req, res) => {
 
 
 module.exports = {
+  addprojects,
   getprojectsById,
   updateprojects,
-  addprojects,
   deleteprojects,
   getAdminprojects,
   getSelectprojects,
