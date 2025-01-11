@@ -1,8 +1,8 @@
 export interface SectionItem {
-  title: string;
+  name: string;
   image: string;
   price: string;
-  desc: string;
+  description: string;
   location: string;
   builder_image: string;
   builder_name: string;
@@ -20,10 +20,10 @@ export const sectionData: SectionData[] = [
     title: "Fast-Moving Properties",
     projects: [
       {
-        title: "Subha Belgravia Villas at Subha Ecocity",
+        name: "Subha Belgravia Villas at Subha Ecocity",
         image: "/assets/properties/image-1.png",
         price: "INR 2.35 Cr to 6.85 Cr",
-        desc: "2, 3, 4 BHK Flats | 750 Sq. Ft. to 2000 Sq. Ft. (Carpet)",
+        description: "2, 3, 4 BHK Flats | 750 Sq. Ft. to 2000 Sq. Ft. (Carpet)",
         location: "Chandapura, Bangalore",
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Shuba",
@@ -31,10 +31,10 @@ export const sectionData: SectionData[] = [
         href: "/property",
       },
       {
-        title: "Godrej Splendour",
+        name: "Godrej Splendour",
         image: "/assets/properties/image-2.png",
         price: "INR 1.2 Cr Onwards",
-        desc: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
+        description: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
         location: "Whitefield, Bangalore",
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Godrej Properties",
@@ -42,10 +42,10 @@ export const sectionData: SectionData[] = [
         href: "/property/godrej-splendour",
       },
       {
-        title: "Prestige Lakeside Habitat",
+        name: "Prestige Lakeside Habitat",
         image: "/assets/properties/image-4.png",
         price: "INR 1.8 Cr Onwards",
-        desc: "2, 3, 4 BHK Apartments | 1000 Sq. Ft. Onwards",
+        description: "2, 3, 4 BHK Apartments | 1000 Sq. Ft. Onwards",
         location: "Varthur Road, Bangalore",
         builder_image: "/assets/properties/image-1.png",
         builder_name: "Prestige Group",
@@ -53,10 +53,10 @@ export const sectionData: SectionData[] = [
         href: "/property/prestige-lakeside-habitat",
       },
       {
-        title: "Sobha Sentosa",
+        name: "Sobha Sentosa",
         image: "/assets/properties/image-1.png",
         price: "INR 4 Cr Onwards",
-        desc: "4, 5 BHK Villas | 3000 Sq. Ft. Onwards",
+        description: "4, 5 BHK Villas | 3000 Sq. Ft. Onwards",
         location: "Electronic City, Bangalore",
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Sobha",
@@ -64,10 +64,10 @@ export const sectionData: SectionData[] = [
         href: "/property/sobha-sentosa",
       },
       {
-        title: "Salarpuria Sattva Serene",
+        name: "Salarpuria Sattva Serene",
         image: "/assets/properties/image-3.png",
         price: "INR 3.5 Cr Onwards",
-        desc: "4, 5 BHK Villas | 4000 Sq. Ft. Onwards",
+        description: "4, 5 BHK Villas | 4000 Sq. Ft. Onwards",
         location: "Sarjapur Road, Bangalore",
         builder_image: "/assets/properties/image-4.png",
         builder_name: "Salarpuria Sattva",
@@ -75,10 +75,10 @@ export const sectionData: SectionData[] = [
         href: "/property/salarpuria-sattva-serene",
       },
       {
-        title: "Purvankara Provident Park",
+        name: "Purvankara Provident Park",
         image: "/assets/properties/image-4.png",
         price: "INR 40 Lakhs Onwards",
-        desc: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
+        description: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
         location: "Whitefield, Bangalore",
         builder_image: "/assets/properties/image-1.png",
         builder_name: "Purvankara",
@@ -86,10 +86,10 @@ export const sectionData: SectionData[] = [
         href: "/property/purvankara-provident-park",
       },
       {
-        title: "Brigade Meadows",
+        name: "Brigade Meadows",
         image: "/assets/properties/image-2.png",
         price: "INR 55 Lakhs Onwards",
-        desc: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
+        description: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
         location: "Hosur Road, Bangalore",
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Brigade Group",
@@ -102,10 +102,10 @@ export const sectionData: SectionData[] = [
     title: "Luxury Properties",
     projects: [
       {
-        title: "Mantri Alpyra",
+        name: "Mantri Alpyra",
         image: "/assets/properties/image-1.png",
         price: "INR 5 Cr Onwards",
-        desc: "4, 5 BHK Villas | 5000 Sq. Ft. Onwards",
+        description: "4, 5 BHK Villas | 5000 Sq. Ft. Onwards",
         location: "Bannerghatta Road, Bangalore",
         builder_image: "/assets/properties/image-1.png",
         builder_name: "Mantri Developers",
@@ -113,10 +113,10 @@ export const sectionData: SectionData[] = [
         href: "/property/mantri-alpyra",
       },
       {
-        title: "Prestige Golfshire Estates",
+        name: "Prestige Golfshire Estates",
         image: "/assets/properties/image-2.png",
         price: "INR 8 Cr Onwards",
-        desc: "5, 6 BHK Villas | 8000 Sq. Ft. Onwards",
+        description: "5, 6 BHK Villas | 8000 Sq. Ft. Onwards",
         location: "Off Sarjapur Road, Bangalore",
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Prestige Group",
@@ -124,10 +124,10 @@ export const sectionData: SectionData[] = [
         href: "/property/prestige-golfshire-estates",
       },
       {
-        title: "Sobha Windsor",
+        name: "Sobha Windsor",
         image: "/assets/properties/image-3.png",
         price: "INR 6 Cr Onwards",
-        desc: "4, 5 BHK Villas | 6000 Sq. Ft. Onwards",
+        description: "4, 5 BHK Villas | 6000 Sq. Ft. Onwards",
         location: "Bannerghatta Road, Bangalore",
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Sobha",
@@ -135,10 +135,10 @@ export const sectionData: SectionData[] = [
         href: "/property/sobha-windsor",
       },
       {
-        title: "L&T Raintree Boulevard",
+        name: "L&T Raintree Boulevard",
         image: "/assets/properties/image-4.png",
         price: "INR 7 Cr Onwards",
-        desc: "5, 6 BHK Villas | 7000 Sq. Ft. Onwards",
+        description: "5, 6 BHK Villas | 7000 Sq. Ft. Onwards",
         location: "Varthur Road, Bangalore",
         builder_image: "/assets/properties/image-4.png",
         builder_name: "L&T Realty",
@@ -146,10 +146,10 @@ export const sectionData: SectionData[] = [
         href: "/property/lnt-raintree-boulevard",
       },
       {
-        title: "DLF Park Place",
+        name: "DLF Park Place",
         image: "/assets/properties/image-1.png",
         price: "INR 10 Cr Onwards",
-        desc: "5, 6 BHK Villas | 10000 Sq. Ft. Onwards",
+        description: "5, 6 BHK Villas | 10000 Sq. Ft. Onwards",
         location: "Begur Road, Bangalore",
         builder_image: "/assets/properties/image-1.png",
         builder_name: "DLF Limited",
@@ -157,10 +157,10 @@ export const sectionData: SectionData[] = [
         href: "/property/dlf-park-place",
       },
       {
-        title: "Mahindra Lifespaces Luminare",
+        name: "Mahindra Lifespaces Luminare",
         image: "/assets/properties/image-2.png",
         price: "INR 4.5 Cr Onwards",
-        desc: "4, 5 BHK Villas | 4500 Sq. Ft. Onwards",
+        description: "4, 5 BHK Villas | 4500 Sq. Ft. Onwards",
         location: "Kanakapura Road, Bangalore",
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Mahindra Lifespaces",
@@ -168,10 +168,10 @@ export const sectionData: SectionData[] = [
         href: "/property/mahindra-lifespaces-luminare",
       },
       {
-        title: "Tata Promont",
+        name: "Tata Promont",
         image: "/assets/properties/image-3.png",
         price: "INR 9 Cr Onwards",
-        desc: "6, 7 BHK Villas | 12000 Sq. Ft. Onwards",
+        description: "6, 7 BHK Villas | 12000 Sq. Ft. Onwards",
         location: "Electronic City, Bangalore",
         builder_image: "/assets/properties/image-3.png",
         builder_name: "Tata Housing",
@@ -184,10 +184,10 @@ export const sectionData: SectionData[] = [
     title: "Affordable Homes",
     projects: [
       {
-        title: "Purvankara Provident Park",
+        name: "Purvankara Provident Park",
         image: "/assets/properties/image-4.png",
         price: "INR 40 Lakhs Onwards",
-        desc: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
+        description: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
         location: "Whitefield, Bangalore",
         builder_image: "/assets/properties/image-2.png",
         builder_name: "Purvankara",
@@ -195,10 +195,10 @@ export const sectionData: SectionData[] = [
         href: "/property/purvankara-provident-park",
       },
       {
-        title: "Brigade Meadows",
+        name: "Brigade Meadows",
         image: "/assets/properties/image-2.png",
         price: "INR 55 Lakhs Onwards",
-        desc: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
+        description: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
         location: "Hosur Road, Bangalore",
         builder_image: "/assets/properties/image-4.png",
         builder_name: "Brigade Group",

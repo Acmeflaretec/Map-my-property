@@ -3,12 +3,13 @@ import React from "react";
 import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";
 import Banner from "./Banner";
-import { bannerData } from "@/data/bannerData";
+// import { bannerData } from "@/data/bannerData";
 
 const HeroSection: React.FC = () => {
   return (
     <div className="relative flex flex-col items-center text-gray-800 mt-20 md:mt-28 mx-1 md:mx-4 lg:mt-32 h-[50vh] md:h-[70vh]">
-      <Banner data={bannerData} />
+      {/* <Banner data={bannerData} /> */}
+      <Banner />
       <div className="absolute hidden md:flex bg-white border-2 mb-2 -bottom-12 w-[95%] lg:w-4/5 xl:w-2/3 h-28 rounded-3xl p-2">
         <div className="w-[35%] p-2 lg:p-4 flex flex-col gap-2">
           <p className="flex gap-1 items-center">

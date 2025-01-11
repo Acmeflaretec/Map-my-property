@@ -8,12 +8,12 @@ dotenv.config();
           
 const app = express();     
 // app.use(cors());
-const corsOptions = {   
-  origin: [process.env.ADMIN_PORT_LOCAL,process.env.CLIENT_PORT_LOCAL],
+const corsOptions = {        
+  origin: [process.env.CLIENT_PORT_LOCAL,process.env.ADMIN_PORT_LOCAL],    
   credentials: true,       
 };         
 
-app.use(cors(corsOptions));    
+app.use(cors(corsOptions));     
 app.use(express.json());
 app.use(express.static(path.join(__dirname, ('./public'))))
 morgan.token("custom-date", (req, res) => {
