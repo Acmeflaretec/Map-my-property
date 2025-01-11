@@ -20,6 +20,11 @@ const projectsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    price: {
+        type: String,
+        required: true
+    },
+    href: { type: String },
     BuilderDescription: {
         type: String,
         required: true
@@ -36,7 +41,7 @@ const projectsSchema = new mongoose.Schema({
     location: {
         type: String,
     },
-    
+
     ExpertOpinions: {
         type: [String]
     },
@@ -69,6 +74,32 @@ const projectsSchema = new mongoose.Schema({
         SpecificationsDetails: String,
         icon: String,
     }],
+    masterPlan: {
+        title: String,
+        desc: String,
+        src: String,
+    },
+    imageGallery: [
+        {
+            title: String,
+            desc: String,
+            src: String,
+        },
+    ],
+    floorPlans: [
+        {
+            title: String,
+            desc: String,
+            src: String,
+        },
+    ],
+    accommodation: [
+        {
+            unit: String,
+            area: String,
+            price: String,
+        },
+    ],
     image: {
         type: Array,
         required: true
@@ -90,5 +121,5 @@ const projectsSchema = new mongoose.Schema({
     });
 
 
-    projectsSchema.plugin(mongoosePaginate);
+projectsSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('Projects', projectsSchema)
