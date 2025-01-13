@@ -113,6 +113,7 @@ const projectsSchema = new mongoose.Schema({
         name: String,
         rating: String,
         review: String,
+        image: String,
     }],
 
 },

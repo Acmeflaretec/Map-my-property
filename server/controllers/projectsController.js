@@ -120,6 +120,8 @@ const addprojects = async (req, res) => {
       }));
       spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
     }
+    console.log("req",req.files);
+    
     let reviewValue = [];
     if (reviewsName) {
       const reviewsNameArray = Array.isArray(reviewsName) ? reviewsName : [reviewsName];
@@ -129,11 +131,12 @@ const addprojects = async (req, res) => {
         name,
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
+        image: req.files.reviews && req.files.reviews[index].filename ,
       }));
 
       reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
     }  
-
+   
     const masterPlan = {
       title: masterPlanTitle,
       desc: masterPlanDesc,
