@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { useGetProjectsById, useUpdateProjects, useDeleteProjects } from 'queries/ProductQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImageList from './ImageList';
-import { Delete ,Add} from '@mui/icons-material';
+import { Delete, Add } from '@mui/icons-material';
 import { Icons } from 'components/Property/Icons.tsx'
 import IconPickerPopup from './IconPickerPopup'
 
@@ -34,7 +34,7 @@ const EditProjects = () => {
   };
 
   const handleSubmit = () => {
-
+    let flag = true
     try {
       const formData = new FormData();
       const image = details?.image?.filter((image) => typeof (image) === 'string');
@@ -45,7 +45,8 @@ const EditProjects = () => {
         }
       });
       for (const key in details) {
-        if (details.hasOwnProperty(key) && key !== "image" && key !== "Spec" && key !== "configurations" && key !== "faqs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews" && key !== "ApartmentAmenities" && key !== "LocationAdvantages") {
+        if (details.hasOwnProperty(key) && key !== "image" && key !== "Spec" && key !== "configurations" && key !== "faqs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews" && key !== "ApartmentAmenities" && key !== "LocationAdvantages"
+          && key !== 'imageGallery' && key !== 'floorPlans' && key !== 'accommodation' && key !== 'masterPlan') {
           formData.append(key, details[key]);
         }
       }
@@ -96,15 +97,7 @@ const EditProjects = () => {
         }
 
       });
-      details?.unit?.forEach(si => {
-        if (si.unitType === '') {
 
-        } else {
-          formData.append('unitType', si.unitType);
-          formData.append('configurationSize', si.configurationSize);
-          formData.append('unitIcon', si.icon);
-        }
-      });
       details?.Spec?.forEach(specif => {
         if (specif.Specifications === '') {
 
@@ -114,26 +107,102 @@ const EditProjects = () => {
           formData.append('SpecificationsIcon', specif.icon);
         }
       });
-      details?.reviews?.forEach(review => {
+      details?.reviews?.forEach((review, i) => {
         if (review.name === '') {
 
         } else {
-          formData.append(`reviewsName`, review.name);
-          formData.append(`reviewsRating`, review.rating);
-          formData.append(`reviewsReview`, review.review);
+          if (review.image) {
+            formData.append(`reviewsName`, review.name);
+            formData.append(`reviewsRating`, review.rating);
+            formData.append(`reviewsReview`, review.review);
+            formData.append(`reviews`, review.image);
+            formData.append(`reviewsImagePocision`, typeof(review.image) === 'object' ? '' :review.image);
+
+          } else {
+            toast.error(`reviews ${i + 1} field image is required`)
+            // setFlag(false)
+            flag = false
+            setDisable(false)
+          }
+        }
+      });
+      if (details?.masterPlan) {
+        if (details.masterPlan.title === '') {
+
+        } else {
+          if (details.masterPlan.src) {
+            formData.append(`masterPlan`, details.masterPlan.src);
+            formData.append(`masterPlanTitle`, details.masterPlan.title);
+            formData.append(`masterPlanDesc`, details.masterPlan.desc);
+          } else {
+            return toast.error(" masterPlan image is required")
+            setDisable(false)
+          }
+
+        }
+      }
+      details?.imageGallery?.forEach((Gallery, i) => {
+        if (Gallery.title === '') {
+
+        } else {
+          if (Gallery.src) {
+            formData.append(`imageGallery`, Gallery.src);
+            formData.append(`imageGalleryTitle`, Gallery.title);
+            formData.append(`imageGalleryDesc`, Gallery.desc);
+            formData.append(`imageGalleryPocision`, typeof(Gallery.src) === 'object' ? '' :Gallery.src);
+          } else {
+            toast.error(`image Gallery ${i + 1} field image is required`)
+            // setFlag(false)
+            flag = false
+            setDisable(false)
+          }
+
+        }
+      });
+      details?.floorPlans?.forEach((Plans, i) => {
+        if (Plans.title === '') {
+
+        } else {
+          if (Plans.src) {
+            console.log("df",typeof(Plans.src) === 'object');
+            
+            formData.append(`floorPlans`, Plans.src);
+            formData.append(`floorPlansTitle`, Plans.title);
+            formData.append(`floorPlansDesc`, Plans.desc);
+          formData.append(`floorPlansimagePocision`, typeof(Plans.src) === 'object' ? '' :Plans.src);
+          } else {
+            toast.error(`floor Plans ${i + 1} field image is required`)
+            // setFlag(false)
+            flag = false
+            setDisable(false)
+          }
+
+        }
+      });
+      details?.accommodation?.forEach(unit => {
+        if (unit.unit === '') {
+
+        } else {
+          formData.append(`accommodationUnit`, unit.unit);
+          formData.append(`accommodationArea`, unit.area);
+          formData.append(`accommodationPrice`, unit.price);
         }
       });
 
-      updateProjects(formData)
-        .then((res) => {
-          if (res) {
-            toast.success(res?.message ?? "Projects updated successfully");
-            navigate('/projects');
-          }
-        })
-        .catch((err) => {
-          toast.error(err?.message ?? "Something went wrong");
-        });
+
+
+      if (flag) {
+        updateProjects(formData)
+          .then((res) => {
+            if (res) {
+              toast.success(res?.message ?? "Projects updated successfully");
+              navigate('/projects');
+            }
+          })
+          .catch((err) => {
+            toast.error(err?.message ?? "Something went wrong");
+          });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -228,20 +297,6 @@ const EditProjects = () => {
   };
 
 
-  const handleUnitAddconfiguration = () => {
-    setDetails(prevData => ({ ...prevData, unit: [...prevData.unit, { unitType: '', configurationSize: '' }] }));
-  };
-  const handleUnitConfigurationChange = (index, field, value) => {
-    const newconfiguration = [...details.unit];
-    newconfiguration[index] = { ...newconfiguration[index], [field]: value };;
-    setDetails(prevData => ({ ...prevData, unit: newconfiguration }));
-  };
-
-  const handleUnitRemoveconfiguration = (index) => {
-    const newconfiguration = details.unit.filter((_, i) => i !== index);
-    setDetails(prevData => ({ ...prevData, unit: newconfiguration }));
-  };
-
 
   const handleAddSpecifications = () => {
     setDetails(prevData => ({ ...prevData, Spec: [...prevData.Spec, { Specifications: '', SpecificationsDetails: '' }] }));
@@ -293,6 +348,36 @@ const EditProjects = () => {
     setDetails(prevData => ({ ...prevData, [field]: updatedData }));
     handleIconPickerClose();
   };
+
+  const handleNestedChange = (field, index, subField, value) => {
+    const updated = [...details[field]];
+    updated[index][subField] = value;
+    setDetails((prev) => ({ ...prev, [field]: updated }));
+  };
+
+  const handleFileChange = (field, index, e) => {
+    const file = e.target.files[0];
+    if(field === "reviews"){
+      handleNestedChange(field, index, 'image', file);
+    }else{
+      handleNestedChange(field, index, 'src', file);
+    }
+  };
+
+  const handleMasterFileChange = (event) => {
+    const file = event.target.files[0];
+    setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, src: file } }))
+ };
+
+  const handleAddField = (field) => {
+    const newItem = field === 'accommodation' ? { unit: '', area: '', price: '' } : { title: '', desc: '', src: '' };
+    setDetails((prev) => ({ ...prev, [field]: [...prev[field], newItem] }));
+  };
+
+  const handleRemoveField = (field, index) => {
+    const updated = details[field].filter((_, i) => i !== index);
+    setDetails((prev) => ({ ...prev, [field]: updated }));
+  };
   // useEffect(() => {
   //   if (isSingleType) {
   //     details?.stock && setDetails(prevData => ({ ...prevData, stock: '' }));
@@ -300,7 +385,8 @@ const EditProjects = () => {
   //     details?.sizes && setDetails(prevData => ({ ...prevData, sizes: [{ sizes: '', quantity: '' }] }));
   //   }
   // }, [isSingleType])
-  
+console.log('details',details);
+
   return (
     <PageLayout title={'Edit Projects'}>
       {isLoading ? <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography> :
@@ -346,6 +432,26 @@ const EditProjects = () => {
                 onChange={handleChange}
                 multiline
                 rows={5}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Input
+                required
+                placeholder="Price"
+                id="price"
+                name="price"
+                value={details.price}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Input
+                required
+                placeholder="URL (href)"
+                id="href"
+                name="href"
+                value={details.href}
+                onChange={handleChange}
               />
             </Grid>
 
@@ -470,47 +576,6 @@ const EditProjects = () => {
               </Grid>
             </Grid>
 
-
-
-            <Grid item xs={12} >
-              <Grid container direction="row">
-                {details?.unit?.map((unit, index) => (
-                  <Grid item xs={12} key={index}>
-                    <Box key={index} display="flex" alignItems="center">
-                      <IconButton onClick={() => handleIconPickerOpen('unit', index)}>
-                        {Icons[unit.icon] ? Icons[unit.icon]({ width: '24px', height: '24px' }) : <Add />}
-                      </IconButton>
-                      <TextField
-                        placeholder={`Unit Type ${index + 1}`}
-                        value={unit.unitType}
-                        onChange={(e) => handleUnitConfigurationChange(index, 'unitType', e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        required
-                        style={{ marginRight: '5px' }}
-                      />
-                      <TextField
-                        placeholder="Size in Sq.Ft"
-                        value={unit.configurationSize}
-                        onChange={(e) => handleUnitConfigurationChange(index, 'configurationSize', e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        required
-                      />
-                      {details.unit.length > 1 && (
-                        <IconButton onClick={() => handleUnitRemoveconfiguration(index)}>
-                          <Delete />
-                        </IconButton>
-                      )}
-                    </Box>
-                  </Grid>
-                ))}
-                <Button onClick={handleUnitAddconfiguration} variant="contained" color="primary" fullWidth className="mt-4">
-                  Add Unit
-                </Button>
-              </Grid>
-            </Grid>
-
             <Grid item xs={12}>
               <Input
                 required
@@ -621,6 +686,90 @@ const EditProjects = () => {
               />
             </Grid>
 
+            <Grid item xs={12}>
+              <Typography variant="h6">Master Plan</Typography>
+              <Grid marginBottom={1}>
+                <TextField
+                  placeholder=" Master Plan Title"
+                  value={details?.masterPlan?.title}
+                  style={{ marginRight: '5px' }}
+                  onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, title: e.target.value } }))}
+                  // onChange={(e) => handleNestedChange("masterPlan", 0, 'title', e.target.value)}
+                />
+                <TextField
+                  placeholder="Description"
+                  value={details?.masterPlan?.desc}
+                  onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, desc: e.target.value } }))}
+                  // onChange={(e) => handleNestedChange("masterPlan", 0, 'desc', e.target.value)}
+                />
+              </Grid>
+              <TextField
+                type="file"
+                fullWidth
+                // onChange={(e) => handleFileChange('masterPlan', 0, e)}
+                onChange={(e) => handleMasterFileChange(e)}
+              />
+            </Grid>
+            {['imageGallery', 'floorPlans', 'accommodation'].map((field) => (
+              <Grid item xs={12} key={field}>
+                <Typography variant="h6">{field.replace(/([A-Z])/g, ' $1').trim()}</Typography>
+                {details[field]?.map((item, index) => (
+                  <Box key={index} display="flex" alignItems="center" marginBottom={1}>
+                    {field !== 'accommodation' && (
+                      <TextField
+                        placeholder="Title"
+                        value={item.title}
+                        required
+                        onChange={(e) => handleNestedChange(field, index, 'title', e.target.value)}
+                        style={{ marginRight: '5px' }}
+                      />
+                    )}
+                    {field !== 'accommodation' && (
+                      <TextField
+                        placeholder="Description"
+                        value={item.desc}
+                        style={{ marginRight: '5px' }}
+                        onChange={(e) => handleNestedChange(field, index, 'desc', e.target.value)}
+                      />
+                    )}
+                    {field !== 'accommodation' && (
+                      <TextField
+                        type="file"
+                        onChange={(e) => handleFileChange(field, index, e)}
+                      />
+                    )}
+                    {field === 'accommodation' && (
+                      <TextField
+                        placeholder="Unit"
+                        value={item.unit}
+                        style={{ marginRight: '5px' }}
+                        onChange={(e) => handleNestedChange(field, index, 'unit', e.target.value)}
+                      />
+                    )}
+                    {field === 'accommodation' && (
+                      <TextField
+                        placeholder="Area"
+                        value={item.area}
+                        style={{ marginRight: '5px' }}
+                        onChange={(e) => handleNestedChange(field, index, 'area', e.target.value)}
+                      />
+                    )}
+                    {field === 'accommodation' && (
+                      <TextField
+                        placeholder="Price"
+                        value={item.price}
+                        onChange={(e) => handleNestedChange(field, index, 'price', e.target.value)}
+                      />
+                    )}
+                    <IconButton onClick={() => handleRemoveField(field, index)}>
+                      <Delete />
+                    </IconButton>
+                  </Box>
+                ))}
+                <Button onClick={() => handleAddField(field)} variant="contained" color="primary" fullWidth className="mt-4">Add {field}</Button>
+              </Grid>
+
+            ))}
 
 
 
@@ -679,6 +828,12 @@ const EditProjects = () => {
                     onChange={(e, value) =>
                       handleReviewChange(index, 'rating', value)
                     }
+                  />
+                  <TextField
+                    type="file"
+                    fullWidth
+                    // value={review.image}
+                    onChange={(e) => handleFileChange('reviews', index, e)}
                   />
                   <TextField
                     placeholder="Review"
