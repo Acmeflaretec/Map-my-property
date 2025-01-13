@@ -191,6 +191,7 @@ const AddProjects = () => {
           formData.append(`floorPlans`, Plans.src);
           formData.append(`floorPlansTitle`, Plans.title);
           formData.append(`floorPlansDesc`, Plans.desc);
+          
         } else {
           toast.error(`floor Plans ${i+1} field image is required`)
           // setFlag(false)

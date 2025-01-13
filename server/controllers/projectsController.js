@@ -37,8 +37,8 @@ const getprojectsById = async (req, res) => {
 const addprojects = async (req, res) => {
   try {
     const { name, subheading, category, location, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
-      configuration, configurationDetails, questions, answer, unitType, configurationSize, Specifications, SpecificationsDetails,
-      reviewsName, reviewsRating, reviewsReview, configurationIcon, unitIcon, SpecificationsIcon,price, href,
+      configuration, configurationDetails, questions, answer, Specifications, SpecificationsDetails,
+      reviewsName, reviewsRating, reviewsReview, configurationIcon, SpecificationsIcon,price, href,
       ApartmentText, ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon ,
       masterPlanTitle,masterPlanDesc,imageGalleryTitle,imageGalleryDesc,floorPlansTitle,floorPlansDesc,accommodationUnit,accommodationArea,accommodationPrice} = req?.body;
 
@@ -94,20 +94,6 @@ const addprojects = async (req, res) => {
       }));
       faqsValue = faqsInside[0]?.questions ? faqsInside : undefined;
     }
-
-
-    let unitValue = [];
-    if (unitType) {
-      const unitTypeArray = Array.isArray(unitType) ? unitType : [unitType];
-      const configurationSizeArray = Array.isArray(configurationSize) ? configurationSize : [configurationSize];
-      const iconsArray = Array.isArray(unitIcon) ? unitIcon : [unitIcon];
-      const configurationInside = unitTypeArray.map((unitType, index) => ({
-        unitType,
-        configurationSize: configurationSizeArray[index],
-        icon: iconsArray[index]
-      }));
-      unitValue = configurationInside[0]?.unitType ? configurationInside : undefined;
-    }
     let spacunitValue = [];
     if (Specifications) {
       const SpecificationsArray = Array.isArray(Specifications) ? Specifications : [Specifications];
@@ -120,7 +106,6 @@ const addprojects = async (req, res) => {
       }));
       spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
     }
-    console.log("req",req.files);
     
     let reviewValue = [];
     if (reviewsName) {
@@ -176,7 +161,7 @@ const addprojects = async (req, res) => {
     if (req.files.length != 0) {
       const projects = new Projects({
         name, subheading, category, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
-        configurations: configurationValue, faqs: faqsValue, unit: unitValue, Spec: spacunitValue, reviews: reviewValue,
+        configurations: configurationValue, faqs: faqsValue, Spec: spacunitValue, reviews: reviewValue,
         ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,image: req.files.images.map((x) => x.filename),
         price,href,masterPlan:masterPlanTitle && masterPlan,imageGallery: imageGalleryTitle && imageGallery,floorPlans: floorPlansTitle && floorPlans ,
         accommodation: accommodationUnit && accommodation
@@ -200,11 +185,14 @@ const addprojects = async (req, res) => {
 };
 
 const updateprojects = async (req, res) => {
+  console.log('updateprojects');
+  
   try {
     const { _id, image, isAvailable, name, subheading, location, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
-      configuration, configurationDetails, questions, answer, unitType, configurationSize, Specifications, SpecificationsDetails,
-      reviewsName, reviewsRating, reviewsReview, configurationIcon, unitIcon, SpecificationsIcon, ApartmentText,
-      ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon } = req?.body
+      configuration, configurationDetails, questions, answer,Specifications, SpecificationsDetails,
+      reviewsName, reviewsRating, reviewsReview, configurationIcon,SpecificationsIcon, ApartmentText,price, href,
+      ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon,masterPlanTitle,masterPlanDesc,
+      imageGalleryTitle,imageGalleryDesc,floorPlansTitle,floorPlansDesc,accommodationUnit,accommodationArea,accommodationPrice } = req?.body
 
       let configurationValue = [];
       if (configuration) {
@@ -258,19 +246,6 @@ const updateprojects = async (req, res) => {
       faqsValue = faqsInside[0]?.questions ? faqsInside : undefined;
     }
 
-
-    let unitValue = [];
-    if (unitType) {
-      const unitTypeArray = Array.isArray(unitType) ? unitType : [unitType];
-      const configurationSizeArray = Array.isArray(configurationSize) ? configurationSize : [configurationSize];
-      const iconsArray = Array.isArray(unitIcon) ? unitIcon : [unitIcon];
-      const configurationInside = unitTypeArray.map((unitType, index) => ({
-        unitType,
-        configurationSize: configurationSizeArray[index],
-        icon: iconsArray[index]
-      }));
-      unitValue = configurationInside[0]?.unitType ? configurationInside : undefined;
-    }
     let spacunitValue = [];
     if (Specifications) {
       const SpecificationsArray = Array.isArray(Specifications) ? Specifications : [Specifications];
@@ -284,6 +259,7 @@ const updateprojects = async (req, res) => {
       spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
     }
     let reviewValue = [];
+    let k=0;
     if (reviewsName) {
       const reviewsNameArray = Array.isArray(reviewsName) ? reviewsName : [reviewsName];
       const reviewsRatingArray = Array.isArray(reviewsRating) ? reviewsRating : [reviewsRating];
@@ -292,21 +268,77 @@ const updateprojects = async (req, res) => {
         name,
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
+        // image: req.files.reviews && req.files.reviews[index].filename ,
+        image: req?.body?.reviewsImagePocision[index] === '' ? (k++,req.files.reviews[k-1].filename) : req?.body?.reviewsImagePocision[index] ,
       }));
-      reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
 
+      reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
+    }  
+   
+   
+    const masterPlan = {
+      title: masterPlanTitle,
+      desc: masterPlanDesc,
+      src: req.files.masterPlan ?? req.body.masterPlan,
+      
+    };
+    
+    if (req?.files?.masterPlan?.length > 0) {
+      console.log('kerittund',req?.files?.masterPlan?.length);
+      masterPlan.src = req.files.masterPlan[0].filename
     }
+    console.log('req?.files',req?.files);
+    console.log('req.body',req.body);
+    let m = 0;
+    const imageGallery = Array.isArray(imageGalleryTitle)?( imageGalleryTitle.map((item, i) => ({
+      title: item,
+      desc: imageGalleryDesc[i],
+      // src: req.files.imageGallery && req.files.imageGallery[i].filename ,
+      src: req?.body?.imageGalleryPocision[i] === '' ? (m++,req.files.imageGallery[m-1].filename) : req?.body?.imageGalleryPocision[i] ,
+    }))) :
+    ({
+      title: imageGalleryTitle,
+      desc: imageGalleryDesc,
+      src:  req.files.imageGallery ? req.files.imageGallery[0].filename : req?.body?.imageGalleryPocision  ,
+    })
+    let s=0;
+    const floorPlans =  Array.isArray(floorPlansTitle)?( floorPlansTitle.map((item, i) => ({
+      title: item,
+      desc: floorPlansDesc[i],
+      src:  req?.body?.floorPlansimagePocision[i] === '' ? (s++,req.files.floorPlans[s-1].filename) : req?.body?.floorPlansimagePocision[i] ,
+      // src: req.files.floorPlans && req.files.floorPlans[i].filename ,
+    }))):
+    ({
+      title: floorPlansTitle,
+      desc: floorPlansDesc,
+      src: req.files.floorPlans ? req.files.floorPlans[0].filename : req?.body?.floorPlansimagePocision ,
+    });
+    const accommodation =Array.isArray(accommodationUnit)?( accommodationUnit.map((item, i) => ({
+      unit: item,
+      area: accommodationArea[i],
+      price:accommodationPrice[i]
+    }))):
+    ({
+      unit: accommodationUnit,
+      area: accommodationArea,
+      price:accommodationPrice
+    }); 
 
     const images = JSON.parse(image) ?? []
-    if (req?.files?.length != 0) {
-      req?.files?.map((x) => images.push(x.filename))
+    if (req?.files?.images?.length != 0) {
+      req?.files?.images?.map((x) => images.push(x.filename))
     }
 
     await Projects.updateOne({ _id }, {
       $set: {
         isAvailable, image: images, name, subheading, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
-        configurations: configurationValue, faqs: faqsValue, unit: unitValue, Spec: spacunitValue, reviews: reviewValue,
+        configurations: configurationValue, faqs: faqsValue, Spec: spacunitValue,
         ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,
+        price,href,masterPlan:masterPlanTitle && masterPlan,
+        imageGallery: imageGalleryTitle && imageGallery,
+        floorPlans: floorPlansTitle && floorPlans , 
+        reviews: reviewValue,
+        accommodation: accommodationUnit && accommodation
       }
     })
 
