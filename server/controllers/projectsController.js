@@ -269,7 +269,7 @@ const updateprojects = async (req, res) => {
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
         // image: req.files.reviews && req.files.reviews[index].filename ,
-        image: req?.body?.reviewsImagePocision[index] === '' ? (k++,req.files.reviews[k-1].filename) : req?.body?.reviewsImagePocision[index] ,
+        image: Array.isArray(req?.body?.reviewsImagePocision) ? (req?.body?.reviewsImagePocision[index] === '' ? (k++,req.files.reviews[k-1].filename) : req?.body?.reviewsImagePocision[index]): (req?.body?.reviewsImagePocision === '' ? (req.files.reviews[0].filename) : req?.body?.reviewsImagePocision),
       }));
 
       reviewValue = configurationInside[0]?.name ? configurationInside : undefined;

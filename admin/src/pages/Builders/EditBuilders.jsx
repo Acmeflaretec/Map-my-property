@@ -1,10 +1,10 @@
-import { Button, Grid, TextField, ToggleButton, Rating, IconButton, Box } from '@mui/material';
+import { Button, Grid, TextField, ToggleButton, Rating, IconButton, Box, Autocomplete } from '@mui/material';
 import Input from 'components/Input';
 import PageLayout from 'layouts/PageLayout';
 import React, { useEffect, useState } from 'react';
 import Typography from 'components/Typography';
 import toast from 'react-hot-toast';
-import { useGetBuildersById, useUpdateBuilders } from 'queries/ProductQuery';
+import { useGetBuildersById, useUpdateBuilders, useGetSelectProjects } from 'queries/ProductQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImageList from './ImageList';
 import { Delete } from '@mui/icons-material';
@@ -13,11 +13,14 @@ const EditBuilders = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState({});
+  const [projects, setProjects] = useState([])
   const { data, isLoading } = useGetBuildersById({ id });
+  const { data: respo } = useGetSelectProjects({ pageNo: 1, pageCount: 100 });
 
 
   useEffect(() => {
     if (data?.data) {
+      data?.data?.projects && setProjects(data?.data?.projects)
       setDetails(data.data);
     }
   }, [data]);
@@ -28,9 +31,18 @@ const EditBuilders = () => {
   const handleChange = (e) => {
     setDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
+  const fileInputRef = React.useRef(null);
+  const handleFileSelect = () => {
+    fileInputRef.current.click();
+  };
+
+  const handlelogoFileChange = (event) => {
+    const file = event.target.files[0];
+    setDetails(prev => ({ ...prev, logo: file }));
+  };
 
   const handleSubmit = () => {
-    console.log('details', details);
+    let flag = true
 
     try {
       const formData = new FormData();
@@ -41,180 +53,90 @@ const EditBuilders = () => {
           formData.append('images', image, image.name);
         }
       });
+      typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
       for (const key in details) {
-        // if (details.hasOwnProperty(key) && key !== "image" && key !== "Spec" && key !== "configurations" && key !== "faqs" && key !== "unit" && key !== "ExpertOpinions" && key !== "reviews" && key !== "address") {
-        if (details.hasOwnProperty(key) && key !== "image" && key !== "faqs" && key !== "reviews" && key !== "address") {
+        if (details.hasOwnProperty(key) && key !== "image" && key !== "faqs" && key !== "reviews" && key !== "address" && key !== "projects" && key !==  'features' && key !==  'logo') {
           formData.append(key, details[key]);
         }
       }
-      // details?.ExpertOpinions?.forEach(fit => {
-      //   if (fit === '') {
-
-      //   } else {
-      //     return formData.append('ExpertOpinions', fit)
-      //   }
-      // });
-
-      // details?.configurations?.forEach(si => {
-      //   if (si.configuration === '') {
-
-      //   } else {
-      //     formData.append('configuration', si.configuration);
-      //     formData.append('configurationDetails', si.details);
-      //   }
-
-      // });
-      details?.faqs?.forEach(si => {
-        if (si.questions === '') {
+      projects.forEach((projects) => formData.append('projects', projects._id));
+      details?.features?.forEach(features => {
+        if (features.text === '') {
 
         } else {
-          formData.append('questions', si.questions);
-          formData.append('answer', si.answer);
+          formData.append('featuresText', features.text);
+          formData.append('featuresHelpertext', features.helpertext);
         }
-
       });
-      // details?.unit?.forEach(si => {
-      //   if (si.unitType === '') {
-
-      //   } else {
-      //     formData.append('unitType', si.unitType);
-      //     formData.append('configurationSize', si.configurationSize);
-      //   }
-      // });
-      // details?.Spec?.forEach(specif => {
-      //   if (specif.Specifications === '') {
-
-      //   } else {
-      //     formData.append('Specifications', specif.Specifications);
-      //     formData.append('SpecificationsDetails', specif.SpecificationsDetails);
-      //   }
-      // });
-      details?.reviews?.forEach(review => {
+      details?.reviews?.forEach((review, i) => {
         if (review.name === '') {
 
         } else {
-          formData.append(`reviewsName`, review.name);
-          formData.append(`reviewsRating`, review.rating);
-          formData.append(`reviewsReview`, review.review);
-        }
-      });
+          if (review.image) {
+            formData.append(`reviewsName`, review.name);
+            formData.append(`reviewsRating`, review.rating);
+            formData.append(`reviewsReview`, review.review);
+            formData.append(`reviews`, review.image);
+            formData.append(`reviewsImagePocision`, typeof (review.image) === 'object' ? '' : review.image);
 
-      details?.address?.forEach((address) => {
-        if (address.street) {
-          formData.append('addressStreet', address.street);
-          formData.append('addressCity', address.city);
-          formData.append('addressState', address.state);
-          formData.append('addressZip', address.zip);
-          formData.append('addressCountry', address.country);
-          formData.append('addressPhone', address.phone);
-        }
-      });
-
-      updateBuilders(formData)
-        .then((res) => {
-          if (res) {
-            toast.success(res?.message ?? "Builders updated successfully");
-            navigate('/builders');
+          } else {
+            toast.error(`reviews ${i + 1} field image is required`)
+            flag = false
+            setDisable(false)
           }
-        })
-        .catch((err) => {
-          toast.error(err?.message ?? "Something went wrong");
-        });
+        }
+      });
+
+      // details?.address?.forEach((address) => {
+      //   if (address.street) {
+      //     formData.append('addressStreet', address.street);
+      //     formData.append('addressCity', address.city);
+      //     formData.append('addressState', address.state);
+      //     formData.append('addressZip', address.zip);
+      //     formData.append('addressCountry', address.country);
+      //     formData.append('addressPhone', address.phone);
+      //   }
+      // });
+      // details?.faqs?.forEach(si => {
+      //   if (si.questions === '') {
+
+      //   } else {
+      //     formData.append('questions', si.questions);
+      //     formData.append('answer', si.answer);
+      //   }
+
+      // });
+      if (flag) {
+        updateBuilders(formData)
+          .then((res) => {
+            if (res) {
+              toast.success(res?.message ?? "Builders updated successfully");
+              navigate('/builders');
+            }
+          })
+          .catch((err) => {
+            toast.error(err?.message ?? "Something went wrong");
+          });
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  // const handleDelete = () => {
-  //   deleteBuilders(details)
-  //     .then((res) => {
-  //       if (res) {
-  //         toast.success(res?.message ?? "Builders deleted successfully");
-  //         navigate('/builders');
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       toast.error(err?.message ?? "Something went wrong");
-  //     });
-  // };
 
-
-
-
-  // const handleExpertOpinionsChange = (index, value) => {
-  //   const newfeature = [...details.ExpertOpinions];
-  //   newfeature[index] = value;
-  //   setDetails(prevData => ({ ...prevData, ExpertOpinions: newfeature }));
-  // };
-  // const handleAddExpertOpinions = () => {
-  //   setDetails(prevData => ({ ...prevData, ExpertOpinions: [...prevData.ExpertOpinions, ''] }));
-  // };
-  // const handleRemoveExpertOpinions = (index) => {
-  //   const newfeature = details.ExpertOpinions.filter((_, i) => i !== index);
-  //   setDetails(prevData => ({ ...prevData, ExpertOpinions: newfeature }));
-  // };
-
-  // const handleAddconfiguration = () => {
-  //   setDetails(prevData => ({ ...prevData, configurations: [...prevData.configurations, { configuration: '', details: '' }] }));
-  // };
-  // const handleconfigurationChange = (index, field, value) => {
-  //   const newconfiguration = [...details.configurations];
-  //   newconfiguration[index] = { ...newconfiguration[index], [field]: value };;
-  //   setDetails(prevData => ({ ...prevData, configurations: newconfiguration }));
-  // };
-
-  // const handleRemoveconfiguration = (index) => {
-  //   const newconfiguration = details.configurations.filter((_, i) => i !== index);
-  //   setDetails(prevData => ({ ...prevData, configurations: newconfiguration }));
-  // };
-
-
-
-
-  const handleAddFAQs = () => {
-    setDetails(prevData => ({ ...prevData, faqs: [...prevData.faqs, { questions: '', answer: '' }] }));
+  const handleAddFeatures = () => {
+    setDetails(prevData => ({ ...prevData, features: [...prevData.features, { text: '', helpertext: '' }] }));
   };
-  const handleFAQsChange = (index, field, value) => {
-    const newFAQs = [...details.faqs];
-    newFAQs[index] = { ...newFAQs[index], [field]: value };;
-    setDetails(prevData => ({ ...prevData, faqs: newFAQs }));
+  const handleFeaturesChange = (index, field, value) => {
+    const newconfiguration = [...details.features];
+    newconfiguration[index] = { ...newconfiguration[index], [field]: value };;
+    setDetails(prevData => ({ ...prevData, features: newconfiguration }));
   };
 
-  const handleRemoveFAQs = (index) => {
-    const newFAQs = details.faqs.filter((_, i) => i !== index);
-    setDetails(prevData => ({ ...prevData, faqs: newFAQs }));
+  const handleFeaturesRemove = (index) => {
+    const newconfiguration = details.features.filter((_, i) => i !== index);
+    setDetails(prevData => ({ ...prevData, features: newconfiguration }));
   };
-
-
-  // const handleUnitAddconfiguration = () => {
-  //   setDetails(prevData => ({ ...prevData, unit: [...prevData.unit, { unitType: '', configurationSize: '' }] }));
-  // };
-  // const handleUnitConfigurationChange = (index, field, value) => {
-  //   const newconfiguration = [...details.unit];
-  //   newconfiguration[index] = { ...newconfiguration[index], [field]: value };;
-  //   setDetails(prevData => ({ ...prevData, unit: newconfiguration }));
-  // };
-
-  // const handleUnitRemoveconfiguration = (index) => {
-  //   const newconfiguration = details.unit.filter((_, i) => i !== index);
-  //   setDetails(prevData => ({ ...prevData, unit: newconfiguration }));
-  // };
-
-
-  // const handleAddSpecifications = () => {
-  //   setDetails(prevData => ({ ...prevData, Spec: [...prevData.Spec, { Specifications: '', SpecificationsDetails: '' }] }));
-  // };
-  // const handleSpecificationsChange = (index, field, value) => {
-  //   const newconfiguration = [...details.Spec];
-  //   newconfiguration[index] = { ...newconfiguration[index], [field]: value };;
-  //   setDetails(prevData => ({ ...prevData, Spec: newconfiguration }));
-  // };
-
-  // const handleSpecificationsRemove = (index) => {
-  //   const newconfiguration = details.Spec.filter((_, i) => i !== index);
-  //   setDetails(prevData => ({ ...prevData, Spec: newconfiguration }));
-  // };
-
 
   const handleAddReview = () => {
     setDetails((prevData) => ({
@@ -235,30 +157,44 @@ const EditBuilders = () => {
   };
 
 
-  const handleAddAddress = () => {
-    setDetails((prevData) => ({
-      ...prevData,
-      address: [...prevData.address, { street: '', city: '', state: '', zip: '', country: '', phone: '' }],
-    }));
-  };
+  const handleFileChange = (field, index, e) => {
+    const file = e.target.files[0];
+    const updated = [...details[field]];
+    updated[index]['image'] = file;
+    setDetails((prev) => ({ ...prev, [field]: updated }));
+  }
+  // const handleAddAddress = () => {
+  //   setDetails((prevData) => ({
+  //     ...prevData,
+  //     address: [...prevData.address, { street: '', city: '', state: '', zip: '', country: '', phone: '' }],
+  //   }));
+  // };
 
-  const handleAddressChange = (index, field, value) => {
-    const newAddresses = [...details.address];
-    newAddresses[index] = { ...newAddresses[index], [field]: value };
-    setDetails((prevData) => ({ ...prevData, address: newAddresses }));
-  };
+  // const handleAddressChange = (index, field, value) => {
+  //   const newAddresses = [...details.address];
+  //   newAddresses[index] = { ...newAddresses[index], [field]: value };
+  //   setDetails((prevData) => ({ ...prevData, address: newAddresses }));
+  // };
 
-  const handleRemoveAddress = (index) => {
-    const newAddresses = details.address.filter((_, i) => i !== index);
-    setDetails((prevData) => ({ ...prevData, address: newAddresses }));
-  };
-  // useEffect(() => {
-  //   if (isSingleType) {
-  //     details?.stock && setDetails(prevData => ({ ...prevData, stock: '' }));
-  //   } else {
-  //     details?.sizes && setDetails(prevData => ({ ...prevData, sizes: [{ sizes: '', quantity: '' }] }));
-  //   }
-  // }, [isSingleType])
+  // const handleRemoveAddress = (index) => {
+  //   const newAddresses = details.address.filter((_, i) => i !== index);
+  //   setDetails((prevData) => ({ ...prevData, address: newAddresses }));
+  // };
+  // const handleAddFAQs = () => {
+  //   setDetails(prevData => ({ ...prevData, faqs: [...prevData.faqs, { questions: '', answer: '' }] }));
+  // };
+  // const handleFAQsChange = (index, field, value) => {
+  //   const newFAQs = [...details.faqs];
+  //   newFAQs[index] = { ...newFAQs[index], [field]: value };;
+  //   setDetails(prevData => ({ ...prevData, faqs: newFAQs }));
+  // };
+
+  // const handleRemoveFAQs = (index) => {
+  //   const newFAQs = details.faqs.filter((_, i) => i !== index);
+  //   setDetails(prevData => ({ ...prevData, faqs: newFAQs }));
+  // };
+console.log('details',details);
+
   return (
     <PageLayout title={'Edit Builders'}>
       {isLoading ? <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography> :
@@ -285,14 +221,42 @@ const EditBuilders = () => {
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} >
-              <Input
-                required
-                disabled
-                placeholder="Projects"
-                id="projects"
-                name="projects"
-                value={details?.projects?.name || ''}
+            <Grid item xs={12} sm={12}>
+              <Autocomplete
+                id="Projects-select"
+                multiple
+                options={respo?.data || []}
+                value={projects}
+                onChange={(event, newValue) => {
+                  setProjects(newValue);
+                }}
+                autoHighlight
+                getOptionLabel={(option) => option.name}
+                renderOption={(props, option) => (
+                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                    <img
+                      loading="lazy"
+                      width="20"
+                      src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image[0]}`}
+                    />
+                    <Typography color="inherit" variant="caption">
+                      {option?.name} <br />
+                      {option?.brand}
+                    </Typography>
+                    <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
+                      {option?.isAvailable ? 'available' : 'NA'}
+                    </Typography>
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Choose a Projects"
+                    inputProps={{
+                      ...params.inputProps,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>
@@ -307,78 +271,16 @@ const EditBuilders = () => {
               />
             </Grid>
 
-            {/* <Grid item xs={12} >
-              <Grid container direction="row">
-                {details?.configurations?.map((configuration, index) => (
-                  <Grid item xs={12} key={index}>
-                    <Box key={index} display="flex" alignItems="center">
-                      <TextField
-                        placeholder={`Configuration ${index + 1}`}
-                        value={configuration.configuration}
-                        onChange={(e) => handleconfigurationChange(index, 'configuration', e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        required
-                        style={{ marginRight: '5px' }}
-                      />
-                      <TextField
-                        placeholder="details"
-                        value={configuration.details}
-                        onChange={(e) => handleconfigurationChange(index, 'details', e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        required
-                      />
-                      {details.configurations.length > 1 && (
-                        <IconButton onClick={() => handleRemoveconfiguration(index)}>
-                          <Delete />
-                        </IconButton>
-                      )}
-                    </Box>
-                  </Grid>
-                ))}
-                <Button onClick={handleAddconfiguration} variant="contained" color="primary" fullWidth className="mt-4">
-                  Add Configuration
-                </Button>
-              </Grid>
-            </Grid>
-
-
-
-            <Grid item xs={12} >
-              <Grid container direction="row">
-                {details?.unit?.map((unit, index) => (
-                  <Grid item xs={12} key={index}>
-                    <Box key={index} display="flex" alignItems="center">
-                      <TextField
-                        placeholder={`Unit Type ${index + 1}`}
-                        value={unit.unitType}
-                        onChange={(e) => handleUnitConfigurationChange(index, 'unitType', e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        required
-                        style={{ marginRight: '5px' }}
-                      />
-                      <TextField
-                        placeholder="Size in Sq.Ft"
-                        value={unit.configurationSize}
-                        onChange={(e) => handleUnitConfigurationChange(index, 'configurationSize', e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        required
-                      />
-                      {details.unit.length > 1 && (
-                        <IconButton onClick={() => handleUnitRemoveconfiguration(index)}>
-                          <Delete />
-                        </IconButton>
-                      )}
-                    </Box>
-                  </Grid>
-                ))}
-                <Button onClick={handleUnitAddconfiguration} variant="contained" color="primary" fullWidth className="mt-4">
-                  Add Unit
-                </Button>
-              </Grid>
+            <Grid item xs={12}>
+              <Input
+                id="vision"
+                placeholder="our vision"
+                name="vision"
+                value={details?.vision || ''}
+                onChange={handleChange}
+                multiline
+                rows={5}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -394,100 +296,41 @@ const EditBuilders = () => {
 
             <Grid item xs={12} >
               <Grid container direction="row">
-                {details?.Spec?.map((spec, index) => (
+                {details?.features?.map((features, index) => (
                   <Grid item xs={12} key={index}>
                     <Box key={index} display="flex" alignItems="center">
                       <TextField
-                        placeholder={`Specifications Type ${index + 1}`}
-                        value={spec.Specifications}
-                        onChange={(e) => handleSpecificationsChange(index, 'Specifications', e.target.value)}
+                        placeholder={`Features Type ${index + 1}`}
+                        value={features.text}
+                        onChange={(e) => handleFeaturesChange(index, 'text', e.target.value)}
                         fullWidth
                         margin="normal"
                         required
                         style={{ marginRight: '5px' }}
                       />
                       <TextField
-                        placeholder="Details"
-                        value={spec.SpecificationsDetails}
-                        onChange={(e) => handleSpecificationsChange(index, 'SpecificationsDetails', e.target.value)}
+                        placeholder="helpertext"
+                        value={features.helpertext}
+                        onChange={(e) => handleFeaturesChange(index, 'helpertext', e.target.value)}
                         fullWidth
                         margin="normal"
                         required
                       />
-                      {details.Spec.length > 1 && (
-                        <IconButton onClick={() => handleSpecificationsRemove(index)}>
+                      {details.features.length > 1 && (
+                        <IconButton onClick={() => handleFeaturesRemove(index)}>
                           <Delete />
                         </IconButton>
                       )}
                     </Box>
                   </Grid>
                 ))}
-                <Button onClick={handleAddSpecifications} variant="contained" color="primary" fullWidth className="mt-4">
-                  Add Specifications
+                <Button onClick={handleAddFeatures} variant="contained" color="primary" fullWidth className="mt-4">
+                  Add Features
                 </Button>
               </Grid>
             </Grid>
 
-
-            <Grid item xs={12}>
-              {details?.ExpertOpinions?.map((ExpertOpinions, index) => (
-                <Box key={index} display="flex" alignItems="center">
-                  <TextField
-                    placeholder={`Expert Opinions ${index + 1}`}
-                    value={ExpertOpinions}
-                    onChange={(e) => handleExpertOpinionsChange(index, e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    required
-                  />
-                  {details.ExpertOpinions.length > 1 && (
-                    <IconButton onClick={() => handleRemoveExpertOpinions(index)}>
-                      <Delete />
-                    </IconButton>
-                  )}
-                </Box>
-              ))}
-              <Button onClick={handleAddExpertOpinions} variant="contained" color="primary" fullWidth className="mt-4">
-                Expert Opinions
-              </Button>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Input
-                id="BuilderDescription"
-                placeholder="More about the Builder"
-                name="BuilderDescription"
-                value={details?.BuilderDescription || ''}
-                onChange={handleChange}
-                multiline
-                rows={5}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Input
-                placeholder="Ongoing Builders"
-                name="ongoing"
-                value={details?.ongoing || ''}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Input
-                placeholder="Upcoming Builders"
-                name="upcoming"
-                value={details?.upcoming || ''}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Input
-                placeholder="Completed Builders"
-                name="completed"
-                value={details?.completed || ''}
-                onChange={handleChange}
-              />
-            </Grid> */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Typography variant="h6">Addresses</Typography>
               {details?.address?.map((address, index) => (
                 <Box key={index} mt={2} display="flex" flexDirection="column">
@@ -586,7 +429,7 @@ const EditBuilders = () => {
                   Add FAQs
                 </Button>
               </Grid>
-            </Grid>
+            </Grid> */}
 
 
             <Grid item xs={12}>
@@ -607,6 +450,11 @@ const EditBuilders = () => {
                     onChange={(e, value) =>
                       handleReviewChange(index, 'rating', value)
                     }
+                  />
+                  <TextField
+                    type="file"
+                    fullWidth
+                    onChange={(e) => handleFileChange('reviews', index, e)}
                   />
                   <TextField
                     placeholder="Review"
@@ -661,13 +509,80 @@ const EditBuilders = () => {
               </Grid>
             </Grid>
           </Grid>
-          {/* <Grid item container spacing={2} xs={12} sm={12} md={6}>
-            <ImageList details={details?.image} setDetails={setDetails} />
-          </Grid> */}
 
           <Grid item container spacing={2} xs={12} sm={12} md={6}>
             <Grid sx={{ width: '100%' }}>
               <ImageList data={details?.image} dispatch={setDetails} />
+            </Grid>
+            <Grid item xs={12} >
+              <Typography variant="h6">Add logo</Typography>
+              <Box
+                sx={{
+                  width: 200,
+                  height: 100,
+                  cursor: "pointer",
+                  backgroundColor: "#212121",
+                  "&:hover": {
+                    backgroundColor: "#424242",
+                    opacity: [0.9, 0.8, 0.7],
+                  },
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+                onClick={handleFileSelect}
+              >
+
+                {details?.logo ? (
+                  <img
+                    style={{ width: 240, height: 135, padding: 22 }}
+                    src={typeof (details?.logo) == 'object' ? URL.createObjectURL(details?.logo) : `${process.env.REACT_APP_API_URL}/uploads/${details?.logo}`}
+                  />
+                ) : (
+                  <React.Fragment>
+                    <svg
+                      width="56"
+                      height="56"
+                      viewBox="0 0 56 56"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M20.9994 51.3346H34.9994C46.666 51.3346 51.3327 46.668 51.3327 35.0013V21.0013C51.3327 9.33464 46.666 4.66797 34.9994 4.66797H20.9994C9.33268 4.66797 4.66602 9.33464 4.66602 21.0013V35.0013C4.66602 46.668 9.33268 51.3346 20.9994 51.3346Z"
+                        stroke="#CDCDCD"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M21.0007 23.3333C23.578 23.3333 25.6673 21.244 25.6673 18.6667C25.6673 16.0893 23.578 14 21.0007 14C18.4233 14 16.334 16.0893 16.334 18.6667C16.334 21.244 18.4233 23.3333 21.0007 23.3333Z"
+                        stroke="#CDCDCD"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M6.23047 44.2186L17.7338 36.4953C19.5771 35.2586 22.2371 35.3986 23.8938 36.8219L24.6638 37.4986C26.4838 39.0619 29.4238 39.0619 31.2438 37.4986L40.9505 29.1686C42.7705 27.6053 45.7105 27.6053 47.5305 29.1686L51.3338 32.4353"
+                        stroke="#CDCDCD"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <Typography sx={{ mt: 1, fontSize: 13 }}>
+                      Upload Thumbnail
+                    </Typography>
+                  </React.Fragment>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handlelogoFileChange}
+                />
+              </Box>
             </Grid>
           </Grid>
         </Grid>}
