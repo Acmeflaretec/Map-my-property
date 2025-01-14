@@ -116,7 +116,7 @@ const EditProjects = () => {
             formData.append(`reviewsRating`, review.rating);
             formData.append(`reviewsReview`, review.review);
             formData.append(`reviews`, review.image);
-            formData.append(`reviewsImagePocision`, typeof(review.image) === 'object' ? '' :review.image);
+            formData.append(`reviewsImagePocision`, typeof (review.image) === 'object' ? '' : review.image);
 
           } else {
             toast.error(`reviews ${i + 1} field image is required`)
@@ -149,7 +149,7 @@ const EditProjects = () => {
             formData.append(`imageGallery`, Gallery.src);
             formData.append(`imageGalleryTitle`, Gallery.title);
             formData.append(`imageGalleryDesc`, Gallery.desc);
-            formData.append(`imageGalleryPocision`, typeof(Gallery.src) === 'object' ? '' :Gallery.src);
+            formData.append(`imageGalleryPocision`, typeof (Gallery.src) === 'object' ? '' : Gallery.src);
           } else {
             toast.error(`image Gallery ${i + 1} field image is required`)
             // setFlag(false)
@@ -164,12 +164,12 @@ const EditProjects = () => {
 
         } else {
           if (Plans.src) {
-            console.log("df",typeof(Plans.src) === 'object');
-            
+            console.log("df", typeof (Plans.src) === 'object');
+
             formData.append(`floorPlans`, Plans.src);
             formData.append(`floorPlansTitle`, Plans.title);
             formData.append(`floorPlansDesc`, Plans.desc);
-          formData.append(`floorPlansimagePocision`, typeof(Plans.src) === 'object' ? '' :Plans.src);
+            formData.append(`floorPlansimagePocision`, typeof (Plans.src) === 'object' ? '' : Plans.src);
           } else {
             toast.error(`floor Plans ${i + 1} field image is required`)
             // setFlag(false)
@@ -357,9 +357,9 @@ const EditProjects = () => {
 
   const handleFileChange = (field, index, e) => {
     const file = e.target.files[0];
-    if(field === "reviews"){
+    if (field === "reviews") {
       handleNestedChange(field, index, 'image', file);
-    }else{
+    } else {
       handleNestedChange(field, index, 'src', file);
     }
   };
@@ -367,7 +367,7 @@ const EditProjects = () => {
   const handleMasterFileChange = (event) => {
     const file = event.target.files[0];
     setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, src: file } }))
- };
+  };
 
   const handleAddField = (field) => {
     const newItem = field === 'accommodation' ? { unit: '', area: '', price: '' } : { title: '', desc: '', src: '' };
@@ -385,7 +385,7 @@ const EditProjects = () => {
   //     details?.sizes && setDetails(prevData => ({ ...prevData, sizes: [{ sizes: '', quantity: '' }] }));
   //   }
   // }, [isSingleType])
-console.log('details',details);
+  console.log('details', details);
 
   return (
     <PageLayout title={'Edit Projects'}>
@@ -694,21 +694,45 @@ console.log('details',details);
                   value={details?.masterPlan?.title}
                   style={{ marginRight: '5px' }}
                   onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, title: e.target.value } }))}
-                  // onChange={(e) => handleNestedChange("masterPlan", 0, 'title', e.target.value)}
+                // onChange={(e) => handleNestedChange("masterPlan", 0, 'title', e.target.value)}
                 />
                 <TextField
                   placeholder="Description"
                   value={details?.masterPlan?.desc}
                   onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, desc: e.target.value } }))}
-                  // onChange={(e) => handleNestedChange("masterPlan", 0, 'desc', e.target.value)}
+                // onChange={(e) => handleNestedChange("masterPlan", 0, 'desc', e.target.value)}
                 />
               </Grid>
-              <TextField
+              {/* <TextField
                 type="file"
                 fullWidth
                 // onChange={(e) => handleFileChange('masterPlan', 0, e)}
                 onChange={(e) => handleMasterFileChange(e)}
-              />
+              /> */}
+              <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+                <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+                  Upload Image
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(e) => handleMasterFileChange(e)}
+                  />
+                </Button>
+                {details?.masterPlan?.src && (
+                  <Box mt={1}>
+                    <img
+                      src={
+                        typeof (details?.masterPlan?.src) === 'object'
+                          ? URL.createObjectURL(details?.masterPlan?.src)
+                          : `${process.env.REACT_APP_API_URL}/uploads/${details?.masterPlan?.src}`
+                      }
+                      alt={`masterPlan`}
+                      style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                    />
+                  </Box>
+                )}
+
+              </Box>
             </Grid>
             {['imageGallery', 'floorPlans', 'accommodation'].map((field) => (
               <Grid item xs={12} key={field}>
@@ -733,10 +757,34 @@ console.log('details',details);
                       />
                     )}
                     {field !== 'accommodation' && (
-                      <TextField
-                        type="file"
-                        onChange={(e) => handleFileChange(field, index, e)}
-                      />
+                      // <TextField
+                      //   type="file"
+                      //   onChange={(e) => handleFileChange(field, index, e)}
+                      // />
+                      <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+                        <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+                          Upload Image
+                          <input
+                            type="file"
+                            hidden
+                            onChange={(e) => handleFileChange(field, index, e)}
+                          />
+                        </Button>
+                        {item.src && (
+                          <Box mt={1}>
+                            <img
+                              src={
+                                typeof item.src === 'object'
+                                  ? URL.createObjectURL(item.src)
+                                  : `${process.env.REACT_APP_API_URL}/uploads/${item.src}`
+                              }
+                              alt={`${item} ${index + 1}`}
+                              style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                            />
+                          </Box>
+                        )}
+
+                      </Box>
                     )}
                     {field === 'accommodation' && (
                       <TextField
@@ -829,12 +877,35 @@ console.log('details',details);
                       handleReviewChange(index, 'rating', value)
                     }
                   />
-                  <TextField
+                  {/* <TextField
                     type="file"
                     fullWidth
-                    // value={review.image}
                     onChange={(e) => handleFileChange('reviews', index, e)}
-                  />
+                  /> */}
+                  <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+                    <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+                      Upload Image
+                      <input
+                        type="file"
+                        hidden
+                        onChange={(e) => handleFileChange('reviews', index, e)}
+                      />
+                    </Button>
+                    {review.image && (
+                      <Box mt={1}>
+                        <img
+                          src={
+                            typeof review.image === 'object'
+                              ? URL.createObjectURL(review.image)
+                              : `${process.env.REACT_APP_API_URL}/uploads/${review.image}`
+                          }
+                          alt={`Review ${index + 1}`}
+                          style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                        />
+                      </Box>
+                    )}
+
+                  </Box>
                   <TextField
                     placeholder="Review"
                     value={review.review}

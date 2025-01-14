@@ -55,7 +55,7 @@ const EditBuilders = () => {
       });
       typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
       for (const key in details) {
-        if (details.hasOwnProperty(key) && key !== "image" && key !== "faqs" && key !== "reviews" && key !== "address" && key !== "projects" && key !==  'features' && key !==  'logo') {
+        if (details.hasOwnProperty(key) && key !== "image" && key !== "faqs" && key !== "reviews" && key !== "address" && key !== "projects" && key !== 'features' && key !== 'logo') {
           formData.append(key, details[key]);
         }
       }
@@ -193,7 +193,7 @@ const EditBuilders = () => {
   //   const newFAQs = details.faqs.filter((_, i) => i !== index);
   //   setDetails(prevData => ({ ...prevData, faqs: newFAQs }));
   // };
-console.log('details',details);
+  console.log('details', details);
 
   return (
     <PageLayout title={'Edit Builders'}>
@@ -451,11 +451,35 @@ console.log('details',details);
                       handleReviewChange(index, 'rating', value)
                     }
                   />
-                  <TextField
+                  {/* <TextField
                     type="file"
                     fullWidth
                     onChange={(e) => handleFileChange('reviews', index, e)}
-                  />
+                  /> */}
+                  <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+                    <Button variant="outlined" component="label">
+                      Upload Image
+                      <input
+                        type="file"
+                        hidden
+                        onChange={(e) => handleFileChange('reviews', index, e)}
+                      />
+                    </Button>
+                    {review.image && (
+                      <Box mt={1}>
+                        <img
+                          src={
+                            typeof review.image === 'object'
+                              ? URL.createObjectURL(review.image)
+                              : `${process.env.REACT_APP_API_URL}/uploads/${review.image}`
+                          }
+                          alt={`Review ${index + 1}`}
+                          style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                        />
+                      </Box>
+                    )}
+
+                  </Box>
                   <TextField
                     placeholder="Review"
                     value={review.review}
