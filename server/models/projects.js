@@ -24,7 +24,11 @@ const projectsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    price: {
+    minPrice: {
+        type: String,
+        required: true
+    },
+    maxPrice: {
         type: String,
         required: true
     },
@@ -48,6 +52,12 @@ const projectsSchema = new mongoose.Schema({
 
     ExpertOpinions: {
         type: [String]
+    },
+    Bedrooms: {
+        type: [String],
+    },
+    Areas: {
+        type: [String],
     },
     configurations: [{
         configuration: String,
