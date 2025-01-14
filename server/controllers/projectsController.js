@@ -37,8 +37,8 @@ const getprojectsById = async (req, res) => {
 const addprojects = async (req, res) => {
   try {
     const { name, subheading, category, location, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
-      configuration, configurationDetails, questions, answer, Specifications, SpecificationsDetails,
-      reviewsName, reviewsRating, reviewsReview, configurationIcon, SpecificationsIcon,price, href,
+      configuration, configurationDetails, questions, answer, Specifications, SpecificationsDetails,Bedrooms, Areas,
+      reviewsName, reviewsRating, reviewsReview, configurationIcon, SpecificationsIcon,minPrice,maxPrice, href,
       ApartmentText, ApartmentHelpertext, ApartmentIcon, LocationText, LocationHelpertext, LocationIcon ,
       masterPlanTitle,masterPlanDesc,imageGalleryTitle,imageGalleryDesc,floorPlansTitle,floorPlansDesc,accommodationUnit,accommodationArea,accommodationPrice} = req?.body;
 
@@ -161,9 +161,9 @@ const addprojects = async (req, res) => {
     if (req.files.length != 0) {
       const projects = new Projects({
         name, subheading, category, description, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
-        configurations: configurationValue, faqs: faqsValue, Spec: spacunitValue, reviews: reviewValue,
+        configurations: configurationValue, faqs: faqsValue, Spec: spacunitValue, reviews: reviewValue,Bedrooms, Areas,
         ApartmentAmenities:ApartmentValue, LocationAdvantages:LocationValue,image: req.files.images.map((x) => x.filename),
-        price,href,masterPlan:masterPlanTitle && masterPlan,imageGallery: imageGalleryTitle && imageGallery,floorPlans: floorPlansTitle && floorPlans ,
+        minPrice,maxPrice,href,masterPlan:masterPlanTitle && masterPlan,imageGallery: imageGalleryTitle && imageGallery,floorPlans: floorPlansTitle && floorPlans ,
         accommodation: accommodationUnit && accommodation
       }); 
       await projects.save();
