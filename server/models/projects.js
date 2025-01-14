@@ -16,6 +16,10 @@ const projectsSchema = new mongoose.Schema({
         required: true,
         ref: "Category"
     },
+    builder: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Builders',
+    },
     description: {
         type: String,
         required: true

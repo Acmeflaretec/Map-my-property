@@ -1,4 +1,5 @@
 const Builders = require('../models/builders');
+const Projects = require('../models/projects');
 
 
 const getAdminbuilders = async (req, res) => {
@@ -36,27 +37,13 @@ const getbuildersById = async (req, res) => {
 
 const addbuilders = async (req, res) => {
   console.log('addbuilders');
-  
+
   try {
-    const { 
-      name, subheading,description, questions, answer,reviewsName, reviewsRating, reviewsReview,
-      projects,addressStreet,addressCity,addressState,addressZip,addressCountry,addressPhone,
-      //  category, location,  BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
-      // configuration, configurationDetails, unitType, configurationSize, Specifications, SpecificationsDetails,
-     } = req?.body;
-
-
-    // let configurationValue = [];
-    // if (configuration) {
-    //   const configurationArray = Array.isArray(configuration) ? configuration : [configuration];
-    //   const DetailsArray = Array.isArray(configurationDetails) ? configurationDetails : [configurationDetails];
-    //   const configurationInside = configurationArray.map((configuration, index) => ({
-    //     configuration,
-    //     details: DetailsArray[index]
-    //   }));
-    //   configurationValue = configurationInside[0]?.configuration ? configurationInside : undefined;
-    // }
-
+    const {
+      name, subheading, description, questions, answer, reviewsName, reviewsRating, reviewsReview,
+      projects, addressStreet, addressCity, addressState, addressZip, addressCountry, addressPhone,
+      featuresText, featuresHelpertext, vision, location
+    } = req?.body;
 
     let faqsValue = [];
     if (questions) {
@@ -68,30 +55,17 @@ const addbuilders = async (req, res) => {
       }));
       faqsValue = faqsInside[0]?.questions ? faqsInside : undefined;
     }
+    let featuresValue = [];
+    if (featuresText) {
+      const featuresArray = Array.isArray(featuresText) ? featuresText : [featuresText];
+      const featuresDetailsArray = Array.isArray(featuresHelpertext) ? featuresHelpertext : [featuresHelpertext];
+      const configurationInside = featuresArray.map((text, index) => ({
+        text,
+        helpertext: featuresDetailsArray[index]
+      }));
 
-
-    // let unitValue = [];
-    // if (unitType) {
-    //   const unitTypeArray = Array.isArray(unitType) ? unitType : [unitType];
-    //   const configurationSizeArray = Array.isArray(configurationSize) ? configurationSize : [configurationSize];
-    //   const configurationInside = unitTypeArray.map((unitType, index) => ({
-    //     unitType,
-    //     configurationSize: configurationSizeArray[index]
-    //   }));
-    //   unitValue = configurationInside[0]?.unitType ? configurationInside : undefined;
-    // }
-
-
-    // let spacunitValue = [];
-    // if (Specifications) {
-    //   const SpecificationsArray = Array.isArray(Specifications) ? Specifications : [Specifications];
-    //   const SpecificationsDetailsArray = Array.isArray(SpecificationsDetails) ? SpecificationsDetails : [SpecificationsDetails];
-    //   const configurationInside = SpecificationsArray.map((Specifications, index) => ({
-    //     Specifications,
-    //     SpecificationsDetails: SpecificationsDetailsArray[index]
-    //   }));
-    //   spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
-    // }
+      featuresValue = configurationInside[0]?.text ? configurationInside : undefined;
+    }
     let reviewValue = [];
     if (reviewsName) {
       const reviewsNameArray = Array.isArray(reviewsName) ? reviewsName : [reviewsName];
@@ -101,11 +75,12 @@ const addbuilders = async (req, res) => {
         name,
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
+        image: req.files.reviews && req.files.reviews[index].filename,
       }));
 
       reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
     }
-    let addressValue = []; 
+    let addressValue = [];
     if (addressStreet) {
       const addressStreetArray = Array.isArray(addressStreet) ? addressStreet : [addressStreet];
       const addressCityArray = Array.isArray(addressCity) ? addressCity : [addressCity];
@@ -114,7 +89,7 @@ const addbuilders = async (req, res) => {
       const addressCountryArray = Array.isArray(addressCountry) ? addressCountry : [addressCountry];
       const addressPhoneArray = Array.isArray(addressPhone) ? addressPhone : [addressPhone];
       const configurationInside = addressStreetArray.map((street, index) => ({
-        
+
         street,
         city: addressCityArray[index],
         state: addressStateArray[index],
@@ -126,16 +101,21 @@ const addbuilders = async (req, res) => {
       addressValue = configurationInside[0]?.street ? configurationInside : undefined;
     }
 
+    const logo = req?.files?.logo[0]?.filename
     if (req.files.length != 0) {
       const builders = new Builders({
-        // category, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
-        // configurations: configurationValue,  unit: unitValue, Spec: spacunitValue, 
-        name, subheading,  description,faqs: faqsValue,reviews: reviewValue,projects,address:addressValue,
-        image: req.files.map((x) => x.filename),
-      });   
-      await builders.save();
-      res.status(200).json({ message: "Projects added successfully !" });
-     
+        name, subheading, description, faqs: faqsValue, reviews: reviewValue, projects, address: addressValue, vision, location,
+        features: featuresValue, logo, image: req.files.images.map((x) => x.filename),
+      });
+      const savedBuilder = await builders.save();
+      if (projects && Array.isArray(projects)) {
+        await Projects.updateMany(
+          { _id: { $in: projects } },
+          { $set: { builder: savedBuilder._id } }
+        );
+      }
+      res.status(200).json({ message: "Builders added successfully !" });
+
     } else {
       res.status(400).json({ message: "failed only jpg ,jpeg, webp & png file supported !" });
     }
@@ -147,23 +127,10 @@ const addbuilders = async (req, res) => {
 
 const updatebuilders = async (req, res) => {
   try {
-    const { _id, image, isAvailable,name, subheading,description, questions, answer,reviewsName, reviewsRating,
-       reviewsReview,projects,addressStreet,addressCity,addressState,addressZip,addressCountry,addressPhone,
-      //  category, location,  BuilderDescription, ExpertOpinions, ongoing, upcoming, completed,
-      // configuration, configurationDetails, unitType, configurationSize, Specifications, SpecificationsDetails, 
-       } = req?.body
-
-    // let configurationValue = [];
-    // if (configuration) {
-    //   const configurationArray = Array.isArray(configuration) ? configuration : [configuration];
-    //   const DetailsArray = Array.isArray(configurationDetails) ? configurationDetails : [configurationDetails];
-    //   const configurationInside = configurationArray.map((configuration, index) => ({
-    //     configuration,
-    //     details: DetailsArray[index]
-    //   }));
-    //   configurationValue = configurationInside[0]?.configuration ? configurationInside : undefined;
-    // }
-
+    const { _id, image, isAvailable, name, subheading, description, questions, answer, reviewsName, reviewsRating,
+      reviewsReview, projects, addressStreet, addressCity, addressState, addressZip, addressCountry, addressPhone,
+      featuresText, featuresHelpertext, vision, location,logo
+    } = req?.body
 
     let faqsValue = [];
     if (questions) {
@@ -175,31 +142,23 @@ const updatebuilders = async (req, res) => {
       }));
       faqsValue = faqsInside[0]?.questions ? faqsInside : undefined;
     }
+    let featuresValue = [];
+    if (featuresText) {
+      const featuresArray = Array.isArray(featuresText) ? featuresText : [featuresText];
+      const featuresDetailsArray = Array.isArray(featuresHelpertext) ? featuresHelpertext : [featuresHelpertext];
+      const configurationInside = featuresArray.map((text, index) => ({
+        text,
+        helpertext: featuresDetailsArray[index]
+      }));
 
+      featuresValue = configurationInside[0]?.text ? configurationInside : undefined;
+    }
 
-    // let unitValue = [];
-    // if (unitType) {
-    //   const unitTypeArray = Array.isArray(unitType) ? unitType : [unitType];
-    //   const configurationSizeArray = Array.isArray(configurationSize) ? configurationSize : [configurationSize];
-    //   const configurationInside = unitTypeArray.map((unitType, index) => ({
-    //     unitType,
-    //     configurationSize: configurationSizeArray[index]
-    //   }));
-    //   unitValue = configurationInside[0]?.unitType ? configurationInside : undefined;
-    // }
-
-
-    // let spacunitValue = [];
-    // if (Specifications) {
-    //   const SpecificationsArray = Array.isArray(Specifications) ? Specifications : [Specifications];
-    //   const SpecificationsDetailsArray = Array.isArray(SpecificationsDetails) ? SpecificationsDetails : [SpecificationsDetails];
-    //   const configurationInside = SpecificationsArray.map((Specifications, index) => ({
-    //     Specifications,
-    //     SpecificationsDetails: SpecificationsDetailsArray[index]
-    //   }));
-    //   spacunitValue = configurationInside[0]?.Specifications ? configurationInside : undefined;
-    // }
     let reviewValue = [];
+    let k=0;
+    console.log('req?.body?.reviewsImagePocision',req?.body);
+    console.log('req?files',req?.files);
+    
     if (reviewsName) {
       const reviewsNameArray = Array.isArray(reviewsName) ? reviewsName : [reviewsName];
       const reviewsRatingArray = Array.isArray(reviewsRating) ? reviewsRating : [reviewsRating];
@@ -208,11 +167,14 @@ const updatebuilders = async (req, res) => {
         name,
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
+        // image: req?.body?.reviewsImagePocision[index] === '' ? (k++,req.files.reviews[k-1].filename) : req?.body?.reviewsImagePocision[index] ,
+        image: Array.isArray(req?.body?.reviewsImagePocision) ? (req?.body?.reviewsImagePocision[index] === '' ? (k++,req.files.reviews[k-1].filename) : req?.body?.reviewsImagePocision[index]): (req?.body?.reviewsImagePocision === '' ? (req.files.reviews[0].filename) : req?.body?.reviewsImagePocision),
       }));
-      reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
 
-    }
-    let addressValue = []; 
+      reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
+    }  
+
+    let addressValue = [];
     if (addressStreet) {
       const addressStreetArray = Array.isArray(addressStreet) ? addressStreet : [addressStreet];
       const addressCityArray = Array.isArray(addressCity) ? addressCity : [addressCity];
@@ -221,7 +183,7 @@ const updatebuilders = async (req, res) => {
       const addressCountryArray = Array.isArray(addressCountry) ? addressCountry : [addressCountry];
       const addressPhoneArray = Array.isArray(addressPhone) ? addressPhone : [addressPhone];
       const configurationInside = addressStreetArray.map((street, index) => ({
-        
+
         street,
         city: addressCityArray[index],
         state: addressStateArray[index],
@@ -232,18 +194,19 @@ const updatebuilders = async (req, res) => {
 
       addressValue = configurationInside[0]?.street ? configurationInside : undefined;
     }
-
+    let logos = logo
+    if (req?.files?.logo?.length > 0) {
+      logos = req.files.logo[0].filename
+    }
     const images = JSON.parse(image) ?? []
-    if (req?.files?.length != 0) {
-      req?.files?.map((x) => images.push(x.filename))
+    if (req?.files?.images?.length != 0) {
+      req?.files?.images?.map((x) => images.push(x.filename))
     }
 
     await Builders.updateOne({ _id }, {
       $set: {
-        // category, BuilderDescription, ExpertOpinions, ongoing, upcoming, completed, location,
-        // configurations: configurationValue,  unit: unitValue, Spec: spacunitValue, 
-        isAvailable, image: images,name, subheading,  description,faqs: faqsValue,reviews: reviewValue,
-        address:addressValue,
+        isAvailable, image: images, name, subheading, description, faqs: faqsValue, reviews: reviewValue,
+        address: addressValue,projects,logo:logos, features: featuresValue,vision, location,
 
       }
     })
@@ -267,7 +230,7 @@ const deletebuilders = async (req, res) => {
 
 const getSelectbuilders = async (req, res) => {
   try {
-    const data = await Builders.find({isAvailable:true})
+    const data = await Builders.find({ isAvailable: true })
     res.status(200).json({ data })
   } catch (error) {
     console.log(error);

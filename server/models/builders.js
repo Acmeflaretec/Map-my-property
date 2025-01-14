@@ -11,12 +11,16 @@ const buildersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    projects: {
+    projects: [{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "Projects"
-    },
+    }],
     description: {
+        type: String,
+        required: true
+    },
+    vision: {
         type: String,
         required: true
     },
@@ -48,16 +52,23 @@ const buildersSchema = new mongoose.Schema({
     //     unitType: String,
     //     configurationSize: String
     // }],
-    // Spec: [{
-    //     Specifications: String,
-    //     SpecificationsDetails: String
-    // }],
+    location: {
+        type: String,
+    },
+    features: [{
+        text: String,
+        helpertext: String
+    }],
     faqs: [{
         questions: String,
         answer: String
     }],
     image: {
         type: Array,
+        required: true
+    },
+    logo: {
+        type: String,
         required: true
     },
     isAvailable: {
@@ -77,6 +88,7 @@ const buildersSchema = new mongoose.Schema({
         name: String,
         rating: String,
         review: String,
+        image: String,
     }],
 
 },
