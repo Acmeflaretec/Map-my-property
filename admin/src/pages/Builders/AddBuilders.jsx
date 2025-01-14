@@ -74,7 +74,7 @@ const AddBuilders = () => {
       });
       typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
       for (const key in details) {
-        if (details.hasOwnProperty(key) && !['image', 'FAQs', 'reviews', 'addresses', 'features','logo'].includes(key)) {
+        if (details.hasOwnProperty(key) && !['image', 'FAQs', 'reviews', 'addresses', 'features', 'logo'].includes(key)) {
           formData.append(key, details[key]);
         }
       }
@@ -212,8 +212,8 @@ const AddBuilders = () => {
   //   const newFAQs = details.FAQs.filter((_, i) => i !== index);
   //   setDetails(prevData => ({ ...prevData, FAQs: newFAQs }));
   // };
-console.log('details',details);
-console.log('projects',projects);
+  console.log('details', details);
+  console.log('projects', projects);
 
   return (
     <PageLayout
@@ -242,43 +242,43 @@ console.log('projects',projects);
             />
           </Grid>
           <Grid item xs={12} sm={12}>
-                  <Autocomplete
-                     id="Projects-select"
-                     multiple
-                     options={data?.data || []}
-                     value={projects}
-                     onChange={(event, newValue) => {
-                        setProjects(newValue);
-                     }}
-                     autoHighlight
-                     getOptionLabel={(option) => option.name}
-                     renderOption={(props, option) => (
-                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                           <img
-                              loading="lazy"
-                              width="20"
-                              src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image[0]}`}
-                           />
-                           <Typography color="inherit" variant="caption">
-                              {option?.name} <br />
-                              {option?.brand}
-                           </Typography>
-                           <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
-                              {option?.isAvailable ? 'available' : 'NA'}
-                           </Typography>
-                        </Box>
-                     )}
-                     renderInput={(params) => (
-                        <TextField
-                           {...params}
-                           placeholder="Choose a Projects"
-                           inputProps={{
-                              ...params.inputProps,
-                           }}
-                        />
-                     )}
+            <Autocomplete
+              id="Projects-select"
+              multiple
+              options={data?.data || []}
+              value={projects}
+              onChange={(event, newValue) => {
+                setProjects(newValue);
+              }}
+              autoHighlight
+              getOptionLabel={(option) => option.name}
+              renderOption={(props, option) => (
+                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                  <img
+                    loading="lazy"
+                    width="20"
+                    src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image[0]}`}
                   />
-               </Grid>
+                  <Typography color="inherit" variant="caption">
+                    {option?.name} <br />
+                    {option?.brand}
+                  </Typography>
+                  <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
+                    {option?.isAvailable ? 'available' : 'NA'}
+                  </Typography>
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Choose a Projects"
+                  inputProps={{
+                    ...params.inputProps,
+                  }}
+                />
+              )}
+            />
+          </Grid>
           <Grid item xs={12}>
             <Input
               id="description"
@@ -470,11 +470,35 @@ console.log('projects',projects);
                     handleReviewChange(index, 'rating', value)
                   }
                 />
-                <TextField
+                {/* <TextField
                   type="file"
                   fullWidth
                   onChange={(e) => handleFileChange('reviews', index, e)}
-                />
+                /> */}
+                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
+                  <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+                    Upload Image
+                    <input
+                      type="file"
+                      hidden
+                      onChange={(e) => handleFileChange('reviews', index, e)}
+                    />
+                  </Button>
+                  {review.image && (
+                    <Box mt={1}>
+                      <img
+                        src={
+                          typeof review.image === 'object'
+                            ? URL.createObjectURL(review.image)
+                            : `${process.env.REACT_APP_API_URL}/uploads/${review.image}`
+                        }
+                        alt={`Review ${index + 1}`}
+                        style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                      />
+                    </Box>
+                  )}
+
+                </Box>
                 <TextField
                   placeholder="Review"
                   value={review.review}
@@ -512,7 +536,7 @@ console.log('projects',projects);
           </Grid>
 
           <Grid item xs={12} >
-          <Typography variant="h6">Add logo</Typography>
+            <Typography variant="h6">Add logo</Typography>
             <Box
               sx={{
                 width: 200,
@@ -530,7 +554,7 @@ console.log('projects',projects);
               }}
               onClick={handleFileSelect}
             >
-              
+
               {details?.logo ? (
                 <img
                   style={{ width: 240, height: 135, padding: 22 }}

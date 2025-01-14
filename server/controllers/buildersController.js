@@ -203,13 +203,17 @@ const updatebuilders = async (req, res) => {
       req?.files?.images?.map((x) => images.push(x.filename))
     }
 
-    await Builders.updateOne({ _id }, {
+    const builderUpdateResult =await Builders.updateOne({ _id }, {
       $set: {
         isAvailable, image: images, name, subheading, description, faqs: faqsValue, reviews: reviewValue,
         address: addressValue,projects,logo:logos, features: featuresValue,vision, location,
 
       }
     })
+    if (builderUpdateResult.modifiedCount > 0 && projects) {
+      await Projects.updateMany({ builder: _id }, { $unset: { builder: "" } });
+      await Projects.updateMany({ _id: { $in: projects } }, { $set: { builder: _id } });
+    }
 
     res.status(200).json({ message: "builders updated successfully !" });
   } catch (error) {
