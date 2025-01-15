@@ -3,11 +3,11 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const projectsSchema = new mongoose.Schema({
 
-    name: {
+    title: {
         type: String,
-        required: true
+        required: true 
     },
-    subheading: {
+    subtitle: {
         type: String,
         required: true
     },
@@ -25,18 +25,15 @@ const projectsSchema = new mongoose.Schema({
         required: true
     },
     minPrice: {
-        type: String,
+        type: Number,
         required: true
     },
     maxPrice: {
-        type: String,
+        type: Number,
         required: true
     },
     href: { type: String },
-    BuilderDescription: {
-        type: String,
-        required: true
-    },
+
     ongoing: {
         type: String,
     },
@@ -50,43 +47,30 @@ const projectsSchema = new mongoose.Schema({
         type: String,
     },
 
-    ExpertOpinions: {
+    expertOpinions: {
         type: [String]
     },
-    Bedrooms: {
+    bedrooms: {
         type: [String],
     },
-    Areas: {
+    areas: {
         type: [String],
     },
-    configurations: [{
-        configuration: String,
-        details: String,
-        icon: String,
-    }],
-    ApartmentAmenities: [{
-        text: String,
-        helpertext: String,
-        icon: String,
-    }],
-    LocationAdvantages: [{
-        text: String,
-        helpertext: String,
-        icon: String,
-    }],
+    features: [
+        {
+          title: String,
+          items: [
+            {
+              text: String,
+              helpertext: String,
+              icon: String,
+            },
+          ],
+        },
+      ],
     faqs: [{
         questions: String,
         answer: String
-    }],
-    unit: [{
-        unitType: String,
-        configurationSize: String,
-        icon: String,
-    }],
-    Spec: [{
-        Specifications: String,
-        SpecificationsDetails: String,
-        icon: String,
     }],
     masterPlan: {
         title: String,
@@ -100,7 +84,7 @@ const projectsSchema = new mongoose.Schema({
             src: String,
         },
     ],
-    floorPlans: [
+    plans: [
         {
             title: String,
             desc: String,
@@ -114,16 +98,12 @@ const projectsSchema = new mongoose.Schema({
             price: String,
         },
     ],
-    image: {
-        type: Array,
-        required: true
-    },
     isAvailable: {
         type: Boolean,
         default: true
     },
 
-    reviews: [{
+    testimonials: [{
         name: String,
         rating: String,
         review: String,

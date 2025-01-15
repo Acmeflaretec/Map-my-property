@@ -59,7 +59,7 @@ const TableData = () => {
   ]
 
   const rows = data?.docs?.map(item => ({
-    projects: <Author id={item._id} image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image?.[0]}`} name={item?.name} desc={item?.subheading} />,
+    projects: <Author id={item._id} image={`${process.env.REACT_APP_API_URL}/uploads/${item?.imageGallery?.[0]?.src}`} name={item?.title} desc={item?.subtitle} />,
     status: (
       <Badge variant="gradient" badgeContent={item?.isAvailable ? 'Active' : 'Blocked'} color={item?.isAvailable ? "success" : 'secondary'} size="xs" container />
     ),
