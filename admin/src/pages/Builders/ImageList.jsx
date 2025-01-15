@@ -6,15 +6,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 
-const ImageList = ({ data = [], dispatch }) => {
+const ImageList = ({ data , dispatch }) => {
    const fileInputRef = React.useRef(null);
 
    const handleImageChange = (e) => {
-      const image = [...data, ...e.target.files];
-      if (image?.length > 8) {
-         toast.error("Maximum 8 images are allowed");
-         image.length = 8;
-      }
+      const image = e.target.files[0];
+      // if (image?.length > 8) {
+      //    toast.error("Maximum 8 images are allowed");
+      //    image.length = 8;
+      // }
       dispatch(prev => ({ ...prev, image }));
    };
 
@@ -86,9 +86,7 @@ const ImageList = ({ data = [], dispatch }) => {
    };
    return (
       <Grid container spacing={2}>
-         {data?.map((image, index) => {
-            return (
-               <Grid key={index} item xs={6} lg={4} >
+               <Grid key={data} item xs={6} lg={4} >
                   <Box
                      sx={{
                         position: 'relative',
@@ -105,10 +103,10 @@ const ImageList = ({ data = [], dispatch }) => {
                      }}
                      onClick={handleFileSelect}
                   >
-                     {image ? (
+                     {data ? (
                         <React.Fragment>
-                           {renderThumbnail(image)}
-                           <IconButton
+                           {renderThumbnail(data)}
+                           {/* <IconButton
                               size='small'
                               sx={{
                                  position: 'absolute',
@@ -125,8 +123,8 @@ const ImageList = ({ data = [], dispatch }) => {
                               }}
                            >
                               <CloseIcon />
-                           </IconButton>
-                           <IconButton
+                           </IconButton> */}
+                           {/* <IconButton
                               size='small'
                               sx={{
                                  position: 'absolute',
@@ -144,8 +142,8 @@ const ImageList = ({ data = [], dispatch }) => {
                               }}
                            >
                               <ArrowBackIosNew />
-                           </IconButton>
-                           <IconButton
+                           </IconButton> */}
+                           {/* <IconButton
                               size='small'
                               sx={{
                                  position: 'absolute',
@@ -163,7 +161,7 @@ const ImageList = ({ data = [], dispatch }) => {
                               }}
                            >
                               <ArrowForwardIos />
-                           </IconButton>
+                           </IconButton> */}
                         </React.Fragment>
                      ) : (
                         <React.Fragment>
@@ -201,10 +199,7 @@ const ImageList = ({ data = [], dispatch }) => {
                      )}
                   </Box>
                </Grid>
-            );
-         })}
-         {!data?.length &&
-            <Grid item xs={6} lg={4} >
+            {/* <Grid item xs={6} lg={4} >
                <Box
                   sx={{
                      position: 'relative',
@@ -254,13 +249,13 @@ const ImageList = ({ data = [], dispatch }) => {
                      </svg>
                   </React.Fragment>
                </Box>
-            </Grid>}
+            </Grid> */}
          <Grid item xs={12}>
             <input
                type="file"
-               accept="image/*,video/*"
+               accept="image/*"
                style={{ display: "none" }}
-               multiple
+               // multiple
                ref={fileInputRef}
                onChange={handleImageChange}
             />

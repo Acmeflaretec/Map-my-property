@@ -5,7 +5,7 @@ import PageLayout from 'layouts/PageLayout'
 import React, { useState } from 'react'
 import ImageList from './ImageList';
 import Typography from 'components/Typography'
-import { useGetSelectProjects, useAddBuilders } from 'queries/ProductQuery'
+import { useAddBuilders } from 'queries/ProductQuery'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { Delete } from '@mui/icons-material';
@@ -29,27 +29,21 @@ const AddBuilders = () => {
     setDetails(prev => ({ ...prev, logo: file }));
   };
 
-  const { data, isLoading } = useGetSelectProjects({ pageNo: 1, pageCount: 100 });
   const { mutateAsync: AddBuilders, isLoading: loading } = useAddBuilders()
   const handleChange = (e) => {
     setDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const [disable, setDisable] = useState(false)
 
-  const [projects, setProjects] = useState([])
-
   const handleSubmit = () => {
     let flag = true
     try {
 
-      if (!details?.name) {
-        return toast.error("name is required")
+      if (!details?.title) {
+        return toast.error("title is required")
       }
-      if (!details?.subheading) {
-        return toast.error("name is subheading")
-      }
-      if (!projects[0]?._id) {
-        return toast.error("projects is required")
+      if (!details?.subtitle) {
+        return toast.error("subtitle is required")
       }
       if (!details?.image) {
         return toast.error("image is required")
@@ -69,16 +63,16 @@ const AddBuilders = () => {
 
       setDisable(true)
       const formData = new FormData();
-      details?.image?.forEach((image) => {
-        formData.append('images', image, image.name);
-      });
+      // details?.image?.forEach((image) => {
+      //   formData.append('images', image, image.name);
+      // });
+      typeof (details.image) == 'object' && formData.append("images", details?.image, details?.image?.name);
       typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
       for (const key in details) {
         if (details.hasOwnProperty(key) && !['image', 'FAQs', 'reviews', 'addresses', 'features', 'logo'].includes(key)) {
           formData.append(key, details[key]);
         }
       }
-      projects.forEach((projects) => formData.append('projects', projects._id));
       details?.features?.forEach(features => {
         if (features.text === '') {
 
@@ -213,7 +207,6 @@ const AddBuilders = () => {
   //   setDetails(prevData => ({ ...prevData, FAQs: newFAQs }));
   // };
   console.log('details', details);
-  console.log('projects', projects);
 
   return (
     <PageLayout
@@ -224,61 +217,24 @@ const AddBuilders = () => {
           <Grid item xs={12} sm={12} md={12}>
             <Input
               required
-              placeholder="Item name"
-              id="name"
-              name="name"
-              value={details?.name || ''}
+              placeholder="Item title"
+              id="title"
+              name="title"
+              value={details?.title || ''}
               onChange={handleChange}
             />
           </Grid>
           <Grid item xs={12}>
             <Input
               required
-              placeholder="Item subheading"
-              id="subheading"
-              name="subheading"
-              value={details?.subheading || ''}
+              placeholder="Item subtitle"
+              id="subtitle"
+              name="subtitle"
+              value={details?.subtitle || ''}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={12}>
-            <Autocomplete
-              id="Projects-select"
-              multiple
-              options={data?.data || []}
-              value={projects}
-              onChange={(event, newValue) => {
-                setProjects(newValue);
-              }}
-              autoHighlight
-              getOptionLabel={(option) => option.name}
-              renderOption={(props, option) => (
-                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                  <img
-                    loading="lazy"
-                    width="20"
-                    src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image[0]}`}
-                  />
-                  <Typography color="inherit" variant="caption">
-                    {option?.name} <br />
-                    {option?.brand}
-                  </Typography>
-                  <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
-                    {option?.isAvailable ? 'available' : 'NA'}
-                  </Typography>
-                </Box>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Choose a Projects"
-                  inputProps={{
-                    ...params.inputProps,
-                  }}
-                />
-              )}
-            />
-          </Grid>
+          
           <Grid item xs={12}>
             <Input
               id="description"

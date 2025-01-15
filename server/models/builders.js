@@ -3,11 +3,11 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const buildersSchema = new mongoose.Schema({
 
-    name: {
+    title: {
         type: String,
         required: true
     },
-    subheading: {
+    subtitle: {
         type: String,
         required: true
     },
@@ -24,34 +24,6 @@ const buildersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // BuilderDescription: {
-    //     type: String,
-    //     required: true
-    // },
-    // ongoing: {
-    //     type: String,
-    // },
-    // upcoming: {
-    //     type: String,
-    // },
-    // completed: {
-    //     type: String,
-    // },
-    // location: {
-    //     type: String,
-    // },
-    
-    // ExpertOpinions: {
-    //     type: [String]
-    // },
-    // configurations: [{
-    //     configuration: String,
-    //     details: String
-    // }],
-    // unit: [{
-    //     unitType: String,
-    //     configurationSize: String
-    // }],
     location: {
         type: String,
     },
@@ -59,12 +31,12 @@ const buildersSchema = new mongoose.Schema({
         text: String,
         helpertext: String
     }],
-    faqs: [{
-        questions: String,
-        answer: String
-    }],
+    // faqs: [{
+    //     questions: String,
+    //     answer: String
+    // }],
     image: {
-        type: Array,
+        type: String,
         required: true
     },
     logo: {
@@ -76,15 +48,15 @@ const buildersSchema = new mongoose.Schema({
         default: true
     },
 
-    address: [{
-        street: String,
-        city: String,
-        state: String,
-        zip: String,
-        country: String,
-        phone: String,
-    }],
-    reviews: [{
+    // address: [{
+    //     street: String,
+    //     city: String,
+    //     state: String,
+    //     zip: String,
+    //     country: String,
+    //     phone: String,
+    // }],
+    testimonials: [{
         name: String,
         rating: String,
         review: String,

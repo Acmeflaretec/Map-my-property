@@ -14,6 +14,7 @@ import {
   getSelectProjects,
   addBuilders,
   getBuilders,
+  getSelectBuilders,
   getBuildersById,
   updateBuilders,
 } from "./productUrls";
@@ -81,6 +82,12 @@ const useGetBuilders = (params) => {
   return useQuery(["get_Builders", params], () => getBuilders(params), {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
+  });
+};
+const useGetSelectBuilders= (data) => {
+  return useQuery(["get_Builders", data], () => getSelectBuilders(data), {
+    staleTime: 3000,
+    keepPreviousData: true,
   });
 };
 
@@ -187,6 +194,7 @@ const useGetSelectProjects= (data) => {
   });
 };
 
+
 export {
   useGetCategory,
   useGetFilterCategory,
@@ -204,4 +212,5 @@ export {
   useAddBuilders,
   useGetBuilders,
   useUpdateBuilders,
+  useGetSelectBuilders
 };

@@ -4,7 +4,7 @@ import PageLayout from 'layouts/PageLayout';
 import React, { useEffect, useState } from 'react';
 import Typography from 'components/Typography';
 import toast from 'react-hot-toast';
-import { useGetBuildersById, useUpdateBuilders, useGetSelectProjects } from 'queries/ProductQuery';
+import { useGetBuildersById, useUpdateBuilders } from 'queries/ProductQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 import ImageList from './ImageList';
 import { Delete } from '@mui/icons-material';
@@ -13,14 +13,11 @@ const EditBuilders = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState({});
-  const [projects, setProjects] = useState([])
   const { data, isLoading } = useGetBuildersById({ id });
-  const { data: respo } = useGetSelectProjects({ pageNo: 1, pageCount: 100 });
 
 
   useEffect(() => {
     if (data?.data) {
-      data?.data?.projects && setProjects(data?.data?.projects)
       setDetails(data.data);
     }
   }, [data]);
@@ -45,21 +42,42 @@ const EditBuilders = () => {
     let flag = true
 
     try {
+      if (!details?.title) {
+        return toast.error("title is required")
+      }
+      if (!details?.subtitle) {
+        return toast.error("subtitle is required")
+      }
+      if (!details?.image) {
+        return toast.error("image is required")
+      }
+      if (!details?.logo) {
+        return toast.error("logo is required")
+      }
+      if (!details?.description) {
+        return toast.error("description is required")
+      }
+      if (!details?.vision) {
+        return toast.error("vision is required")
+      }
+      if (!details?.location) {
+        return toast.error("location is required")
+      }
       const formData = new FormData();
-      const image = details?.image?.filter((image) => typeof (image) === 'string');
-      formData.append('image', JSON.stringify(image));
-      details?.image?.forEach((image) => {
-        if (typeof (image) === 'object') {
-          formData.append('images', image, image.name);
-        }
-      });
+      // const image = details?.image?.filter((image) => typeof (image) === 'string');
+      // formData.append('image', JSON.stringify(image));
+      // details?.image?.forEach((image) => {
+      //   if (typeof (image) === 'object') {
+      //     formData.append('images', image, image.name);
+      //   }
+      // });
+      typeof (details.image) == 'object' && formData.append("images", details?.image, details?.image?.name);
       typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
       for (const key in details) {
-        if (details.hasOwnProperty(key) && key !== "image" && key !== "faqs" && key !== "reviews" && key !== "address" && key !== "projects" && key !== 'features' && key !== 'logo') {
+        if (details.hasOwnProperty(key) && key !== "image" && key !== "faqs" && key !== "testimonials" && key !== "address" && key !== 'features' && key !== 'logo') {
           formData.append(key, details[key]);
         }
       }
-      projects.forEach((projects) => formData.append('projects', projects._id));
       details?.features?.forEach(features => {
         if (features.text === '') {
 
@@ -68,7 +86,7 @@ const EditBuilders = () => {
           formData.append('featuresHelpertext', features.helpertext);
         }
       });
-      details?.reviews?.forEach((review, i) => {
+      details?.testimonials?.forEach((review, i) => {
         if (review.name === '') {
 
         } else {
@@ -141,19 +159,19 @@ const EditBuilders = () => {
   const handleAddReview = () => {
     setDetails((prevData) => ({
       ...prevData,
-      reviews: [...prevData.reviews, { name: '', rating: 0, review: '' }],
+      testimonials: [...prevData.testimonials, { name: '', rating: 0, review: '' }],
     }));
   };
 
   const handleReviewChange = (reviewIndex, field, value) => {
-    const newReviews = [...details.reviews];
+    const newReviews = [...details.testimonials];
     newReviews[reviewIndex] = { ...newReviews[reviewIndex], [field]: value };
-    setDetails((prevData) => ({ ...prevData, reviews: newReviews }));
+    setDetails((prevData) => ({ ...prevData, testimonials: newReviews }));
   };
 
   const handleRemoveReview = (reviewIndex) => {
-    const newReviews = details.reviews.filter((_, i) => i !== reviewIndex);
-    setDetails((prevData) => ({ ...prevData, reviews: newReviews }));
+    const newReviews = details.testimonials.filter((_, i) => i !== reviewIndex);
+    setDetails((prevData) => ({ ...prevData, testimonials: newReviews }));
   };
 
 
@@ -200,63 +218,24 @@ const EditBuilders = () => {
       {isLoading ? <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography> :
         <Grid container spacing={5} display={'flex'} direction={'row'} p={8}>
           <Grid item container spacing={2} xs={12} sm={12} md={6} py={5}>
-            <Grid item xs={12} >
+            <Grid item xs={12} sm={12} md={12}>
               <Input
                 required
-                placeholder="Item name"
-                id="name"
-                name="name"
-                value={details?.name || ''}
+                placeholder="Item title"
+                id="title"
+                name="title"
+                value={details?.title || ''}
                 onChange={handleChange}
               />
             </Grid>
-
             <Grid item xs={12}>
               <Input
                 required
-                placeholder="Item subheading"
-                id="subheading"
-                name="subheading"
-                value={details?.subheading || ''}
+                placeholder="Item subtitle"
+                id="subtitle"
+                name="subtitle"
+                value={details?.subtitle || ''}
                 onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Autocomplete
-                id="Projects-select"
-                multiple
-                options={respo?.data || []}
-                value={projects}
-                onChange={(event, newValue) => {
-                  setProjects(newValue);
-                }}
-                autoHighlight
-                getOptionLabel={(option) => option.name}
-                renderOption={(props, option) => (
-                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                    <img
-                      loading="lazy"
-                      width="20"
-                      src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image[0]}`}
-                    />
-                    <Typography color="inherit" variant="caption">
-                      {option?.name} <br />
-                      {option?.brand}
-                    </Typography>
-                    <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
-                      {option?.isAvailable ? 'available' : 'NA'}
-                    </Typography>
-                  </Box>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Choose a Projects"
-                    inputProps={{
-                      ...params.inputProps,
-                    }}
-                  />
-                )}
               />
             </Grid>
             <Grid item xs={12}>
@@ -434,7 +413,7 @@ const EditBuilders = () => {
 
             <Grid item xs={12}>
               <Typography variant="h6">Reviews</Typography>
-              {details?.reviews?.map((review, index) => (
+              {details?.testimonials?.map((review, index) => (
                 <Box key={index} mt={2} display="flex" flexDirection="column">
                   <TextField
                     placeholder="Reviewer Name"
@@ -462,7 +441,7 @@ const EditBuilders = () => {
                       <input
                         type="file"
                         hidden
-                        onChange={(e) => handleFileChange('reviews', index, e)}
+                        onChange={(e) => handleFileChange('testimonials', index, e)}
                       />
                     </Button>
                     {review.image && (
@@ -491,7 +470,7 @@ const EditBuilders = () => {
                     multiline
                     rows={3}
                   />
-                  {details.reviews.length > 1 && (
+                  {details.testimonials.length > 1 && (
                     <IconButton onClick={() => handleRemoveReview(index)}>
                       <Delete />
                     </IconButton>
