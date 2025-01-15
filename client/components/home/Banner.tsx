@@ -1,7 +1,7 @@
 "use client";
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../common/Icons";
-// import Image from "next/image";
+import Image from "next/image";
 import { SentenceAnimation } from "../ui/AnimationText";
 import { FlipWords } from "../ui/FlipWords";
 import CustomButton from "../ui/CustomButton";
@@ -10,23 +10,17 @@ import { bannerData } from "@/data/bannerData";
 import toast from "react-hot-toast";
 import { getBanner } from "@/utils/api";
 import { BannerType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const Banner: React.FC = () => {
-// const Banner: React.FC<{ data: BannerType[] }> = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [data, setData] = useState<BannerType[] | []>(bannerData);
 
   const fetchData = async () => {
     try {
       const res = await getBanner({});
-      
       const data = res?.data?.data || null;
-      const updatedData = data.map((item) => {
-        const newSrc = item.src ? `${process.env.NEXT_PUBLIC_SERVER_URL}/uploads/${item.src}` : "/assets/banner.png";
-        return { ...item, src: newSrc };
-      });
-  
-      setData(updatedData?.length>0 ? updatedData:bannerData);
+      setData(data?.length ? data : bannerData);
     } catch (error: any) {
       toast.error(
         error.message || "Something went wrong. Please try again later."
@@ -73,10 +67,10 @@ const Banner: React.FC = () => {
             transition={{ duration: 0.7, ease: "easeInOut" }}
             className={`absolute inset-0 w-full h-full`}
           >
-            <img
-              src={item?.src}
+            <Image
+              src={generateImageUrl(item?.src)}
               alt="banner-image"
-              // layout="fill"
+              layout="fill"
               className="object-cover"
             />
           </motion.div>
@@ -137,7 +131,12 @@ const Banner: React.FC = () => {
           <CustomButton type="secondary" href="/contact">
             Get Enquired <Icons.phone />
           </CustomButton>
-          <CustomButton type="primary" href={data[currentIndex]?.href?data[currentIndex]?.href :"/property"}>
+          <CustomButton
+            type="primary"
+            href={
+              data[currentIndex]?.href ? data[currentIndex]?.href : "/property"
+            }
+          >
             Explore Now <Icons.rightArrow />
           </CustomButton>
         </div>
@@ -147,5 +146,3 @@ const Banner: React.FC = () => {
 };
 
 export default Banner;
-
-
