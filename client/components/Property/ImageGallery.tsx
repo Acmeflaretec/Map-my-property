@@ -1,12 +1,12 @@
 "use client";
-import { BannerType } from "@/data/propertyData";
 import React, { useState } from "react";
 import { Icons } from "../common/Icons";
 import Image from "next/image";
 import Model from "../common/Model";
+import { GalleryType } from "@/utils/interface";
 
 const ImageGallery: React.FC<{
-  data: BannerType[];
+  data: GalleryType[];
   open: boolean;
   toggleModal: React.MouseEventHandler<HTMLButtonElement>;
 }> = ({ data, open, toggleModal }) => {

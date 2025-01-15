@@ -1,11 +1,11 @@
 "use client";
-import { BannerType } from "@/data/propertyData";
 import React, { useState } from "react";
 import { Icons } from "../common/Icons";
 import Image from "next/image";
 import ImageGallery from "./ImageGallery";
+import { GalleryType } from "@/utils/interface";
 
-const Carousel: React.FC<{ data: BannerType[] }> = ({ data }) => {
+const Carousel: React.FC<{ data: GalleryType[] }> = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
   const toggleModal = () => {
