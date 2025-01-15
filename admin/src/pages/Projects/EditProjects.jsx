@@ -82,7 +82,7 @@ const EditProjects = () => {
           formData.append('answer', si.answer);
         }
 
-      }); 
+      });
       details?.testimonials?.forEach((review, i) => {
         if (review.name === '') {
 
@@ -403,29 +403,34 @@ const EditProjects = () => {
 
 
 
-            {details?.features?.map((feature, index) => (
-              <Box key={index} mt={2} p={2} border={1}>
-                <TextField fullWidth label="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
-                {feature.items.map((item, itemIndex) => (
-                  <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
-                    {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
-                    <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
-                      {Icons[item.icon] ? Icons[item.icon]({ width: '24px', height: '24px' }) : <Add />}
-                    </IconButton>
-                    <TextField placeholder="Text" value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
-                    <TextField placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
-                    <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                ))}
-                <Button onClick={() => handleAddFeatureItem(index)}>Add Item</Button>
-                <Button onClick={() => handleRemoveFeature(index)}>Remove Feature</Button>
+            <Grid item xs={12}>
+              {details?.features?.map((feature, index) => (
+                <Box key={index} mt={2} p={2} border={1}>
+                  <Typography variant="h6">Feature Title</Typography>
+                  <TextField fullWidth placeholder="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
+                  {feature?.items?.map((item, itemIndex) => (
+                    <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
+                      {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
+                      <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
+                        {Icons[item.icon] ? Icons[item.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      </IconButton>
+                      <TextField placeholder="Text" style={{ marginRight: '5px' }} value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
+                      <TextField placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
+                      <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
+                        <Delete />
+                      </IconButton>
+                    </Box>
+                  ))}
+                  <Button onClick={() => handleAddFeatureItem(index)}>Add Item</Button>
+                  <Button onClick={() => handleRemoveFeature(index)}>Remove Feature</Button>
+                </Box>
+              ))}
+              <Box style={{ marginTop: '10px' }}>
+                <Button onClick={handleAddFeature} variant="contained" color="primary" fullWidth className="mt-4">Add Feature</Button>
               </Box>
-            ))}
-            <Button onClick={handleAddFeature}>Add Feature</Button>
+            </Grid>
 
-            
+
 
             <Grid item xs={12}>
               <Input
@@ -459,7 +464,7 @@ const EditProjects = () => {
               onAdd={() => handleAddFields('areas')}
               onRemove={(index) => handleRemoveFields('areas', index)}
             />
-           
+
             <Grid item xs={12}>
               <Typography variant="h6">Master Plan</Typography>
               <Box display="flex" alignItems="center" marginBottom={1}>

@@ -4,7 +4,7 @@ import Input from 'components/Input'
 import PageLayout from 'layouts/PageLayout'
 import React, { useState } from 'react'
 import Typography from 'components/Typography'
-import { useGetCategory, useAddProjects } from 'queries/ProductQuery'
+import { useGetCategory, useAddProjects,useGetSelectBuilders } from 'queries/ProductQuery'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { Delete, Add } from '@mui/icons-material';
@@ -26,8 +26,10 @@ const AddProjects = () => {
     accommodation: [{ unit: '', area: '', price: '' }],
     features: [{ title: '', items: [{ text: '', helpertext: '', icon: '' }] }]
   })
+  const [builders, setBuilders] = useState()
   const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
   const { mutateAsync: AddProjects, isLoading: loading } = useAddProjects()
+  const { data:build } = useGetSelectBuilders({ pageNo: 1, pageCount: 100 });
   const handleChange = (e) => {
     setDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -35,8 +37,8 @@ const AddProjects = () => {
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const [selectedIconField, setSelectedIconField] = useState({});
 
-  console.log('selectedIconField',selectedIconField);
-  
+  console.log('selectedIconField', selectedIconField);
+
 
   const [category, setCategory] = useState()
 
@@ -296,9 +298,9 @@ const AddProjects = () => {
     updatedItems[itemIndex] = { ...updatedItems[itemIndex], icon: iconName };
     updatedFeatures[featureIndex].items = updatedItems;
     setDetails(prev => ({ ...prev, features: updatedFeatures }));
-    setIconPickerOpen(false); 
+    setIconPickerOpen(false);
   };
-  
+
 
   const handleNestedChange = (field, index, subField, value) => {
     const updated = [...details[field]];
@@ -387,6 +389,43 @@ const AddProjects = () => {
               )}
             />
           </Grid>
+          <Grid item xs={12} sm={12}>
+            <Autocomplete
+              id="Builders-select"
+              options={build?.data}
+              value={builders}
+              onChange={(event, newValue) => {
+                setBuilders(newValue);
+              }}
+              autoHighlight
+              getOptionLabel={(option) => option.title}
+              renderOption={(props, option) => (
+                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                  <img
+                    loading="lazy"
+                    width="20"
+                    src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image}`}
+                  />
+                  <Typography color="inherit" variant="caption">
+                    {option?.title} <br />
+                    {option?.subtitle}
+                  </Typography>
+                  <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
+                    {option?.isAvailable ? 'available' : 'NA'}
+                  </Typography>
+                </Box>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Choose a builder"
+                  inputProps={{
+                    ...params.inputProps,
+                  }}
+                />
+              )}
+            />
+          </Grid>
           <Grid item xs={12}>
             <Input
               id="description"
@@ -436,29 +475,32 @@ const AddProjects = () => {
 
 
 
-
-          {details.features.map((feature, index) => (
-            <Box key={index} mt={2} p={2} border={1}>
-              <TextField fullWidth label="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
-              {feature.items.map((item, itemIndex) => (
-                <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
-                  {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
-                  <IconButton onClick={() => handleIconPickerOpen( index, itemIndex )}>
-                    {Icons[item.icon] ? Icons[item.icon]({ width: '24px', height: '24px' }) : <Add />}
-                  </IconButton>
-                  <TextField placeholder="Text" value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
-                  <TextField placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
-                  <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
-                    <Delete />
-                  </IconButton>
-                </Box>
-              ))}
-              <Button onClick={() => handleAddFeatureItem(index)}>Add Item</Button>
-              <Button onClick={() => handleRemoveFeature(index)}>Remove Feature</Button>
+          <Grid item xs={12}>
+            {details.features.map((feature, index) => (
+              <Box key={index} mt={2} p={2} border={1}>
+                <Typography variant="h6">Feature Title</Typography>
+                <TextField fullWidth placeholder="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
+                {feature.items.map((item, itemIndex) => (
+                  <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
+                    {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
+                    <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
+                      {Icons[item.icon] ? Icons[item.icon]({ width: '24px', height: '24px' }) : <Add />}
+                    </IconButton>
+                    <TextField placeholder="Text" style={{marginRight:'5px'}} value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
+                    <TextField placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
+                    <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
+                      <Delete />
+                    </IconButton>
+                  </Box>
+                ))}
+                <Button onClick={() => handleAddFeatureItem(index)}>Add Item</Button>
+                <Button onClick={() => handleRemoveFeature(index)}>Remove Feature</Button>
+              </Box>
+            ))}
+            <Box style={{marginTop:'10px'}}>
+              <Button onClick={handleAddFeature} variant="contained" color="primary" fullWidth className="mt-4">Add Feature</Button>
             </Box>
-          ))}
-          <Button onClick={handleAddFeature}>Add Feature</Button>
-          
+          </Grid>
           <Grid item xs={12}>
             <Input
               required
@@ -491,7 +533,7 @@ const AddProjects = () => {
             onAdd={() => handleAddFields('Areas')}
             onRemove={(index) => handleRemoveFields('Areas', index)}
           />
-          
+
           <Grid item xs={12}>
             <Typography variant="h6">Master Plan</Typography>
             <Box display="flex" alignItems="center" marginBottom={1}>
