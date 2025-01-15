@@ -154,11 +154,7 @@ export const propertyData: PropertyData = {
       title: "Apartment Amenities",
       items: [
         { text: "Gymnasium", helpertext: "25,000 sq/ft", icon: "gymnasium" },
-        {
-          text: "Indoor Games",
-          helpertext: "15,068 sq/ft",
-          icon: "indoorGames",
-        },
+        { text: "Indoor Games", helpertext: "15,068 sq/ft",icon: "indoorGames"},
         { text: "Multi-Courts", helpertext: "Available", icon: "games" },
         { text: "Visitor Parking", helpertext: "Available", icon: "parking" },
         { text: "Jogging Track", helpertext: "1.3 km", icon: "jogging" },
