@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const { addprojects,deleteprojects, getprojectsById, updateprojects,getAdminprojects,getSelectprojects,
+const { addprojects,deleteprojects, getprojectsById, updateprojects,getAdminprojects,getSelectprojects,getFilteredProjects,
  } = require('../controllers/projectsController');    
 const { upload } = require('../middlewares/multer');
 router.post('/', upload.fields([
@@ -18,6 +18,7 @@ router.patch('/', upload.fields([
     { name: 'floorPlans', maxCount: 10 },
     { name: 'reviews', maxCount: 10 }
   ]), updateprojects);  
-router.get('/', getSelectprojects); 
+router.get('/listingProjects', getSelectprojects); 
+router.get('/', getFilteredProjects); 
 
 module.exports = router;

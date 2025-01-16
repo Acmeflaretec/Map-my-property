@@ -6,7 +6,7 @@ const Builders = require('../models/builders')
 const getAdminprojects = async (req, res) => {
   try {
     const { page = 1, perPage = 10, sortBy = 'createdAt', order = 'desc', search = '' } = req.query;
-    const query = search ? { name: { $regex: search, $options: 'i' } } : {};
+    const query = search ? { title: { $regex: search, $options: 'i' } } : {};
     const options = {
       page: parseInt(page, 10),
       limit: parseInt(perPage, 10),
@@ -286,6 +286,77 @@ const getSelectprojects = async (req, res) => {
 };
 
 
+
+
+const getFilteredProjects = async (req, res) => {
+  console.log('getFilteredProjects');
+  
+  try {
+    const {
+      page = 1,
+      perPage = 10,
+      search = '',
+      area,
+      price,
+      bedroom,
+      resident_type,
+      location,
+      sortBy = 'createdAt',
+      order = 'desc'
+    } = req.query;
+
+    const query = {};
+
+    if (search) {
+      query.title = { $regex: search, $options: 'i' };
+    }
+
+    if (area) {
+      const { min = 0, max = Number.MAX_SAFE_INTEGER } = JSON.parse(area);
+      query.areas = { $elemMatch: { $gte: parseFloat(min), $lte: parseFloat(max) } };
+    }
+
+    if (price) {
+      const { min = 0, max = Number.MAX_SAFE_INTEGER } = JSON.parse(price);
+      query.$or = [
+        { minPrice: { $gte: min, $lte: max } },
+        { maxPrice: { $gte: min, $lte: max } }
+      ];
+    }
+
+    if (bedroom) {
+      query.bedrooms = bedroom;
+    }
+
+    if (resident_type) {
+      const category = await Category.findOne({ name: resident_type });
+      if (category) {
+        query.category = category._id;
+      } else {
+        return res.status(404).json({ message: 'Resident type not found' });
+      }
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(perPage, 10),
+      sort: { [sortBy]: order === 'desc' ? -1 : 1 },
+    };
+
+    const projects = await Projects.paginate(query, options);
+
+    res.status(200).json(projects);
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ message: error?.message ?? 'Something went wrong!' });
+  }
+};
+
+
 module.exports = {
   addprojects,
   getprojectsById,
@@ -293,4 +364,5 @@ module.exports = {
   deleteprojects,
   getAdminprojects,
   getSelectprojects,
+  getFilteredProjects,
 }

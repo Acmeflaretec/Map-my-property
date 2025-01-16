@@ -452,15 +452,15 @@ const EditProjects = () => {
               {details?.features?.map((feature, index) => (
                 <Box key={index} mt={2} p={2} border={1}>
                   <Typography variant="h6">Feature Title</Typography>
-                  <TextField fullWidth placeholder="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
+                  <Input fullWidth placeholder="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
                   {feature?.items?.map((item, itemIndex) => (
                     <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
                       {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
                       <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
                         {Icons[item.icon] ? Icons[item.icon]({ width: '24px', height: '24px' }) : <Add />}
                       </IconButton>
-                      <TextField placeholder="Text" style={{ marginRight: '5px' }} value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
-                      <TextField placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
+                      <Input placeholder="Text" style={{ marginRight: '5px' }} value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
+                      <Input placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
                       <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
                         <Delete />
                       </IconButton>
@@ -513,14 +513,14 @@ const EditProjects = () => {
             <Grid item xs={12}>
               <Typography variant="h6">Master Plan</Typography>
               <Box display="flex" alignItems="center" marginBottom={1}>
-                <TextField
+                <Input
                   placeholder=" Master Plan Title"
                   value={details?.masterPlan?.title}
                   style={{ marginRight: '5px' }}
                   fullWidth
                   onChange={(e) => setDetails((prev) => ({ ...prev, masterPlan: { ...prev.masterPlan, title: e.target.value } }))}
                 />
-                <TextField
+                <Input
                   placeholder="Description"
                   value={details?.masterPlan?.desc}
                   fullWidth
@@ -560,7 +560,7 @@ const EditProjects = () => {
                   <Box key={index} marginBottom={1}>
                     <Box display="flex" alignItems="center">
                       {field !== 'accommodation' && (
-                        <TextField
+                        <Input
                           placeholder="Title"
                           value={item?.title}
                           required
@@ -570,7 +570,7 @@ const EditProjects = () => {
                         />
                       )}
                       {field !== 'accommodation' && (
-                        <TextField
+                        <Input
                           placeholder="Description"
                           value={item?.desc}
                           style={{ marginRight: '5px' }}
@@ -580,7 +580,7 @@ const EditProjects = () => {
                       )}
 
                       {field === 'accommodation' && (
-                        <TextField
+                        <Input
                           placeholder="Unit"
                           value={item?.unit}
                           style={{ marginRight: '5px' }}
@@ -589,7 +589,7 @@ const EditProjects = () => {
                         />
                       )}
                       {field === 'accommodation' && (
-                        <TextField
+                        <Input
                           placeholder="Area"
                           value={item?.area}
                           style={{ marginRight: '5px' }}
@@ -598,7 +598,7 @@ const EditProjects = () => {
                         />
                       )}
                       {field === 'accommodation' && (
-                        <TextField
+                        <Input
                           placeholder="Price"
                           value={item?.price}
                           onChange={(e) => handleNestedChange(field, index, 'price', e.target.value)}
@@ -649,8 +649,8 @@ const EditProjects = () => {
               <Grid container direction="row">
                 {details?.faqs?.map((FAQs, index) => (
                   <Grid item xs={12} key={index}>
-                    <Box key={index} display="flex" alignItems="center">
-                      <TextField
+                    <Box key={index} display="flex" style={{marginBottom:'10px'}} alignItems="center">
+                      <Input
                         placeholder={`questions ${index + 1}`}
                         value={FAQs.questions}
                         onChange={(e) => handleFAQsChange(index, 'questions', e.target.value)}
@@ -659,7 +659,7 @@ const EditProjects = () => {
                         required
                         style={{ marginRight: '5px' }}
                       />
-                      <TextField
+                      <Input
                         placeholder="answer"
                         value={FAQs.answer}
                         onChange={(e) => handleFAQsChange(index, 'answer', e.target.value)}
@@ -675,7 +675,7 @@ const EditProjects = () => {
                     </Box>
                   </Grid>
                 ))}
-                <Button onClick={handleAddFAQs} variant="contained" color="primary" fullWidth className="mt-4">
+                <Button onClick={handleAddFAQs}  variant="contained" color="primary" fullWidth className="mt-4">
                   Add FAQs
                 </Button>
               </Grid>
@@ -685,24 +685,25 @@ const EditProjects = () => {
             <Grid item xs={12}>
               <Typography variant="h6">Reviews</Typography>
               {details?.testimonials?.map((review, index) => (
-                <Box key={index} mt={2} display="flex" flexDirection="column">
-                  <TextField
+                <Box key={index} mt={2} display="flex" flexDirection="column" style={{marginBottom:'10px'}}>
+                  <Input
                     placeholder="Reviewer Name"
                     value={review.name}
                     onChange={(e) =>
                       handleReviewChange(index, 'name', e.target.value)
                     }
                     fullWidth
-                    margin="normal"
+                    style={{marginBottom:'10px'}}
                   />
                   <Rating
                     value={review.rating}
                     onChange={(e, value) =>
                       handleReviewChange(index, 'rating', value)
                     }
+                    style={{marginBottom:'10px'}}
                   />
                   <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-                    <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+                    <Button variant="outlined" component="label" style={{ color: 'gray'}}>
                       Upload Image
                       <input
                         type="file"
@@ -725,14 +726,14 @@ const EditProjects = () => {
                     )}
 
                   </Box>
-                  <TextField
+                  <Input
                     placeholder="Review"
                     value={review.review}
                     onChange={(e) =>
                       handleReviewChange(index, 'review', e.target.value)
                     }
                     fullWidth
-                    margin="normal"
+                    style={{marginTop:'10px'}}
                     multiline
                     rows={3}
                   />
