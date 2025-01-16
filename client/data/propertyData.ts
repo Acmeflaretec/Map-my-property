@@ -1,59 +1,9 @@
-import { builderData, BuilderType } from "./builderData";
+import { ProjectType } from "@/utils/interface";
+import { builderData } from "./builderData";
 
-export interface TestimonialData {
-  title: string;
-  description: string;
-  author: string;
-  image: string;
-}
-export interface FaqData {
-  title: string;
-  content: string;
-}
-export interface FeatureItem {
-  text: string;
-  helpertext: string;
-  icon: string;
-}
-export interface Feature {
-  title: string;
-  items: FeatureItem[];
-}
-export interface PricingType {
-  unit: string;
-  area: string;
-  price: string;
-}
-export interface PlanType {
-  title: string;
-  desc: string;
-  image: string;
-}
-export interface BannerType {
-  title: string;
-  desc: string;
-  src: string;
-}
-export interface PropertyData {
-  title: string;
-  images: BannerType[];
-  price: string;
-  desc: string;
-  features: Feature[];
-  pricing: PricingType[];
-  masterPlan: PlanType;
-  plans: PlanType[];
-  location: string;
-  builder: BuilderType;
-  href: string;
-  faqs: FaqData[];
-  expertOpinions: string[];
-  testimonials: TestimonialData[];
-}
-
-export const propertyData: PropertyData = {
+export const propertyData: ProjectType = {
   title: "Subha Belgravia Villas at Subha Ecocity",
-  images: [
+  imageGallery: [
     {
       title: "Subha Belgravia - Front Faceing View",
       desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
@@ -134,10 +84,9 @@ export const propertyData: PropertyData = {
       desc: "A captivating front view of Rosewood Manor, highlighting its elegant facade and charming road-facing entrance",
       src: "/assets/properties/image-4.png",
     },
-
   ],
   price: "INR 2.35 Cr to 6.85 Cr",
-  desc: "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
+  description: "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
   location: "Chandapura, Bangalore",
   features: [
     {
@@ -154,7 +103,11 @@ export const propertyData: PropertyData = {
       title: "Apartment Amenities",
       items: [
         { text: "Gymnasium", helpertext: "25,000 sq/ft", icon: "gymnasium" },
-        { text: "Indoor Games", helpertext: "15,068 sq/ft",icon: "indoorGames"},
+        {
+          text: "Indoor Games",
+          helpertext: "15,068 sq/ft",
+          icon: "indoorGames",
+        },
         { text: "Multi-Courts", helpertext: "Available", icon: "games" },
         { text: "Visitor Parking", helpertext: "Available", icon: "parking" },
         { text: "Jogging Track", helpertext: "1.3 km", icon: "jogging" },
@@ -260,7 +213,19 @@ export const propertyData: PropertyData = {
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
   ],
-  builder: builderData,
+  builder: {
+    title: "Subha Constructions",
+    helpertext: "Builders & Developers",
+    desc: "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
+    image: "/assets/properties/image-1.png",
+    logo: "/assets/banner.png",
+    vision:
+      "Our team of Brigadiers—based in several major cities in South India, Dubai and San Francisco—work across a diverse portfolio of domains and projects, and draw upon a national and international pool of professional associates. To date, we have completed over 100 buildings; worked on numerous interesting projects and initiatives, many of which inhabit realms unrelated to our business; and engaged with the community through a variety of CSR initiatives. In the process, we have earned important certifications, won prestigious awards and created urban landmarks.",
+    location: "Chandapura, Bangalore",
+    features: [],
+    projects: [],
+    testimonials: [],
+  },
   href: "/property/Subha-Belgravia-Villas",
   faqs: [
     {

@@ -1,9 +1,9 @@
-import { PropertyData } from "@/data/propertyData";
 import React from "react";
 import { Icons } from "../common/Icons";
 import Carousel from "./Carousel";
+import { ProjectType } from "@/utils/interface";
 
-const Banner: React.FC<{ data: PropertyData }> = ({ data }) => {
+const Banner: React.FC<{ data: ProjectType }> = ({ data }) => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between">
@@ -21,10 +21,10 @@ const Banner: React.FC<{ data: PropertyData }> = ({ data }) => {
           real-time updates, and expert guidance all in one place
         </p>
       </div>
-      <Carousel data={data?.images} />
+      <Carousel data={data?.imageGallery} />
       <div className="flex flex-col gap-4 p-2">
         <h1 className="font-bold text-base md:text-xl">Project Overview</h1>
-        <p className="text-sm md:text-xl md:w-1/2 max-w-4xl">{data?.desc}</p>
+        <p className="text-sm md:text-xl md:w-1/2 max-w-4xl">{data?.description}</p>
       </div>
     </div>
   );

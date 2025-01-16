@@ -1,29 +1,5 @@
-import { ProjectData } from "./projectData";
-
-export interface TestimonialData {
-  title: string;
-  description: string;
-  author: string;
-  image: string;
-}
-
-export interface FeatureType {
-  text: string;
-  helpertext: string;
-}
-
-export interface BuilderType {
-  title: string;
-  helpertext: string;
-  desc: string;
-  logo: string;
-  image: string;
-  vision: string;
-  features: FeatureType[];
-  location: string;
-  projects: ProjectData[];
-  testimonials: TestimonialData[];
-}
+import { BuilderType } from "@/utils/interface";
+import { propertyData } from "./propertyData";
 
 export const builderData: BuilderType = {
   title: "Subha Constructions",
@@ -40,72 +16,9 @@ export const builderData: BuilderType = {
     { text: "20+ Projects", helpertext: "Upcomming" },
   ],
   projects: [
-    {
-      name: "Subha Belgravia Villas at Subha Ecocity",
-      image: "/assets/properties/image-1.png",
-      price: "INR 2.35 Cr to 6.85 Cr",
-      description: "2, 3, 4 BHK Flats | 750 Sq. Ft. to 2000 Sq. Ft. (Carpet)",
-      location: "Chandapura, Bangalore",
-      builder_image: "/assets/properties/image-2.png",
-      builder_name: "Shuba",
-      builder_helpertext: "Quality Home Builders",
-      href: "/property/Subha-Belgravia-Villas",
-    },
-    {
-      name: "Godrej Splendour",
-      image: "/assets/properties/image-2.png",
-      price: "INR 1.2 Cr Onwards",
-      description: "2, 3 BHK Apartments | 900 Sq. Ft. Onwards",
-      location: "Whitefield, Bangalore",
-      builder_image: "/assets/properties/image-3.png",
-      builder_name: "Godrej Properties",
-      builder_helpertext: "Trusted Real Estate",
-      href: "/property/godrej-splendour",
-    },
-    {
-      name: "Prestige Lakeside Habitat",
-      image: "/assets/properties/image-4.png",
-      price: "INR 1.8 Cr Onwards",
-      description: "2, 3, 4 BHK Apartments | 1000 Sq. Ft. Onwards",
-      location: "Varthur Road, Bangalore",
-      builder_image: "/assets/properties/image-1.png",
-      builder_name: "Prestige Group",
-      builder_helpertext: "Luxury Living Spaces",
-      href: "/property/prestige-lakeside-habitat",
-    },
-    {
-      name: "Sobha Sentosa",
-      image: "/assets/properties/image-1.png",
-      price: "INR 4 Cr Onwards",
-      description: "4, 5 BHK Villas | 3000 Sq. Ft. Onwards",
-      location: "Electronic City, Bangalore",
-      builder_image: "/assets/properties/image-2.png",
-      builder_name: "Sobha",
-      builder_helpertext: "Luxury Homes Built",
-      href: "/property/sobha-sentosa",
-    },
-    {
-      name: "Salarpuria Sattva Serene",
-      image: "/assets/properties/image-3.png",
-      price: "INR 3.5 Cr Onwards",
-      description: "4, 5 BHK Villas | 4000 Sq. Ft. Onwards",
-      location: "Sarjapur Road, Bangalore",
-      builder_image: "/assets/properties/image-4.png",
-      builder_name: "Salarpuria Sattva",
-      builder_helpertext: "Lifestyle Creators",
-      href: "/property/salarpuria-sattva-serene",
-    },
-    {
-      name: "Purvankara Provident Park",
-      image: "/assets/properties/image-4.png",
-      price: "INR 40 Lakhs Onwards",
-      description: "2, 3 BHK Apartments | 800 Sq. Ft. Onwards",
-      location: "Whitefield, Bangalore",
-      builder_image: "/assets/properties/image-1.png",
-      builder_name: "Purvankara",
-      builder_helpertext: "Building Trust Since",
-      href: "/property/purvankara-provident-park",
-    },
+    propertyData,
+    propertyData,
+    propertyData,
   ],
   testimonials: [
     {

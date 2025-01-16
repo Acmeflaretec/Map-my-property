@@ -1,36 +1,38 @@
-// import Image from "next/image";
+"use client";
+import Image from "next/image";
 import React from "react";
 import { Icons } from "../common/Icons";
-import { ProjectData } from "@/data/projectData";
 import Link from "next/link";
+import { ProjectType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
-const ProjectCard: React.FC<{ data: ProjectData }> = ({ data }) => {
+const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
   return (
     <Link
-      href={data?.href ? data?.href :"/property"}
-      key={data?.name}
-      className="flex flex-col items-center rounded-2xl md:rounded-3xl p-1 border-2"
+      href={data?.href ? data?.href : "/property"}
+      key={data?.title}
+      className="flex flex-col w-fit max-w-[17rem] items-center rounded-2xl md:rounded-3xl p-1 border-2"
     >
       <div className="h-32 md:h-48 min-w-[45vw] md:min-w-[14rem] lg:min-w-[16.5rem] max-w-[16.5rem] rounded-2xl md:rounded-3xl overflow-hidden border-2">
-        <img
-          src={data?.image}
+        <Image
+          src={generateImageUrl(data?.imageGallery?.[0]?.src)}
           height={300}
           width={300}
-          alt={""}
+          alt={"project-image"}
           className="h-3/4"
         />
         <div className="flex justify-between items-center p-1 pr-2 h-1/4 bg-gradient-to-r from-[#f4f3f3] to-white bg-opacity-50">
           <div className="flex justify-start items-center gap-1">
             <img
-              src={data?.builder_image}
+              src={generateImageUrl(data?.builder?.image)}
               height={40}
               width={40}
-              alt={""}
+              alt={"builder-profile"}
               className="rounded-full h-8 w-8 border-2"
             />
             <div>
-              <p className="text-xs">{data?.builder_name}</p>
-              <p className="text-[10px]">{data?.builder_helpertext}</p>
+              <p className="text-xs">{data?.builder?.title}</p>
+              <p className="text-[10px]">{data?.builder?.helpertext}</p>
             </div>
           </div>
           <button className="bg-[#0C0E0D] hidden lg:flex items-center z-30 h-fit text-[10px] text-white p-[2px] pl-3 pr-1 rounded-lg">
@@ -40,7 +42,9 @@ const ProjectCard: React.FC<{ data: ProjectData }> = ({ data }) => {
         </div>
       </div>
       <div className="px-1 md:px-3 py-2 flex flex-col w-full gap-1 relative overflow-hidden">
-        <p className="text-sm md:text-xl font-bold max-w-[42vw] md:max-w-[12.5rem] lg:max-w-[14.5rem] truncate">{data?.name}</p>
+        <p className="text-sm md:text-xl font-bold max-w-[42vw] md:max-w-[12.5rem] lg:max-w-[14.5rem] truncate">
+          {data?.title}
+        </p>
         <p className="text-[10px] md:text-xs">
           {data?.price}
           <br />
