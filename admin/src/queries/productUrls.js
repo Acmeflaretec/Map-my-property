@@ -27,7 +27,7 @@ const deleteProjects = async (data) => request(`/projects/${data?._id}`, 'DELETE
 const getProjectsById = async (data) => request(`/projects/${data?.id}`, 'GET', data)
 const getBuildersById = async (data) => request(`/builders/${data?.id}`, 'GET', data)
 const getSelectBuilders = async (data) => request(`/builders?page=${data?.pageNo}&perpageitems=${data?.pageCount}`, 'GET', data)
-const getSelectProjects = async (data) => request(`/projects?page=${data?.pageNo}&perpageitems=${data?.pageCount}`, 'GET', data)
+const getSelectProjects = async (data) => request(`/projects/listingProjects?page=${data?.pageNo}&perpageitems=${data?.pageCount}`, 'GET', data)
 const getProjects = async ({ page, perPage, sortBy, order, search }) => {
   const queryParams = new URLSearchParams({
     page,

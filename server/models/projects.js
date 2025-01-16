@@ -54,7 +54,7 @@ const projectsSchema = new mongoose.Schema({
         type: [String],
     },
     areas: {
-        type: [String],
+        type: [Number],
     },
     features: [
         {

@@ -414,21 +414,22 @@ const EditBuilders = () => {
             <Grid item xs={12}>
               <Typography variant="h6">Reviews</Typography>
               {details?.testimonials?.map((review, index) => (
-                <Box key={index} mt={2} display="flex" flexDirection="column">
-                  <TextField
+                <Box key={index} mt={2} display="flex" flexDirection="column" style={{marginBottom:'10px'}}>
+                  <Input
                     placeholder="Reviewer Name"
                     value={review.name}
                     onChange={(e) =>
                       handleReviewChange(index, 'name', e.target.value)
                     }
                     fullWidth
-                    margin="normal"
+                    style={{marginBottom:'10px'}}
                   />
                   <Rating
                     value={review.rating}
                     onChange={(e, value) =>
                       handleReviewChange(index, 'rating', value)
                     }
+                    style={{marginBottom:'10px'}}
                   />
                   {/* <TextField
                     type="file"
@@ -459,14 +460,14 @@ const EditBuilders = () => {
                     )}
 
                   </Box>
-                  <TextField
+                  <Input
                     placeholder="Review"
                     value={review.review}
                     onChange={(e) =>
                       handleReviewChange(index, 'review', e.target.value)
                     }
                     fullWidth
-                    margin="normal"
+                    style={{marginTop:'10px'}}
                     multiline
                     rows={3}
                   />
