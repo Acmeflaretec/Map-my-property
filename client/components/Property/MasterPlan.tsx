@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Icons } from "../common/Icons";
 import Model from "../common/Model";
-import { PlanType } from "@/data/propertyData";
+import { PlanType } from "@/utils/interface";
 
 const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);

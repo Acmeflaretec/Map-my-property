@@ -1,8 +1,8 @@
-import { Feature } from "@/data/propertyData";
 import React from "react";
 import { Icons } from "./Icons";
+import { FeatureType } from "@/utils/interface";
 
-const Features: React.FC<{ data: Feature[] }> = ({ data }) => {
+const Features: React.FC<{ data: FeatureType[] }> = ({ data }) => {
   return (
     <div className="border rounded-2xl overflow-hidden">
       {data?.map((feature) => (

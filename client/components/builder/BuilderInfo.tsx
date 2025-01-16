@@ -1,4 +1,4 @@
-import { BuilderType } from "@/data/builderData";
+import { BuilderType } from "@/utils/interface";
 import React from "react";
 
 const BuilderInfo: React.FC<{ data: BuilderType }> = ({ data }) => {

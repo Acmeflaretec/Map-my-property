@@ -1,6 +1,6 @@
+import { BuilderType } from "@/utils/interface";
 import Image from "next/image";
 import React from "react";
-import { BuilderType } from "@/data/builderData";
 
 const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
   return (

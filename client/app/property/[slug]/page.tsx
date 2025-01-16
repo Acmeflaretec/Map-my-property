@@ -13,15 +13,17 @@ import Plans from "@/components/Property/Plans";
 import MasterPlan from "@/components/Property/MasterPlan";
 
 interface Props {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
-const Page: React.FC<Props> = ({ params }) => {
-  const property_name = params?.slug;
-  const data = propertyData;
-  data.title = property_name;
+const Page: React.FC<Props> = async ({ params }) => {
+  const resolvedParams = await params;
+  const property_name = resolvedParams?.slug;
+
+  const data = {
+    ...propertyData,
+    title: property_name,
+  };
   return (
     <main className="w-screen xl:max-w-screen-xl overflow-visible">
       <div className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full">
@@ -30,8 +32,8 @@ const Page: React.FC<Props> = ({ params }) => {
           <div className="flex flex-col w-full xl:w-2/3 gap-8 md:gap-12">
             <Features data={data?.features} />
             <Pricing data={data?.pricing} />
-            <Plans data={data?.plans}/>
-            <MasterPlan data={data?.masterPlan}/>
+            <Plans data={data?.plans} />
+            <MasterPlan data={data?.masterPlan} />
             <Faqs data={data?.faqs} />
             <ExpertOpinion data={data?.expertOpinions} />
             <AboutBuilder data={data?.builder} />

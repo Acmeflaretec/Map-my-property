@@ -1,5 +1,5 @@
 "use client";
-import { PlanType } from "@/data/propertyData";
+import { PlanType } from "@/utils/interface";
 import React, { useState } from "react";
 import { Icons } from "../common/Icons";
 import Image from "next/image";

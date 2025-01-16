@@ -1,4 +1,4 @@
-import { BuilderType } from "@/data/builderData";
+import { BuilderType } from "@/utils/interface";
 import React from "react";
 import { Icons } from "../common/Icons";
 import Image from "next/image";

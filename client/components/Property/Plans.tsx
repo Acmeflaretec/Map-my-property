@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { PlanType } from "@/data/propertyData";
+import { PlanType } from "@/utils/interface";
 import PlanCard from "./PlanCard";
 
 const Plans: React.FC<{ data: PlanType[] }> = ({ data }) => {

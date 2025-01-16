@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { PricingType } from "@/data/propertyData";
+import { PricingType } from "@/utils/interface";
 import Image from "next/image";
 import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";

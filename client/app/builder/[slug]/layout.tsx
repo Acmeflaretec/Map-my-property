@@ -2,13 +2,12 @@ import { Metadata } from "next";
 import React, { Suspense } from "react";
 
 interface Props {
-   params: {
-     slug: string;
-   };
- }
+  params: Promise<{ slug: string }>;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const builder_name = params?.slug?.toUpperCase();
+  const resolvedParams = await params;
+  const builder_name = resolvedParams.slug?.toUpperCase();
   return {
     title: `${builder_name} | Map My Property`,
     description: `Explore and find your perfect property at Map My Property.`,
@@ -16,15 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const page = ({
-   children,
+  children,
 }: Readonly<{
-   children: React.ReactNode;
+  children: React.ReactNode;
 }>) => {
-   return (
-      <main>
-         <Suspense>{children}</Suspense>
-      </main>
-   );
+  return (
+    <main>
+      <Suspense>{children}</Suspense>
+    </main>
+  );
 };
 
 export default page;
