@@ -26,7 +26,7 @@ const AddProjects = () => {
     accommodation: [{ unit: '', area: '', price: '' }],
     features: [{ title: '', items: [{ text: '', helpertext: '', icon: '' }] }]
   })
-  const [builders, setBuilders] = useState()
+  const [builder, setBuilders] = useState()
   const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
   const { mutateAsync: AddProjects, isLoading: loading } = useAddProjects()
   const { data:build } = useGetSelectBuilders({ pageNo: 1, pageCount: 100 });
@@ -55,6 +55,9 @@ const AddProjects = () => {
       if (!category?._id) {
         return toast.error("category is required")
       }
+      if (!builder?._id) {
+        return toast.error("builder is required")
+      }
       if (!details?.imageGallery[0]?.title) {
         return toast.error("imageGallery is required")
       }
@@ -76,6 +79,7 @@ const AddProjects = () => {
         }
       }
       formData.append('category', category?._id);
+      formData.append('builder', builder?._id);
 
       details.features.forEach(feature => {
         feature.items.forEach(item => {
@@ -325,6 +329,7 @@ const AddProjects = () => {
 
 
   console.log('details', details);
+  // console.log('builders', builder);
 
   return (
     <PageLayout
@@ -393,7 +398,7 @@ const AddProjects = () => {
             <Autocomplete
               id="Builders-select"
               options={build?.data}
-              value={builders}
+              value={builder}
               onChange={(event, newValue) => {
                 setBuilders(newValue);
               }}

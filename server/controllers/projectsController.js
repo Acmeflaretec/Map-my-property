@@ -1,5 +1,6 @@
 const Projects = require('../models/projects');
 const Category = require('../models/category')
+const Builders = require('../models/builders')
 
 
 const getAdminprojects = async (req, res) => {
@@ -25,7 +26,7 @@ const getAdminprojects = async (req, res) => {
 
 const getprojectsById = async (req, res) => {
   try {
-    const data = await Projects.findOne({ _id: req.params.id }).populate('category')
+    const data = await Projects.findOne({ _id: req.params.id }).populate('category').populate('builder')
     res.status(200).json({ data, message: 'projects found successfully' });
   } catch (error) {
     console.log(error.message);
@@ -36,12 +37,14 @@ const getprojectsById = async (req, res) => {
 
 const addprojects = async (req, res) => {
   try {
-    const { title,subtitle, category, location, description, ExpertOpinions, questions, answer,
+    const { title,subtitle, category, location, description, ExpertOpinions, questions, answer,builder,
       Bedrooms, Areas, reviewsName, reviewsRating, reviewsReview, minPrice, maxPrice, href, masterPlanTitle, masterPlanDesc, features,
       imageGalleryTitle, imageGalleryDesc, floorPlansTitle, floorPlansDesc, accommodationUnit, accommodationArea, accommodationPrice,
     } = req?.body;
 
-    const featuresArray = Object.entries(features).map(([title, items]) => {
+    let featuresArray;
+    if(features){
+    featuresArray = Object.entries(features).map(([title, items]) => {
       const parsedItems = items.map(item => {
         const parsedItem = JSON.parse(item);
         return {
@@ -56,6 +59,7 @@ const addprojects = async (req, res) => {
         items: parsedItems.filter(item => item.text || item.helpertext || item.icon),
       };
     });
+  }
 
     let faqsValue = [];
     if (questions) {
@@ -120,7 +124,7 @@ const addprojects = async (req, res) => {
         price: accommodationPrice
       });
     const projects = new Projects({
-      title,subtitle, category, description,expertOpinions:ExpertOpinions,  location, testimonials: reviewValue, bedrooms:Bedrooms, areas:Areas, faqs: faqsValue,
+      title,subtitle, category,builder, description,expertOpinions:ExpertOpinions,  location, testimonials: reviewValue, bedrooms:Bedrooms, areas:Areas, faqs: faqsValue,
       minPrice, maxPrice, href, masterPlan: masterPlanTitle && masterPlan, imageGallery: imageGalleryTitle && imageGallery, plans: floorPlansTitle && floorPlans,
       accommodation: accommodationUnit && accommodation, features: featuresArray
     });
@@ -128,6 +132,7 @@ const addprojects = async (req, res) => {
 
     if (projects) {
       await Category.updateOne({ _id: category }, { $push: { projects: projects._id } })
+      await Builders.updateOne({ _id: builder }, { $push: { projects: projects._id } })
       res.status(200).json({ message: "Projects added successfully !" });
 
     } else {
@@ -142,12 +147,14 @@ const addprojects = async (req, res) => {
 const updateprojects = async (req, res) => {
 
   try {
-    const { _id, isAvailable, title,subtitle, location, description, expertOpinions,  questions, features,
+    const { _id, isAvailable, title,subtitle, location, description, expertOpinions,  questions, features,builder,
       reviewsName, reviewsRating, reviewsReview, minPrice, maxPrice, href, masterPlanTitle, masterPlanDesc, answer, bedrooms, areas,
       imageGalleryTitle, imageGalleryDesc, floorPlansTitle, floorPlansDesc, accommodationUnit, accommodationArea, accommodationPrice
     } = req?.body
 
-    const featuresArray = Object.entries(features).map(([title, items]) => {
+    let featuresArray;
+    if(features){
+    featuresArray = Object.entries(features).map(([title, items]) => {
       const parsedItems = items.map(item => {
         const parsedItem = JSON.parse(item);
         return {
@@ -162,6 +169,7 @@ const updateprojects = async (req, res) => {
         items: parsedItems.filter(item => item.text || item.helpertext || item.icon),
       };
     });
+  }
 
     
     let faqsValue = [];
@@ -234,16 +242,22 @@ const updateprojects = async (req, res) => {
         price: accommodationPrice
       });
 
-    await Projects.updateOne({ _id }, {
+   const projectUpdateResult =   await Projects.updateOne({ _id }, {
       $set: {
         isAvailable, title,subtitle, description, expertOpinions, location, faqs: faqsValue,bedrooms, areas,
-        minPrice, maxPrice, href, masterPlan: masterPlanTitle && masterPlan, features: featuresArray,
+        minPrice, maxPrice, href, masterPlan: masterPlanTitle && masterPlan, features: featuresArray,builder,
         imageGallery: imageGalleryTitle && imageGallery,
         plans: floorPlansTitle && floorPlans,
         testimonials: reviewValue,
         accommodation: accommodationUnit && accommodation
       }
     })
+
+    if (projectUpdateResult.modifiedCount > 0 && builder) {
+      await Builders.updateMany({ projects: _id }, { $pull: { projects: _id } });
+      await Builders.updateMany({ _id: { $in: builder } }, { $push: { projects: _id } });
+    }
+
 
     res.status(200).json({ message: "projects updated successfully !" });
   } catch (error) {

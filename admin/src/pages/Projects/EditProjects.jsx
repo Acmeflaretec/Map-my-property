@@ -1,10 +1,10 @@
-import { Button, Grid, TextField, ToggleButton, Rating, IconButton, Box } from '@mui/material';
+import { Button, Grid, TextField, ToggleButton, Rating, IconButton, Box,Autocomplete } from '@mui/material';
 import Input from 'components/Input';
 import PageLayout from 'layouts/PageLayout';
 import React, { useEffect, useState } from 'react';
 import Typography from 'components/Typography';
 import toast from 'react-hot-toast';
-import { useGetProjectsById, useUpdateProjects, useDeleteProjects } from 'queries/ProductQuery';
+import { useGetProjectsById, useUpdateProjects, useGetSelectBuilders, useDeleteProjects } from 'queries/ProductQuery';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Delete, Add } from '@mui/icons-material';
 import { Icons } from 'components/Property/Icons.tsx'
@@ -18,16 +18,19 @@ const EditProjects = () => {
   const { data, isLoading } = useGetProjectsById({ id });
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const [selectedIconField, setSelectedIconField] = useState(null);
-
+  const [builder, setBuilders] = useState({})
 
   useEffect(() => {
-    if (data?.data) {
+    if (data?.data) {      
+      data?.data?.builder && setBuilders(data?.data?.builder)
       setDetails(data.data);
     }
   }, [data]);
 
   const { mutateAsync: updateProjects, isLoading: loading } = useUpdateProjects();
   const { mutateAsync: deleteProjects, isLoading: deleting } = useDeleteProjects();
+  const { data: build } = useGetSelectBuilders({ pageNo: 1, pageCount: 100 });
+
 
   const handleChange = (e) => {
     setDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -41,6 +44,9 @@ const EditProjects = () => {
       }
       if (!details?.subtitle) {
         return toast.error("subtitle is required")
+      }
+      if (!builder?._id) {
+        return toast.error("builder is required")
       }
       if (!details?.imageGallery[0]?.title) {
         return toast.error("imageGallery is required")
@@ -57,10 +63,11 @@ const EditProjects = () => {
       const formData = new FormData();
       for (const key in details) {
         if (details.hasOwnProperty(key) && !['expertOpinions', 'bedrooms', 'areas', 'features',
-          'faqs', 'testimonials', 'imageGallery', 'plans', 'accommodation', 'masterPlan'].includes(key)) {
+          'faqs', 'testimonials', 'imageGallery', 'plans', 'accommodation', 'masterPlan', 'builder'].includes(key)) {
           formData.append(key, details[key]);
         }
       }
+      formData.append('builder', builder?._id);
       details.features.forEach(feature => {
         feature.items.forEach(item => {
           formData.append(`features[${feature.title}][]`, JSON.stringify(item));
@@ -320,6 +327,7 @@ const EditProjects = () => {
     setDetails((prev) => ({ ...prev, [field]: updated }));
   };
   console.log('details', details);
+  console.log('builder', builder);
 
   return (
     <PageLayout title={'Edit Projects'}>
@@ -354,6 +362,43 @@ const EditProjects = () => {
                 id="Category"
                 name="Category"
                 value={details?.category?.name || ''}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <Autocomplete
+                id="Builders-select"
+                options={build?.data}
+                value={builder}
+                onChange={(event, newValue) => {
+                  setBuilders(newValue);
+                }}
+                autoHighlight
+                getOptionLabel={(option) => option.title}
+                renderOption={(props, option) => (
+                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                    <img
+                      loading="lazy"
+                      width="20"
+                      src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image}`}
+                    />
+                    <Typography color="inherit" variant="caption">
+                      {option?.title} <br />
+                      {option?.subtitle}
+                    </Typography>
+                    <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
+                      {option?.isAvailable ? 'available' : 'NA'}
+                    </Typography>
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Choose a builder"
+                    inputProps={{
+                      ...params.inputProps,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>

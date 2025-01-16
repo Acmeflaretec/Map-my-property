@@ -16,7 +16,8 @@ const getStoreSections = async (req, res) => {
       const data = await Section.find({ status: true })
          .populate({
             path: 'projects',
-            populate: { path: 'category' }
+            populate: { path: 'category' },
+            populate: { path: 'builder' },
          });
       res.status(200).json({ data })
    } catch (error) {
