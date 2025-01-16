@@ -1,5 +1,5 @@
 import request from "./axiosInstance";
-import { BannerType, SectionType } from "./interface";
+import { BannerType, ProjectType, SectionType } from "./interface";
 
 const buildQueryParams = (data: Record<string, number | string>) =>
   new URLSearchParams(
@@ -25,4 +25,12 @@ const getSections = async (
     method: "GET",
   });
 
-export { getBanner, getSections };
+const getProjects = async (
+  data: any
+): Promise<{ data: { docs: ProjectType[] } }> =>
+  request({
+    endpoint: `/projects?${buildQueryParams(data)}`,
+    method: "GET",
+  });
+
+export { getBanner, getSections, getProjects };

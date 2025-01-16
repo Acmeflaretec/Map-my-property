@@ -23,7 +23,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
           />
           <div className="pl-32">
             <p className="font-bold text-base md:text-lg">{data?.title}</p>
-            <p className="text-sm md:text-base">{data?.helpertext}</p>
+            <p className="text-sm md:text-base">{data?.subtitle}</p>
           </div>
         </div>
       </div>

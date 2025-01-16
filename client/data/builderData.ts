@@ -3,7 +3,7 @@ import { propertyData } from "./propertyData";
 
 export const builderData: BuilderType = {
   title: "Subha Constructions",
-  helpertext: "Builders & Developers",
+  subtitle: "Builders & Developers",
   desc: "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
   image: "/assets/properties/image-1.png",
   logo: "/assets/banner.png",

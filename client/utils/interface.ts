@@ -19,7 +19,7 @@ export interface TestimonialType {
 
 export interface BuilderType {
   title: string;
-  helpertext: string;
+  subtitle: string;
   desc: string;
   logo: string;
   image: string;
@@ -63,8 +63,10 @@ export interface GalleryType {
 }
 export interface ProjectType {
   title: string;
+  subtitle: string;
   imageGallery: GalleryType[];
-  price: string;
+  minPrice: number;
+  maxPrice: number;
   description: string;
   features: FeatureType[];
   pricing: PricingType[];

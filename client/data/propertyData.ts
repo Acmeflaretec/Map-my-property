@@ -3,6 +3,7 @@ import { builderData } from "./builderData";
 
 export const propertyData: ProjectType = {
   title: "Subha Belgravia Villas at Subha Ecocity",
+  subtitle: "Subha Belgravia Villas at Subha Ecocity",
   imageGallery: [
     {
       title: "Subha Belgravia - Front Faceing View",
@@ -85,7 +86,8 @@ export const propertyData: ProjectType = {
       src: "/assets/properties/image-4.png",
     },
   ],
-  price: "INR 2.35 Cr to 6.85 Cr",
+  minPrice: 28293423,
+  maxPrice: 68492000,
   description: "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
   location: "Chandapura, Bangalore",
   features: [
@@ -215,7 +217,7 @@ export const propertyData: ProjectType = {
   ],
   builder: {
     title: "Subha Constructions",
-    helpertext: "Builders & Developers",
+    subtitle: "Builders & Developers",
     desc: "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
     image: "/assets/properties/image-1.png",
     logo: "/assets/banner.png",

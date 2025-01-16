@@ -18,7 +18,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
         />
         <div>
           <p className="text-lg md:text-xl">{data?.title}</p>
-          <p className="text-sm md:text-base">{data?.helpertext}</p>
+          <p className="text-sm md:text-base">{data?.subtitle}</p>
         </div>
       </div>
       <p className="text-gray-500">{data?.desc}</p>

@@ -5,6 +5,7 @@ import { Icons } from "../common/Icons";
 import Link from "next/link";
 import { ProjectType } from "@/utils/interface";
 import { generateImageUrl } from "@/utils/generateImageUrl";
+import getPriceRange from "@/utils/getPriceRange";
 
 const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
   return (
@@ -32,7 +33,7 @@ const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
             />
             <div>
               <p className="text-xs">{data?.builder?.title}</p>
-              <p className="text-[10px]">{data?.builder?.helpertext}</p>
+              <p className="text-[10px]">{data?.builder?.subtitle}</p>
             </div>
           </div>
           <button className="bg-[#0C0E0D] hidden lg:flex items-center z-30 h-fit text-[10px] text-white p-[2px] pl-3 pr-1 rounded-lg">
@@ -46,9 +47,9 @@ const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
           {data?.title}
         </p>
         <p className="text-[10px] md:text-xs">
-          {data?.price}
+          {getPriceRange(data?.minPrice, data?.maxPrice)}
           <br />
-          {data?.description}
+          {data?.subtitle}
         </p>
         <p className="flex text-[10px] md:text-xs items-center gap-1 md:gap-2">
           <Icons.location />
