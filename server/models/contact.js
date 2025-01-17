@@ -14,13 +14,6 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  requirement: {
-    type: String,
-    required: true
-  },
-  homeLoan: {
-    type: Boolean,
-  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -27,8 +27,8 @@ const TableData = () => {
 
   const columns = [
     { name: 'User', align: 'left' },
-    { name: 'Requirement', align: 'center' },
-    { name: 'HomeLoan', align: 'center' },
+    // { name: 'Requirement', align: 'center' },
+    // { name: 'HomeLoan', align: 'center' },
     { name: 'CreatedAt', align: 'center' },
     { name: 'Status', align: 'center' },
     // { name: 'Action', align: 'center' },
@@ -55,17 +55,17 @@ const TableData = () => {
       </>
 
     ),
-    Requirement: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
+    // Requirement: (
+    //   <Typography variant="caption" color="secondary" fontWeight="medium">
 
-        {item?.requirement ? item.requirement : '-'}
-      </Typography>
-    ),
-    HomeLoan: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.homeLoan ? item?.homeLoan.substring(0,30) : '-'}
-      </Typography>
-    ),
+    //     {item?.requirement ? item.requirement : '-'}
+    //   </Typography>
+    // ),
+    // HomeLoan: (
+    //   <Typography variant="caption" color="secondary" fontWeight="medium">
+    //     {item?.homeLoan ? item?.homeLoan.substring(0,30) : '-'}
+    //   </Typography>
+    // ),
     CreatedAt: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
         {new Date(item?.createdAt).toDateString()}

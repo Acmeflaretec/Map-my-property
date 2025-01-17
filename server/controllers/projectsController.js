@@ -1,6 +1,7 @@
 const Projects = require('../models/projects');
 const Category = require('../models/category')
 const Builders = require('../models/builders')
+const Tags = require('../models/tags')
 
 
 const getAdminprojects = async (req, res) => {
@@ -276,7 +277,7 @@ const deleteprojects = async (req, res) => {
   }
 }
 
-const getSelectprojects = async (req, res) => {
+const getSelectprojects = async (req, res) => {  
   try {
     const data = await Projects.find({ isAvailable: true })
     res.status(200).json({ data })
@@ -307,8 +308,20 @@ const getFilteredProjects = async (req, res) => {
 
     const query = {};
 
+    // if (search) {
+    //   query.title = { $regex: search, $options: 'i' };
+    // }
     if (search) {
-      query.title = { $regex: search, $options: 'i' };
+      const tagProjects = await Tags.find({
+        $or: [{ title: { $regex: search, $options: 'i' } }]
+      }).select('projects');
+      
+      const projectIdsFromTags = tagProjects.flatMap(tag => tag.projects);
+
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { _id: { $in: projectIdsFromTags } }
+      ];
     }
 
     if (area) {
@@ -345,6 +358,11 @@ const getFilteredProjects = async (req, res) => {
       page: parseInt(page, 10),
       limit: parseInt(perPage, 10),
       sort: { [sortBy]: order === 'desc' ? -1 : 1 },
+      populate: [
+        { path: 'category' },
+        { path: 'builder' },
+      ],
+
     };
 
     const projects = await Projects.paginate(query, options);
