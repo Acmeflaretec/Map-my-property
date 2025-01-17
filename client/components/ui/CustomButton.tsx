@@ -9,6 +9,7 @@ interface CustomButtonProps {
   className?: string;
   href?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -17,6 +18,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   className,
   href,
   onClick,
+  disabled = false,
 }) => {
   const router = useRouter();
 
@@ -44,6 +46,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         }`,
         className
       )}
+      disabled={disabled}
     >
       {children}
     </button>

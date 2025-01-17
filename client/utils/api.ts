@@ -49,4 +49,14 @@ const getBuilderById = async (
     method: "GET",
   });
 
-export { getBanner, getSections, getProjects, getProjectById, getBuilderById };
+const sendInquiry = async (data: any) =>
+  request({ endpoint: `/contact`, method: "POST", data });
+
+export {
+  getBanner,
+  getSections,
+  getProjects,
+  getProjectById,
+  getBuilderById,
+  sendInquiry,
+};
