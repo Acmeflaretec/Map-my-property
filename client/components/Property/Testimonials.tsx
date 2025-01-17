@@ -4,11 +4,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
-import { TestimonialData } from "@/data/propertyData";
+import { TestimonialType } from "@/utils/interface";
 import { Icons } from "../common/Icons";
 import Image from "next/image";
 
-const Testimonials: React.FC<{ data: TestimonialData[] }> = ({ data }) => {
+const Testimonials: React.FC<{ data: TestimonialType[] }> = ({ data }) => {
    return (
       <div className="relative">
          <p className="text-xl pl-2 md:text-2xl max-w-2xl font-semibold">

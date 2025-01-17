@@ -2,9 +2,11 @@ import { BuilderType } from "@/utils/interface";
 import { propertyData } from "./propertyData";
 
 export const builderData: BuilderType = {
+  _id: "123",
   title: "Subha Constructions",
-  helpertext: "Builders & Developers",
-  desc: "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
+  subtitle: "Builders & Developers",
+  description:
+    "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
   image: "/assets/properties/image-1.png",
   logo: "/assets/banner.png",
   vision:
@@ -15,11 +17,7 @@ export const builderData: BuilderType = {
     { text: "70+ Projects", helpertext: "Completed" },
     { text: "20+ Projects", helpertext: "Upcomming" },
   ],
-  projects: [
-    propertyData,
-    propertyData,
-    propertyData,
-  ],
+  projects: [propertyData, propertyData, propertyData],
   testimonials: [
     {
       title: "Hassle-Free Property Search",

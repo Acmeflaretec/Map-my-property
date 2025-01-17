@@ -1,12 +1,12 @@
-import { Feature } from "@/data/propertyData";
 import React from "react";
 import { Icons } from "./Icons";
+import { FeatureType } from "@/utils/interface";
 
-const Features: React.FC<{ data: Feature[] }> = ({ data }) => {
+const Features: React.FC<{ data: FeatureType[] }> = ({ data }) => {
   return (
     <div className="border rounded-2xl overflow-hidden">
       {data?.map((feature) => (
-        <>
+        <div key={feature?.title}>
           <h1 className="font-bold text-lg p-2">{feature?.title}</h1>
           <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-2 justify-between">
             {feature.items.map((item, index) => {
@@ -31,7 +31,7 @@ const Features: React.FC<{ data: Feature[] }> = ({ data }) => {
               );
             })}
           </div>
-        </>
+        </div>
       ))}
     </div>
   );

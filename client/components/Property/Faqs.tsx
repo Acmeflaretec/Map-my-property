@@ -1,8 +1,8 @@
 "use client"
-import { FaqData } from '@/data/propertyData'
+import { FaqType } from '@/utils/interface';
 import React, { useState } from 'react'
 
-const Faqs: React.FC<{ data: FaqData[] }> = ({ data }) => {
+const Faqs: React.FC<{ data: FaqType[] }> = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   const toggleAccordion = (index: number) => {

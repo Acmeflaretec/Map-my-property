@@ -18,9 +18,10 @@ export interface TestimonialType {
 }
 
 export interface BuilderType {
+  _id: string;
   title: string;
-  helpertext: string;
-  desc: string;
+  subtitle: string;
+  description: string;
   logo: string;
   image: string;
   vision: string;
@@ -54,7 +55,7 @@ export interface PricingType {
 export interface PlanType {
   title: string;
   desc: string;
-  image: string;
+  src: string;
 }
 export interface GalleryType {
   title: string;
@@ -62,9 +63,12 @@ export interface GalleryType {
   src: string;
 }
 export interface ProjectType {
+  _id: string;
   title: string;
+  subtitle: string;
   imageGallery: GalleryType[];
-  price: string;
+  minPrice: number;
+  maxPrice: number;
   description: string;
   features: FeatureType[];
   pricing: PricingType[];

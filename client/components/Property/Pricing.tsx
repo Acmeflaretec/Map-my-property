@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { PricingType } from "@/data/propertyData";
+import { PricingType } from "@/utils/interface";
 import Image from "next/image";
 import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";
@@ -21,7 +21,7 @@ const Pricing: React.FC<{ data: PricingType[] }> = ({ data }) => {
           <p className="w-1/4 text-sm md:text-base">Approx. Price</p>
         </div>
         <div className="w-full flex flex-col">
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <div
               key={index}
               className={`flex w-full gap-4 p-4 text-gray-600 border-t ${

@@ -4,6 +4,7 @@ import { Icons } from "../common/Icons";
 import Image from "next/image";
 import Model from "../common/Model";
 import { GalleryType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const ImageGallery: React.FC<{
   data: GalleryType[];
@@ -35,7 +36,7 @@ const ImageGallery: React.FC<{
           <div className="relative flex flex-col md:flex-row rounded-xl">
             <div className="overflow-hidden w-full">
               <Image
-                src={data[currentIndex]?.src}
+                src={generateImageUrl(data[currentIndex]?.src)}
                 alt="hero-image"
                 className="w-full min-h-60 object-contain"
                 width={800}
@@ -77,7 +78,7 @@ const ImageGallery: React.FC<{
               onClick={() => goToSlide(index)}
             >
               <Image
-                src={item?.src}
+                src={generateImageUrl(item?.src)}
                 alt="gallery-images"
                 className="absolute block min-w-20 h-20 md:w-24 md:h-24 object-cover"
                 width={800}

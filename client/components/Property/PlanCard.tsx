@@ -1,9 +1,10 @@
 "use client";
-import { PlanType } from "@/data/propertyData";
+import { PlanType } from "@/utils/interface";
 import React, { useState } from "react";
 import { Icons } from "../common/Icons";
 import Image from "next/image";
 import Model from "../common/Model";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const PlanCard: React.FC<{
   data: PlanType[];
@@ -34,7 +35,7 @@ const PlanCard: React.FC<{
         <div className="relative flex flex-col md:flex-row border-2 rounded-3xl mx-2">
           <div className="relative flex justify-end md:h-1/2 w-[90vw] md:w-2/3 p-2">
             <Image
-              src={data[currentIndex]?.image}
+              src={generateImageUrl(data[currentIndex]?.src)}
               alt="master-plan"
               className="h-full w-full md:w-2/3 max-h-72 min-h-60 object-contain"
               width={800}
@@ -83,7 +84,7 @@ const PlanCard: React.FC<{
                 >
                   <div className="relative w-36 h-full">
                     <Image
-                      src={item?.image}
+                      src={generateImageUrl(item?.src)}
                       alt="pricing-details"
                       className="absolute block w-full h-full object-cover"
                       width={800}

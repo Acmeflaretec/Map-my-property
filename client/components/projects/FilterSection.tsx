@@ -20,10 +20,10 @@ interface FilterOption {
   label: string;
 }
 export const bedroomOptions: FilterOption[] = [
-  { key: "1bhk", label: "1 BHK" },
-  { key: "2bhk", label: "2 BHK" },
-  { key: "3bhk", label: "3 BHK" },
-  { key: "4bhk", label: "4 BHK" },
+  { key: "1BHK", label: "1 BHK" },
+  { key: "2BHK", label: "2 BHK" },
+  { key: "3BHK", label: "3 BHK" },
+  { key: "4BHK", label: "4 BHK" },
   { key: "studio", label: "Studio" },
 ];
 

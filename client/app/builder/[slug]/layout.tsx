@@ -1,30 +1,39 @@
+import { getBuilderById } from "@/utils/api";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 
 interface Props {
-   params: {
-     slug: string;
-   };
- }
+  params: Promise<{ slug: string }>;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const builder_name = params?.slug?.toUpperCase();
+  const resolvedParams = await params;
+  const _id = resolvedParams?.slug;
+  const res = _id?.length === 24 ? await getBuilderById(_id) : null;
+  const data = res?.data?.data;
+  if (data) {
+    return {
+      title: `${data?.title} | Map My Property`,
+      description: data?.subtitle || "Explore your perfect property.",
+    };
+  }
+
   return {
-    title: `${builder_name} | Map My Property`,
-    description: `Explore and find your perfect property at Map My Property.`,
+    title: "Builder Not Found | Map My Property",
+    description: "The requested property could not be found.",
   };
 }
 
 const page = ({
-   children,
+  children,
 }: Readonly<{
-   children: React.ReactNode;
+  children: React.ReactNode;
 }>) => {
-   return (
-      <main>
-         <Suspense>{children}</Suspense>
-      </main>
-   );
+  return (
+    <main className="min-h-screen">
+      <Suspense>{children}</Suspense>
+    </main>
+  );
 };
 
 export default page;

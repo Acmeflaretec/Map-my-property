@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Icons } from "../common/Icons";
 import FilterSection, {
   bedroomOptions,
@@ -7,11 +7,20 @@ import FilterSection, {
 } from "./FilterSection";
 import RangeSlider from "./RangeSlider";
 
-const Filter: React.FC = () => {
-  const [filter, setFilter] = useState({
-    bedroom: "1bhk",
-    resident_type: "villas",
-  });
+interface Props {
+  filter: { bedroom: string; resident_type: string; location: string };
+  setFilter: React.Dispatch<
+    React.SetStateAction<{
+      bedroom: string;
+      resident_type: string;
+      location: string;
+      price: { min: number; max: number };
+      area: { min: number; max: number };
+    }>
+  >;
+}
+
+const Filter: React.FC<Props> = ({ filter, setFilter }) => {
   return (
     <div className="flex h-fit flex-col border border-stone-300 rounded-xl p-2 xl:p-6 py-8 gap-6">
       <h1 className="flex gap-3 uppercase font-bold">
@@ -24,6 +33,10 @@ const Filter: React.FC = () => {
           placeholder="Enter your preferred location"
           id="location"
           className="outline-none text-sm px-2 w-full bg-transparent"
+          value={filter.location}
+          onChange={(e) =>
+            setFilter((prev) => ({ ...prev, location: e.target.value }))
+          }
         />
       </div>
       <div className="flex flex-col gap-2 w-full">
@@ -34,7 +47,12 @@ const Filter: React.FC = () => {
         <FilterSection
           options={bedroomOptions}
           selectedKey={filter.bedroom}
-          onSelect={(key) => setFilter((prev) => ({ ...prev, bedroom: key }))}
+          onSelect={(key) =>
+            setFilter((prev) => ({
+              ...prev,
+              bedroom: filter.bedroom === key ? "" : key,
+            }))
+          }
         />
       </div>
       <div className="flex flex-col gap-2 w-full">
@@ -42,7 +60,13 @@ const Filter: React.FC = () => {
           <Icons.priceTag />
           Price
         </p>
-        <RangeSlider min={100000} max={1000000000} />
+        <RangeSlider
+          min={100000}
+          max={1000000000}
+          setFilter={(value) =>
+            setFilter((prev) => ({ ...prev, price: value }))
+          }
+        />
       </div>
       <div className="flex flex-col gap-2 w-full">
         <p className="flex font-semibold gap-2">
@@ -53,7 +77,10 @@ const Filter: React.FC = () => {
           options={residentTypeOptions}
           selectedKey={filter.resident_type}
           onSelect={(key) =>
-            setFilter((prev) => ({ ...prev, resident_type: key }))
+            setFilter((prev) => ({
+              ...prev,
+              resident_type: filter.resident_type === key ? "" : key,
+            }))
           }
         />
       </div>
@@ -62,7 +89,11 @@ const Filter: React.FC = () => {
           <Icons.area />
           Area
         </p>
-        <RangeSlider min={100000} max={1000000000} />
+        <RangeSlider
+          min={1000}
+          max={10000000}
+          setFilter={(value) => setFilter((prev) => ({ ...prev, area: value }))}
+        />
       </div>
     </div>
   );

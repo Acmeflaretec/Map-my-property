@@ -3,15 +3,17 @@ import React, { useEffect, useRef, useState } from "react";
 interface RangeSliderProps {
   min: number;
   max: number;
+  setFilter: (value: { min: number; max: number }) => void;
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ min, max }) => {
+const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, setFilter }) => {
   const [fromValue, setFromValue] = useState(min);
   const [toValue, setToValue] = useState(max);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     updateSliderBackground();
+    setFilter({ min: fromValue, max: toValue });
   }, [fromValue, toValue]);
 
   const updateSliderBackground = () => {
@@ -33,13 +35,21 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max }) => {
   };
 
   const handleFromInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), toValue);
-    setFromValue(value);
+    const value = Number(e.target.value);
+    if (value > toValue) {
+      setToValue(value);
+    } else {
+      setFromValue(value);
+    }
   };
 
   const handleToInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(Number(e.target.value), fromValue);
-    setToValue(value);
+    const value = Number(e.target.value);
+    if (value < fromValue) {
+      setFromValue(value);
+    } else {
+      setToValue(value);
+    }
   };
 
   return (
@@ -57,7 +67,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max }) => {
           min={min}
           max={max}
           value={fromValue}
-          onChange={(e) => setFromValue(Number(e.target.value))}
+          onChange={handleFromInputChange}
           className="absolute w-full appearance-none h-0 pointer-events-auto multi-range-slider"
         />
         <input
@@ -66,7 +76,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({ min, max }) => {
           min={min}
           max={max}
           value={toValue}
-          onChange={(e) => setToValue(Number(e.target.value))}
+          onChange={handleToInputChange}
           className="absolute w-full appearance-none h-0 pointer-events-auto z-1 multi-range-slider"
         />
       </div>

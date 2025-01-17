@@ -1,19 +1,10 @@
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const property_name = params?.slug?.toUpperCase();
-  return {
-    title: `${property_name} | Map My Property`,
-    description: `Explore and find your perfect property at Map My Property.`,
-  };
-}
+export const metadata: Metadata = {
+  title: "Properties | Map My Property",
+  description: "Find your perfect property | Map My Property",
+};
 
 const page = ({
   children,
@@ -21,7 +12,7 @@ const page = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <main>
+    <main className="min-h-screen">
       <Suspense>{children}</Suspense>
     </main>
   );
