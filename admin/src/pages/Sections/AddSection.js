@@ -114,17 +114,17 @@ const AddSection = () => {
                         setProjects(newValue);
                      }}
                      autoHighlight
-                     getOptionLabel={(option) => option.name}
+                     getOptionLabel={(option) => option.title}
                      renderOption={(props, option) => (
                         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                            <img
                               loading="lazy"
                               width="20"
-                              src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image[0]}`}
+                              src={`${process.env.REACT_APP_API_URL}/uploads/${option?.image}`}
                            />
                            <Typography color="inherit" variant="caption">
-                              {option?.name} <br />
-                              {option?.brand}
+                              {option?.title} <br />
+                              {option?.subtitle}
                            </Typography>
                            <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
                               {option?.isAvailable ? 'available' : 'NA'}

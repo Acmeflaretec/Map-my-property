@@ -17,12 +17,12 @@ const getBlogs = async (req, res) => {
 
 const addBlog = async (req, res) => {
   try {
-    const { title, subtitle, url, description, status } = req?.body
+    const { title, subtitle, url, description, status,type  } = req?.body
     const image = req?.file?.filename
     if (!image) {
       return res.status(404).json({ message: 'Image not found' });
     }
-    const data = new Blog({ title, subtitle, url, image, description, status })
+    const data = new Blog({ title, subtitle, url, image, description, status,type  })
     await data.save()
     res.status(201).json({ data, message: 'Blog created successfully' });
   } catch (error) {
@@ -46,7 +46,7 @@ const getBlogById = async (req, res) => {
 }
 
 const updateBlog = async (req, res) => {
-  const { _id, title, subtitle, url, description, status } = req.body;
+  const { _id, title, subtitle, url, description, status,isImportant,type } = req.body;
   const image = req?.file?.filename;
   try {
     const data = await Blog.findById(_id);
@@ -63,7 +63,7 @@ const updateBlog = async (req, res) => {
       });
     }
     await Blog.updateOne({ _id }, {
-      $set: { title, subtitle, url, description, status, ...(image && { image }) }
+      $set: { title, subtitle, url, description, status,isImportant,type, ...(image && { image }) }
     })
     res.status(200).json({ data, message: 'Blog updated successfully' });
   } catch (error) {

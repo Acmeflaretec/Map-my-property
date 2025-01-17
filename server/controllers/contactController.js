@@ -2,7 +2,7 @@ const Contact = require('../models/contact');
 
 const createContact = async (req, res) => {
     
-  const { name, email, phoneNumber, requirement, homeLoan } = req.body;
+  const { name, email, phoneNumber } = req.body;
   
 
 
@@ -11,8 +11,7 @@ const createContact = async (req, res) => {
       name,
       email,
       phoneNumber,
-      requirement,    
-      homeLoan,
+      
     });
 
     res.status(201).json({

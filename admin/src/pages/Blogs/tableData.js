@@ -18,7 +18,7 @@ function Blogs({ image, name, desc }) {
           {name}
         </Typography>
         <Typography variant="caption" color="secondary">
-          {desc?.substring(0, 80)}
+          {desc?.substring(0, 40)}
         </Typography>
       </Box>
     </Box>
@@ -33,6 +33,7 @@ const TableData = () => {
     { name: "status", align: "center" },
     { name: "createdon", align: "center" },
     { name: "Lastupdated", align: "center" },
+    { name: "Important", align: "center" },
     { name: "action", align: "center" },
   ]
 
@@ -40,7 +41,7 @@ const TableData = () => {
     Blogs: <Blogs image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`} name={item?.title} desc={item?.subtitle} />,
     url: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
-        <a href={item?.url}>{item?.url}</a>
+        <a href={item?.url}>{item?.url.substring(0, 40)}</a>
       </Typography>
     ),
     status: (
@@ -55,6 +56,9 @@ const TableData = () => {
       <Typography variant="caption" color="secondary" fontWeight="medium">
         {new Date(item?.updatedAt).toDateString()}
       </Typography>
+    ),
+    Important: (
+      <Badge variant="gradient" badgeContent={item?.isImportant ? 'Important' : 'Not-Important'} color={item?.isImportant ? "success" : 'secondary'} size="xs" container />
     ),
     action: (
       <Link to={`/blogs/editBlog/${item?._id}`}>

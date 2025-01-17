@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, ToggleButton, Typography } from "@mui/material";
+import { Alert, Box, Button, Grid, ToggleButton, Typography, MenuItem, Select, } from "@mui/material";
 import React, { useEffect, useState } from 'react'
 import PageLayout from 'layouts/PageLayout';
 import toast from "react-hot-toast";
@@ -7,7 +7,7 @@ import { useEditBlogs } from "queries/StoreQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetBlogsById } from "queries/StoreQuery";
 import { useDeleteBlogs } from "queries/StoreQuery";
-import TextEditor from "./TextEditor";
+// import TextEditor from "./TextEditor";
 
 const EditBlog = () => {
    const { id } = useParams();
@@ -118,7 +118,7 @@ const EditBlog = () => {
                      variant="outlined"
                   />
                </Grid>
-               <Grid item xs={12} sm={6}>
+               <Grid item xs={12}>
                   <Input
                      required
                      placeholder="Blog Target (url)"
@@ -133,25 +133,37 @@ const EditBlog = () => {
                   />
                </Grid>
                <Grid item xs={12} sm={6}>
-                  <Typography variant="caption">
-                     Blog status &nbsp;
-                  </Typography>
-                  <ToggleButton
-                     value={data?.status}
-                     selected={data?.status}
-                     onChange={() => {
-                        setData(prev => ({ ...prev, status: !data?.status }))
-                     }}
+                  <Typography variant="caption">Blog Type</Typography>
+                  <Select
+                     name="type"
+                     value={data?.type || ''}
+                     onChange={handleChange}
+                     fullWidth
+                     variant="outlined"
                   >
-                     {data?.status ? 'Active' : 'Blocked'}
-                  </ToggleButton>
+                     <MenuItem value="type one">Type One</MenuItem>
+                     <MenuItem value="type two">Type Two</MenuItem>
+                     <MenuItem value="type three">Type Three</MenuItem>
+                  </Select>
                </Grid>
 
-               <Grid item xs={12} mb={12}>
+
+               {/* <Grid item xs={12} mb={12}>
                   <TextEditor value={data?.description || ''} onChange={handleChange} />
+               </Grid> */}
+               <Grid item xs={12}>
+                  <Input
+                     id="description"
+                     placeholder="More about"
+                     name="description"
+                     value={data?.description || ''}
+                     onChange={handleChange}
+                     multiline
+                     rows={5}
+                  />
                </Grid>
 
-               <Grid item xs={12} >
+               <Grid item xs={12} display={"flex"} justifyContent={'space-between'}>
                   <Box
                      sx={{
                         width: 200,
@@ -218,6 +230,36 @@ const EditBlog = () => {
                         onChange={handleFileChange}
                      />
                   </Box>
+                  <Grid item xs={12} sm={6}>
+                     <Typography variant="caption">
+                        Blog status &nbsp;
+                     </Typography>
+                     <Box>
+                        <ToggleButton
+                           value={data?.status}
+                           selected={data?.status}
+                           onChange={() => {
+                              setData(prev => ({ ...prev, status: !data?.status }))
+                           }}
+                        >
+                           {data?.status ? 'Active' : 'Blocked'}
+                        </ToggleButton>
+                     </Box>
+                  </Grid>
+               </Grid>
+               <Grid item xs={12} sm={6}>
+                  <Typography variant="caption">
+                     Important Blog &nbsp;
+                  </Typography>
+                  <ToggleButton
+                     value={data?.isImportant}
+                     selected={data?.isImportant}
+                     onChange={() => {
+                        setData(prev => ({ ...prev, isImportant: !data?.isImportant }))
+                     }}
+                  >
+                     {data?.isImportant ? 'Important' : 'Not Important'}
+                  </ToggleButton>
                </Grid>
                <Grid item xs={12}>
                   <Button onClick={handleSubmit} disabled={updating}>Update Blog</Button>

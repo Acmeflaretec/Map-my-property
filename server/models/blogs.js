@@ -15,17 +15,26 @@ const blogSchema = mongoose.Schema({
     description: {
         type: String,
     },
+    type: {
+        type: String,
+        default: 'type one',
+        enum: ['type one', 'type two', 'type three']
+    },
     image: {
         type: String,
         required: true
+    },
+    isImportant: {
+        type: Boolean,
+        default: false
     },
     status: {
         type: Boolean,
         default: true
     }
 },
-{
-    timestamps: true
-})
+    {
+        timestamps: true
+    })
 
 module.exports = mongoose.model('Blog', blogSchema)

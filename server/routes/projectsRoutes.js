@@ -11,6 +11,7 @@ router.post('/', upload.fields([
   ]), addprojects);
 router.get('/adminProjects', getAdminprojects);
 router.delete('/:id',  deleteprojects);
+router.get('/listingProjects', getSelectprojects); 
 router.get('/:id', getprojectsById);  
 router.patch('/', upload.fields([
     { name: 'masterPlan', maxCount: 1 },
@@ -18,7 +19,6 @@ router.patch('/', upload.fields([
     { name: 'floorPlans', maxCount: 10 },
     { name: 'reviews', maxCount: 10 }
   ]), updateprojects);  
-router.get('/listingProjects', getSelectprojects); 
 router.get('/', getFilteredProjects); 
 
 module.exports = router;
