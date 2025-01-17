@@ -18,6 +18,7 @@ export interface TestimonialType {
 }
 
 export interface BuilderType {
+  _id: string;
   title: string;
   subtitle: string;
   description: string;

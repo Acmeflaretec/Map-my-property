@@ -1,5 +1,5 @@
 import request from "./axiosInstance";
-import { BannerType, ProjectType, SectionType } from "./interface";
+import { BannerType, BuilderType, ProjectType, SectionType } from "./interface";
 
 const buildQueryParams = (data: Record<string, number | string>) =>
   new URLSearchParams(
@@ -41,4 +41,12 @@ const getProjectById = async (
     method: "GET",
   });
 
-export { getBanner, getSections, getProjects, getProjectById };
+const getBuilderById = async (
+  data: any
+): Promise<{ data: { data: BuilderType } }> =>
+  request({
+    endpoint: `/builders/${data}`,
+    method: "GET",
+  });
+
+export { getBanner, getSections, getProjects, getProjectById, getBuilderById };

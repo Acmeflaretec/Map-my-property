@@ -23,7 +23,7 @@ const request = async <T>({
       data,
     };
     const res: AxiosResponse<T> = await axiosInstance.request<T>(options);
-    console.log(res);
+    // console.log(res);
     return res;
   } catch (error: any) {
     if (!error?.response) {

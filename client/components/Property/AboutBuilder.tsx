@@ -24,7 +24,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
       </div>
       <p className="text-gray-500">{data?.description}</p>
       <Link
-        href={`/builder/${data?.title}`}
+        href={`/builder/${data?._id}`}
         className="flex w-fit h-fit items-center rounded-full border-2 gap-3 p-1 bg-white"
       >
         <p className="pl-6 text-sm">Know more</p>
