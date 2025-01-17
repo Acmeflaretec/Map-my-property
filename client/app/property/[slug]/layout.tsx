@@ -12,7 +12,7 @@ const page = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <main>
+    <main className="min-h-screen">
       <Suspense>{children}</Suspense>
     </main>
   );

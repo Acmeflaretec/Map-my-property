@@ -2,20 +2,20 @@ import { Metadata } from "next";
 import React, { Suspense } from "react";
 
 export const metadata: Metadata = {
-   title: "Blogs | Map My Property",
-   description: "Find your perfect property | Map My Property",
+  title: "Blogs | Map My Property",
+  description: "Find your perfect property | Map My Property",
 };
 
 const page = ({
-   children,
+  children,
 }: Readonly<{
-   children: React.ReactNode;
+  children: React.ReactNode;
 }>) => {
-   return (
-      <main>
-         <Suspense>{children}</Suspense>
-      </main>
-   );
+  return (
+    <main className="min-h-screen">
+      <Suspense>{children}</Suspense>
+    </main>
+  );
 };
 
 export default page;
