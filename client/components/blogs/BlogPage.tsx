@@ -1,20 +1,36 @@
 "use client";
-import blogData, { Blog } from "@/data/blogData";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
 import CustomButton from "../ui/CustomButton";
 import HeroSection from "./HeroSection";
 import { Icons } from "../common/Icons";
+import { BlogType } from "@/utils/interface";
+import toast from "react-hot-toast";
+import { getBlogs } from "@/utils/api";
 
 const BlogPage = () => {
   const [index, setIndex] = useState(4);
-  const [data, setData] = useState<Blog[] | []>(blogData);
+  const [data, setData] = useState<BlogType[] | []>([]);
   const handleLoad = () => {
     const pos = index + 4;
     if (index < data?.length) {
       setIndex(pos);
     }
   };
+  const fetchData = async () => {
+    try {
+      const res = await getBlogs({});
+      const data = res?.data?.data || null;
+      setData(data);
+    } catch (error: any) {
+      toast.error(
+        error.message || "Something went wrong. Please try again later."
+      );
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen">
       <HeroSection />

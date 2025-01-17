@@ -1,12 +1,39 @@
 "use client";
 import Image from "next/image";
-import React from "react";
-import blogData from "@/data/blogData";
+import React, { useEffect, useState } from "react";
 import { Icons } from "../common/Icons";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { getBlogs } from "@/utils/api";
+import { BlogType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const HeroSection: React.FC = () => {
-  const data = blogData[0];
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<BlogType | null>();
+  const [imgSrc, setImgSrc] = useState<string>("/assets/banner.png");
+
+  const handleImageError = () => {
+    setImgSrc("/assets/banner.png");
+  };
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const res = await getBlogs({ banner: true });
+      const data = res?.data?.data?.[0] || null;
+      setData(data);
+      setImgSrc(generateImageUrl(data?.image));
+    } catch (error: any) {
+      toast.error(
+        error.message || "Something went wrong. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between">
@@ -33,10 +60,16 @@ const HeroSection: React.FC = () => {
         </p>
       </div>
       <div className="w-full relative overflow-hidden h-[300px] md:h-[500px] rounded-3xl">
+        {loading && (
+          <div className="absolute z-1 bg-black w-full h-full flex items-center justify-center text-white">
+            loading...
+          </div>
+        )}
         <div className="absolute inset-0 transition-transform duration-700 ease-in-out">
           <Image
-            src={data?.image}
-            alt={`Slide`}
+            src={imgSrc}
+            alt="background cover image"
+            onError={handleImageError}
             className="absolute block w-full h-full object-cover"
             width={4920}
             height={3080}

@@ -2,8 +2,11 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import blogData from "@/data/blogData";
 import { Icons } from "@/components/common/Icons";
+import { BlogType } from "@/utils/interface";
+import { getBlogsById } from "@/utils/api";
+import toast from "react-hot-toast";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const Blog = ({
   params: paramsPromise,
@@ -13,6 +16,7 @@ const Blog = ({
   const router = useRouter();
   const [params, setParams] = useState<{ id: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<BlogType | null>(null);
 
   useEffect(() => {
     const unwrapParams = async () => {
@@ -24,25 +28,53 @@ const Blog = ({
     unwrapParams();
   }, [paramsPromise]);
 
-  if (loading || !params) {
-    return <p>Loading...</p>;
-  }
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      if (params?.id) {
+        const _id = params?.id;
+        const res = _id?.length === 24 ? await getBlogsById(_id) : null;
+        const data = res?.data?.data || null;
+        setData(data);
+      }
+    } catch (error: any) {
+      toast.error(
+        error.message || "Something went wrong. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const id = params.id;
-  const data = id ? blogData[parseInt(id) - 1] : null;
+  useEffect(() => {
+    if (params) fetchData();
+  }, [params]);
+
+  if (loading || !params) {
+    return (
+      <main className="flex items-center justify-center min-h-screen">
+        <h1>Loading...</h1>
+      </main>
+    );
+  }
 
   if (!data) {
-    return <p>Blog post not found.</p>;
+    return (
+      <main className="flex items-center justify-center min-h-screen">
+        <h1>Blog post not found.</h1>
+      </main>
+    );
   }
+
   const formatDescription = (desc: string | undefined) => {
     return <div dangerouslySetInnerHTML={{ __html: desc || "" }} />;
   };
 
   return (
     <section className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen">
-      <div className="container p-4 md:p-10 w-full">
+      <div className="container p-4 w-full">
         <div className="-mx-4 flex flex-wrap justify-center">
-          <div className="w-full px-4 lg:w-3/4 xl:w-2/3">
+          <div className="w-full px-4">
             <div className="flex gap-1 pb-4">
               <button onClick={() => router.back()}>← Back</button>
               <p className="text-slate-400">/ Blogs</p>
@@ -93,7 +125,7 @@ const Blog = ({
               <div className="mb-10 w-full overflow-hidden rounded-lg">
                 <div className="relative aspect-[97/60] w-full sm:aspect-[97/44] flex items-center justify-center">
                   <img
-                    src={data?.image}
+                    src={generateImageUrl(data?.image)}
                     alt="image"
                     onLoad={() => setLoading(false)}
                     width={400}

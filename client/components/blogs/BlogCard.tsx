@@ -2,6 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Icons } from "../common/Icons";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 interface BlogCardProps {
   data: {
@@ -23,7 +24,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
       onClick={() => router.push(`blogs/${data?._id}`)}
     >
       <img
-        src={data?.image}
+        src={generateImageUrl(data?.image)}
         alt="background cover image"
         className="absolute object-cover object-center h-full transition-transform duration-500 group-hover:scale-110"
         sizes="(max-width: 768px) 100vw, 50vw"

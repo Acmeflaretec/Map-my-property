@@ -1,14 +1,6 @@
-export interface Blog {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  image: string;
-}
+import { BlogType } from "@/utils/interface";
 
-const blogData: Blog[] = [
+const blogData: BlogType[] = [
   {
     _id: "1",
     createdAt: "2025-01-10 09:00 AM",

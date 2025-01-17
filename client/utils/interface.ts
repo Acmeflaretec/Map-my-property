@@ -86,3 +86,13 @@ export interface SectionType {
   title: string;
   projects: ProjectType[];
 }
+
+export interface BlogType {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+}

@@ -1,5 +1,11 @@
 import request from "./axiosInstance";
-import { BannerType, BuilderType, ProjectType, SectionType } from "./interface";
+import {
+  BannerType,
+  BlogType,
+  BuilderType,
+  ProjectType,
+  SectionType,
+} from "./interface";
 
 const buildQueryParams = (data: Record<string, number | string>) =>
   new URLSearchParams(
@@ -52,6 +58,20 @@ const getBuilderById = async (
 const sendInquiry = async (data: any) =>
   request({ endpoint: `/contact`, method: "POST", data });
 
+const getBlogs = async (data: any): Promise<{ data: { data: BlogType[] } }> =>
+  request({
+    endpoint: `/blogs?${buildQueryParams(data)}`,
+    method: "GET",
+  });
+
+const getBlogsById = async (
+  id: string
+): Promise<{ data: { data: BlogType } }> =>
+  request({
+    endpoint: `/blogs/${id}`,
+    method: "GET",
+  });
+
 export {
   getBanner,
   getSections,
@@ -59,4 +79,6 @@ export {
   getProjectById,
   getBuilderById,
   sendInquiry,
+  getBlogs,
+  getBlogsById,
 };
