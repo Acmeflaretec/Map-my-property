@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Icons } from "../common/Icons";
 import Model from "../common/Model";
 import { PlanType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -29,7 +30,7 @@ const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
           onClick={toggleModal}
         >
           <Image
-            src={data?.image}
+            src={generateImageUrl(data?.src)}
             alt="master-plan"
             className="absolute block w-full h-full min-h-56 object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
             width={800}
@@ -43,7 +44,7 @@ const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
           <div className="relative h-full overflow-x-scroll w-[90vw] md:w-full">
             <div className="w-[800px]">
               <Image
-                src={data?.image}
+                src={generateImageUrl(data?.src)}
                 alt="master-plan"
                 className="h-full w-full min-h-96 object-contain"
                 width={800}

@@ -33,4 +33,12 @@ const getProjects = async (
     method: "GET",
   });
 
-export { getBanner, getSections, getProjects };
+const getProjectById = async (
+  data: any
+): Promise<{ data: { data: ProjectType } }> =>
+  request({
+    endpoint: `/projects/${data}`,
+    method: "GET",
+  });
+
+export { getBanner, getSections, getProjects, getProjectById };

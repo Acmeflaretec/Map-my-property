@@ -3,6 +3,7 @@ import React from "react";
 import { Icons } from "../common/Icons";
 import Image from "next/image";
 import Link from "next/link";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
   return (
@@ -10,7 +11,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
       <h1 className="font-bold text-lg">More About the Builder</h1>
       <div className="flex justify-start items-center gap-2 md:gap-4">
         <Image
-          src={data?.image}
+          src={generateImageUrl(data?.image)}
           height={40}
           width={40}
           alt={"builder-profile"}
@@ -21,7 +22,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
           <p className="text-sm md:text-base">{data?.subtitle}</p>
         </div>
       </div>
-      <p className="text-gray-500">{data?.desc}</p>
+      <p className="text-gray-500">{data?.description}</p>
       <Link
         href={`/builder/${data?.title}`}
         className="flex w-fit h-fit items-center rounded-full border-2 gap-3 p-1 bg-white"

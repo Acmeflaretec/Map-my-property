@@ -21,7 +21,7 @@ const Pricing: React.FC<{ data: PricingType[] }> = ({ data }) => {
           <p className="w-1/4 text-sm md:text-base">Approx. Price</p>
         </div>
         <div className="w-full flex flex-col">
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <div
               key={index}
               className={`flex w-full gap-4 p-4 text-gray-600 border-t ${

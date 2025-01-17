@@ -20,7 +20,7 @@ const BuilderPage: React.FC = () => {
           <h1 className="text-2xl md:text-4xl font-bold tracking-wide leading-tight">
             {builderData?.title}
           </h1>
-          <p className="text-sm md:text-base">{builderData?.helpertext}</p>
+          <p className="text-sm md:text-base">{builderData?.subtitle}</p>
         </div>
         <div className="xl:hidden">
           <AboutBuilder data={builderData} />

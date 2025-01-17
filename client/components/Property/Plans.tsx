@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { PlanType } from "@/utils/interface";
 import PlanCard from "./PlanCard";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const Plans: React.FC<{ data: PlanType[] }> = ({ data }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const Plans: React.FC<{ data: PlanType[] }> = ({ data }) => {
             >
               <div className="relative w-60 h-full">
                 <Image
-                  src={item?.image}
+                  src={generateImageUrl(item?.src)}
                   alt="pricing-details"
                   className="absolute block w-full h-full object-cover"
                   width={800}

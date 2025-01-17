@@ -1,7 +1,7 @@
 import { ProjectType } from "@/utils/interface";
-import { builderData } from "./builderData";
 
 export const propertyData: ProjectType = {
+  _id: "123",
   title: "Subha Belgravia Villas at Subha Ecocity",
   subtitle: "Subha Belgravia Villas at Subha Ecocity",
   imageGallery: [
@@ -88,7 +88,8 @@ export const propertyData: ProjectType = {
   ],
   minPrice: 28293423,
   maxPrice: 68492000,
-  description: "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
+  description:
+    "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
   location: "Chandapura, Bangalore",
   features: [
     {
@@ -171,54 +172,54 @@ export const propertyData: ProjectType = {
   masterPlan: {
     title: "Master Plan of Subha Belgravia Villas",
     desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
-    image: "/assets/master-plan.png",
+    src: "/assets/master-plan.png",
   },
   plans: [
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-1.png",
+      src: "/assets/plan-1.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-2.png",
+      src: "/assets/plan-2.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-1.png",
+      src: "/assets/plan-1.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-2.png",
+      src: "/assets/plan-2.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-1.png",
+      src: "/assets/plan-1.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-2.png",
+      src: "/assets/plan-2.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-1.png",
+      src: "/assets/plan-1.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
     {
       title: "1 BHK 1T Type 1A",
-      image: "/assets/plan-2.png",
+      src: "/assets/plan-2.png",
       desc: "This master plan is a conceptual layout that guides the future growth and development of an area. It can involve land use, infrastructure, and spatial organization.",
     },
   ],
   builder: {
     title: "Subha Constructions",
     subtitle: "Builders & Developers",
-    desc: "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
+    description: "In 1986, we began as a team of five, operating out of a small site office on our first project, with our sole focus being property development. Today, we number well over 500 and operate from plush offices across two floors at the prestigious World Trade Center Bangalore.",
     image: "/assets/properties/image-1.png",
     logo: "/assets/banner.png",
     vision:

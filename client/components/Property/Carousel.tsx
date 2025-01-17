@@ -4,6 +4,7 @@ import { Icons } from "../common/Icons";
 import Image from "next/image";
 import ImageGallery from "./ImageGallery";
 import { GalleryType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const Carousel: React.FC<{ data: GalleryType[] }> = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -39,7 +40,7 @@ const Carousel: React.FC<{ data: GalleryType[] }> = ({ data }) => {
           }`}
         >
           <Image
-            src={item?.src}
+            src={generateImageUrl(item?.src)}
             alt={`Slide ${index + 1}`}
             className="absolute block w-full h-full object-cover"
             width={4920}

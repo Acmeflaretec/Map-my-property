@@ -10,7 +10,7 @@ import getPriceRange from "@/utils/getPriceRange";
 const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
   return (
     <Link
-      href={data?.href ? data?.href : "/property"}
+      href={`/property/${data?._id}`}
       key={data?.title}
       className="flex flex-col w-fit max-w-[17rem] items-center rounded-2xl md:rounded-3xl p-1 border-2"
     >

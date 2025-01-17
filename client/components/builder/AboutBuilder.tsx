@@ -1,3 +1,4 @@
+import { generateImageUrl } from "@/utils/generateImageUrl";
 import { BuilderType } from "@/utils/interface";
 import Image from "next/image";
 import React from "react";
@@ -7,7 +8,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
     <div className="flex flex-col items-center rounded-2xl md:rounded-3xl p-1 border-2">
       <div className="min-h-32 md:min-h-48 w-full min-w-[45vw] md:min-w-[14rem] lg:min-w-[16.5rem] rounded-xl md:rounded-2xl overflow-hidden border-2">
         <Image
-          src={data?.image}
+          src={generateImageUrl(data?.image)}
           height={800}
           width={800}
           alt={"builder-image"}
@@ -15,7 +16,7 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
         />
         <div className="relative flex justify-start items-center gap-1 p-1 h-fit bg-gradient-to-r from-[#f4f3f3] to-white bg-opacity-50">
           <Image
-            src={data?.logo}
+            src={generateImageUrl(data?.logo)}
             height={40}
             width={40}
             alt={"builder-logo"}
@@ -29,7 +30,9 @@ const AboutBuilder: React.FC<{ data: BuilderType }> = ({ data }) => {
       </div>
       <div className="px-1 md:px-3 py-2 flex flex-col w-full gap-1 relative overflow-hidden">
         <p className="text-sm md:text-xl font-bold">About</p>
-        <p className="text-sm md:text-base text-gray-500">{data?.desc}</p>
+        <p className="text-sm md:text-base text-gray-500">
+          {data?.description}
+        </p>
       </div>
     </div>
   );
