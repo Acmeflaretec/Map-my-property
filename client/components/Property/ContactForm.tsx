@@ -16,7 +16,7 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phoneNumber: "",
+    contactNumber: "",
   });
   const [filter, setFilter] = useState({
     bhkPreference: "none",
@@ -42,10 +42,10 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
-    if (!formData.phoneNumber) {
-      newErrors.phoneNumber = "Contact number is required";
-    } else if (!/^\+91\s?\d{10}$|^\d{10}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Invalid phone number";
+    if (!formData.contactNumber) {
+      newErrors.contactNumber = "Contact number is required";
+    } else if (!/^\+91\s?\d{10}$|^\d{10}$/.test(formData.contactNumber)) {
+      newErrors.contactNumber = "Invalid phone number";
     }
     return newErrors;
   };
@@ -68,7 +68,7 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
         projectId: data?._id,
       });
       toast.success("Your inquiry has been sent successfully!");
-      setFormData({ name: "", email: "", phoneNumber: "" });
+      setFormData({ name: "", email: "", contactNumber: "" });
       setFilter({ bhkPreference: "", areaPreference: "" });
       setChecked(false);
     } catch {
@@ -126,14 +126,14 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
         </label>
         <input
           type="text"
-          name="phoneNumber"
-          id="phoneNumber"
-          value={formData.phoneNumber}
+          name="contactNumber"
+          id="contactNumber"
+          value={formData.contactNumber}
           onChange={handleChange}
           placeholder="Enter contact number"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg outline-none focus:border-[#8E7D3A] focus:bg-[#FFFBEA] block w-full p-2.5"
         />
-        {renderError("phoneNumber")}
+        {renderError("contactNumber")}
       </div>
       <div className="flex flex-col gap-2 w-full">
         <p className="flex font-semibold gap-2">
