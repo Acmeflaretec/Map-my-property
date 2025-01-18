@@ -7,6 +7,9 @@ const getBlogs = async (req, res) => {
     if(req?.query?.banner){
       filter.banner = req?.query?.banner
     }
+    if(req?.query?.isImportant){
+      filter.isImportant = req?.query?.isImportant
+    }
     if (!req?.query?.isAdmin) {
       filter.status = true;
     }
