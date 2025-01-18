@@ -9,13 +9,13 @@ async function server() {
 
     app.listen(process.env.PORT_LOCAL, () => console.log(`Listening on port ${process.env.PORT_LOCAL}`));
     connect(`${mongoUrl}/${process.env.DATABASE_NAME}`,
-      {
+      {   
         useNewUrlParser: true,    
         useUnifiedTopology: true
       }
     )      
     connection.on('connected', () => {
-      console.log('Connected to MongoDB');
+      console.log('Connected to MongoDB');   
     });
   } catch (error) {
     console.log(error.message);

@@ -2,19 +2,27 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 const projectEnquirySchema = new mongoose.Schema({
-    propertyType: {
-        type: String,
-        required: true,
-    },
+    // propertyType: {
+    //     type: String,
+    //     required: true,
+    // },
+    // budgetRange: {
+    //     type: String,
+    //     required: true,
+    // },
+    // locationPreference: {
+    //     type: String,
+    //     required: true,
+    // },
     bhkPreference: {
         type: String,
         required: true,
     },
-    budgetRange: {
-        type: String,
-        required: true,
+    loanAssistance: {
+        type: Boolean,
+        default: false,
     },
-    locationPreference: {
+    areaPreference: {
         type: String,
         required: true,
     },

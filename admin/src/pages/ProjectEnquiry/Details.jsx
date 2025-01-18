@@ -40,10 +40,9 @@ const Details = () => {
                             <Typography fontSize={14}>Name :  {enquiry?.name} </Typography>
                             <Typography fontSize={14}>Phone : {enquiry?.contactNumber} </Typography>
                             <Typography fontSize={14}>Email : {enquiry?.email} </Typography>
-                            <Typography fontSize={14}>Property Type: : {enquiry?.propertyType} </Typography>
+                            <Typography fontSize={14}>Loan Assistance: : {enquiry?.loanAssistance} </Typography>
                             <Typography fontSize={14}>BHK Preference: : {enquiry?.bhkPreference} </Typography>
-                            <Typography fontSize={14}>Budget Range: : {enquiry?.budgetRange} </Typography>
-                            <Typography fontSize={14}>Location Preference: : {enquiry?.locationPreference} </Typography>
+                            <Typography fontSize={14}>Area Preference: : {enquiry?.areaPreference} </Typography>
                             <Typography variant='body2' py={2} fontWeight={600}>Project Details</Typography>
                             <Typography fontSize={14}>Project Name: {enquiry.projectId?.name} </Typography>
                             <Typography fontSize={14}>Location: {enquiry.projectId?.location} </Typography>

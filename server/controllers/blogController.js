@@ -4,6 +4,9 @@ const fs = require('fs');
 const getBlogs = async (req, res) => {
   try {
     const filter = {};
+    if(req?.query?.banner){
+      filter.banner = req?.query?.banner
+    }
     if (!req?.query?.isAdmin) {
       filter.status = true;
     }
@@ -22,7 +25,11 @@ const addBlog = async (req, res) => {
     if (!image) {
       return res.status(404).json({ message: 'Image not found' });
     }
-    const data = new Blog({ title, subtitle, url, image, description, status,type  })
+    const existingBanner = await Blog.findOne({ banner: true });
+    const banner = !existingBanner;
+
+    const data = new Blog({ title, subtitle, url, image, description, status,type, banner });
+    // const data = new Blog({ title, subtitle, url, image, description, status,type  })
     await data.save()
     res.status(201).json({ data, message: 'Blog created successfully' });
   } catch (error) {
@@ -93,10 +100,32 @@ const deleteBlog = async (req, res) => {
   }
 };
 
+const updateBlogBanner = async (req, res) => {
+  const { id } = req.params;
+  const { banner } = req.body;
+
+  try {
+    if (banner) {
+      await Blog.updateMany({ banner: true }, { $set: { banner: false } });
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(id, { banner }, { new: true });
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.status(200).json({ message: "Banner updated successfully", data: updatedBlog });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message || "Something went wrong" });
+  }
+};
+
 module.exports = {
   getBlogs,
   addBlog,
   getBlogById,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  updateBlogBanner
 }

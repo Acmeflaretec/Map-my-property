@@ -29,8 +29,6 @@ const TableData = () => {
 
   const columns = [
     { name: 'User', align: 'left' },
-    { name: 'PropertyType', align: 'center' },
-    { name: 'Location', align: 'center' },
     { name: 'Project', align: 'center' },
     { name: 'CreatedAt', align: 'center' },
     { name: 'Status', align: 'center' },
@@ -58,17 +56,7 @@ const TableData = () => {
       </>
 
     ),
-    PropertyType: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-
-        {item?.propertyType ? item.propertyType : '-'}
-      </Typography>
-    ),
-    Location: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {item?.locationPreference ? item?.locationPreference.substring(0, 30) : '-'}
-      </Typography>
-    ),
+    
     Project: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
         {item?.projectId?.name ? item?.projectId?.name : '-'}

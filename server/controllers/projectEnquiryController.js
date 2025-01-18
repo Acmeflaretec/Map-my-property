@@ -2,18 +2,17 @@ const ProjectEnquiry = require('../models/projectEnquiry');
 const Project = require('../models/projects');
 
 const createEnquiry = async (req, res) => {
-    const { propertyType, bhkPreference, budgetRange, locationPreference, name, contactNumber, email, projectId } = req.body;
+    const { bhkPreference, name, contactNumber, email, projectId,loanAssistance,areaPreference } = req.body;
 
     try {
         const newEnquiry = await ProjectEnquiry.create({
-            propertyType,
             bhkPreference,
-            budgetRange,
-            locationPreference,
             name,
             contactNumber,
             email,
             projectId,
+            loanAssistance,
+            areaPreference
         });
 
         res.status(201).json({ message: 'Enquiry created successfully', enquiry: newEnquiry });

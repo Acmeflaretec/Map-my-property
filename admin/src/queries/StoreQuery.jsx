@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
+    updateBlogBanner,
     getBlogs,
     addBlogs,
     getBlogsById,
@@ -301,8 +302,20 @@ const useDeleteTags = () => {
         },
     });
 };
-
+const useUpdateBlogBanner = () => {
+    const queryClient = useQueryClient();
+  
+    return useMutation(({ blogId, banner }) => updateBlogBanner(blogId, banner), {
+      onSuccess: () => {
+        queryClient.invalidateQueries("get_blogs");
+      },
+      onError: (error) => {
+        console.error("Error updating banner:", error);
+      },
+    });
+  };
 export {
+    useUpdateBlogBanner,
     useGetBlogs,
     useGetBlogsById,
     useAddBlogs,
