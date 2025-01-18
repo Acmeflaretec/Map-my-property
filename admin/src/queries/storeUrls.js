@@ -16,6 +16,10 @@ const deleteTags = async (data) => request(`/tags/${data?._id}`, 'DELETE', data)
 const getTags = async (data) => request(`/tags?page=${data?.pageNo}&perpageitems=${data?.pageCount}`, 'GET', data)
 const getTagsById = async (data) => request(`/tags/${data?.id}`, 'GET', data)
 
+const updateBlogBanner = async (blogId, banner) => {
+  return request(`/blogs/${blogId}/setBanner`, 'PUT', { banner });
+};
+
 
 const editContact = async ({ userId, newStatus }) => request('/contact/update-status', 'PUT', {userId, newStatus})
     
@@ -77,4 +81,5 @@ export {
     deleteTags,
     getTags,
     getTagsById,
+    updateBlogBanner
   };

@@ -141,9 +141,9 @@ const EditBlog = () => {
                      fullWidth
                      variant="outlined"
                   >
-                     <MenuItem value="type one">Type One</MenuItem>
-                     <MenuItem value="type two">Type Two</MenuItem>
-                     <MenuItem value="type three">Type Three</MenuItem>
+                     <MenuItem value="1">Type One</MenuItem>
+                     <MenuItem value="2">Type Two</MenuItem>
+                     <MenuItem value="3">Type Three</MenuItem>
                   </Select>
                </Grid>
 

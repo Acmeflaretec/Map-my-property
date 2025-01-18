@@ -14,11 +14,15 @@ const blogSchema = mongoose.Schema({
     },
     description: {
         type: String,
-    },
+    },   
     type: {
         type: String,
-        default: 'type one',
-        enum: ['type one', 'type two', 'type three']
+        default: '1',
+        enum: ['1', '2', '3']
+    },
+    banner: {
+        type: Boolean,
+        default: false
     },
     image: {
         type: String,

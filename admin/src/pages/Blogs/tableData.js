@@ -2,8 +2,8 @@
 import Box from "components/Box";
 import Typography from "components/Typography";
 import Table from "examples/Tables/Table";
-import { useGetBlogs } from "queries/StoreQuery";
-import { Avatar, Icon } from "@mui/material";
+import { useGetBlogs,useUpdateBlogBanner } from "queries/StoreQuery";
+import { Avatar, Icon,Switch } from "@mui/material";
 import Badge from "components/Badge";
 import { Link } from "react-router-dom";
 
@@ -27,16 +27,20 @@ function Blogs({ image, name, desc }) {
 
 const TableData = () => {
   const { data, isLoading } = useGetBlogs({ pageNo: 1, pageCount: 100 });
+  const { mutate: updateBanner } = useUpdateBlogBanner();
   const columns = [
     { name: "Blogs", align: "left" },
     { name: "url", align: "center" },
     { name: "status", align: "center" },
+    { name: "banner", align: "center" },
     { name: "createdon", align: "center" },
     { name: "Lastupdated", align: "center" },
     { name: "Important", align: "center" },
     { name: "action", align: "center" },
   ]
-
+  const handleBannerChange = (blogId, isBanner) => {    
+    isBanner && updateBanner({ blogId, banner: isBanner });
+  };
   const rows = data?.data?.map(item => ({
     Blogs: <Blogs image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`} name={item?.title} desc={item?.subtitle} />,
     url: (
@@ -46,6 +50,13 @@ const TableData = () => {
     ),
     status: (
       <Badge variant="gradient" badgeContent={item?.status ? 'Available' : 'Unavailable'} color={item?.status ? "success" : 'secondary'} size="xs" container />
+    ),
+    banner: (
+      <Switch
+        checked={item?.banner}
+        onChange={() => handleBannerChange(item?._id, !item?.banner)}
+        color="primary"
+      />
     ),
     createdon: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
