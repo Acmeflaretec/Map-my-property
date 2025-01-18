@@ -76,7 +76,7 @@ export interface ProjectType {
   plans: PlanType[];
   location: string;
   areas: number[];
-  bedrooms: string[]; 
+  bedrooms: string[];
   builder: BuilderType;
   href: string;
   faqs: FaqType[];
@@ -97,4 +97,6 @@ export interface BlogType {
   subtitle: string;
   description: string;
   image: string;
+  url: string;
+  type: string;
 }

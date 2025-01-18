@@ -1,20 +1,38 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import carousalCards from "./CarousalCards";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Icons } from "../common/Icons";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
+import { BlogType } from "@/utils/interface";
+import { getBlogs } from "@/utils/api";
+import toast from "react-hot-toast";
+import CarousalCards from "./CarousalCards";
+import blogData from "@/data/blogData";
 
 const Carousal: React.FC = () => {
   const sm = useMediaQuery({ query: "(max-width: 600px)" });
-  const data = carousalCards;
   const [activeIndex, setActiveIndex] = useState(0);
   const top = [0, 120, 60, 60, 60];
+  const [data, setData] = useState<BlogType[] | []>();
 
+  const fetchData = async () => {
+    try {
+      const res = await getBlogs({ isImportant: true });
+      const data = res?.data?.data || blogData;
+      setData(data);
+    } catch (error: any) {
+      toast.error(
+        error.message || "Something went wrong. Please try again later."
+      );
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.89, y: 200, x: 100 }}
@@ -55,7 +73,7 @@ const Carousal: React.FC = () => {
           autoHeight={true}
           modules={[Navigation, Autoplay]}
         >
-          {data.map((item, idx) => {
+          {data?.map((item, idx) => {
             const pos =
               idx - activeIndex < 0
                 ? idx - activeIndex + data.length
@@ -70,7 +88,7 @@ const Carousal: React.FC = () => {
                   }}
                   className="min-h-[400px] md:min-h-[470px]"
                 >
-                  {item}
+                  <CarousalCards data={item} />
                 </div>
               </SwiperSlide>
             );

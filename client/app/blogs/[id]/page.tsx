@@ -71,7 +71,7 @@ const Blog = ({
   };
 
   return (
-    <section className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen">
+    <section className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen max-w-screen-md 2xl:max-w-screen-lg">
       <div className="container p-4 w-full">
         <div className="-mx-4 flex flex-wrap justify-center">
           <div className="w-full px-4">

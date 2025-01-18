@@ -10,6 +10,8 @@ const blogData: BlogType[] = [
     description:
       "Map My Property is reshaping the real estate landscape with innovative tools that simplify property management, buying, and selling. Discover how this company is helping individuals and businesses navigate the complexities of real estate with ease.",
     image: "/assets/properties/image-1.png",
+    type: "1",
+    url: "/",
   },
   {
     _id: "2",
@@ -20,6 +22,8 @@ const blogData: BlogType[] = [
     description:
       "From seamless property listings to advanced analytics, Map My Property provides comprehensive solutions to real estate challenges. Learn how this platform can elevate your property journey.",
     image: "/assets/properties/image-2.png",
+    type: "3",
+    url: "/",
   },
   {
     _id: "3",
@@ -30,6 +34,8 @@ const blogData: BlogType[] = [
     description:
       "Explore the unique features of Map My Property that make it a top choice for buyers, sellers, and agents alike. From interactive maps to personalized recommendations, the platform offers unmatched value.",
     image: "/assets/properties/image-3.png",
+    type: "2",
+    url: "/",
   },
   {
     _id: "4",
@@ -40,6 +46,8 @@ const blogData: BlogType[] = [
     description:
       "Learn how Map My Property leverages technology to make real estate transactions faster, more transparent, and accessible for everyone. Discover the tools that set it apart in a competitive market.",
     image: "/assets/properties/image-4.png",
+    type: "1",
+    url: "/",
   },
   {
     _id: "5",
@@ -50,6 +58,8 @@ const blogData: BlogType[] = [
     description:
       "Finding your dream property has never been easier. Use Map My Property's advanced search filters, AI-driven recommendations, and detailed listings to make informed decisions.",
     image: "/assets/properties/image-1.png",
+    type: "3",
+    url: "/",
   },
 ];
 
