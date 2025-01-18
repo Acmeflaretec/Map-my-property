@@ -127,6 +127,7 @@ const ContactCard: React.FC = () => {
             type="secondary"
             onClick={handleSubmit}
             disabled={loading}
+            className="w-full justify-center"
           >
             Get Appoinment <Icons.phone />
           </CustomButton>
@@ -134,6 +135,7 @@ const ContactCard: React.FC = () => {
             type="primary"
             onClick={handleSubmit}
             disabled={loading}
+            className="w-full justify-center"
           >
             Send Message <Icons.rightArrow />
           </CustomButton>

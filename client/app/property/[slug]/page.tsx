@@ -68,7 +68,7 @@ const Page: React.FC<Props> = async ({ params }) => {
             )}
           </div>
           <div className="w-full flex flex-col gap-8 xl:w-1/3 min-h-screen">
-            <ContactForm />
+            <ContactForm data={data} />
             <div className="sticky top-32">
               <ContactCard />
             </div>

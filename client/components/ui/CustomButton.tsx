@@ -39,7 +39,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <button
       onClick={handleClick}
       className={cn(
-        `gap-2 flex items-center z-20 h-fit text-sm py-2 pl-8 pr-5 rounded-lg border ${
+        `gap-2 flex items-center z-20 h-fit text-sm py-2 pl-4 md:pl-8 pr-3 md:pr-5 rounded-lg border ${
           type === "primary"
             ? "bg-[#0C0E0D] text-white border-stone-600"
             : "border-[#8E7D3A] bg-[#F2E6B8] text-black"

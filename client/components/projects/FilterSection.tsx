@@ -15,38 +15,19 @@ const Button: React.FC<ButtonProps> = ({ selected, children, ...props }) => (
   </button>
 );
 
-interface FilterOption {
-  key: string;
-  label: string;
-}
-export const bedroomOptions: FilterOption[] = [
-  { key: "1BHK", label: "1 BHK" },
-  { key: "2BHK", label: "2 BHK" },
-  { key: "3BHK", label: "3 BHK" },
-  { key: "4BHK", label: "4 BHK" },
-  { key: "studio", label: "Studio" },
-];
-
-export const residentTypeOptions: FilterOption[] = [
-  { key: "apartments", label: "Apartments" },
-  { key: "villas", label: "Villas" },
-  { key: "plots", label: "Plots" },
-  { key: "townships", label: "Townships" },
-];
-
 const FilterSection: React.FC<{
-  options: FilterOption[];
+  options: string[];
   selectedKey: string;
   onSelect: (key: string) => void;
 }> = ({ options, selectedKey, onSelect }) => (
   <div className="flex gap-2">
     {options.map((option) => (
       <Button
-        key={option.key}
-        selected={selectedKey === option.key}
-        onClick={() => onSelect(option.key)}
+        key={option}
+        selected={selectedKey === option}
+        onClick={() => onSelect(option)}
       >
-        {option.label}
+        {option?.charAt(0)?.toUpperCase() + option?.slice(1)}
       </Button>
     ))}
   </div>

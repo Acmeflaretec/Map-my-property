@@ -20,7 +20,7 @@ const ProjectPage: React.FC = () => {
     resident_type: params.get("resident_type") ?? "",
     location: params.get("location") ?? "",
     price: { min: 100000, max: 1000000000 },
-    area: { min: 1000, max: 10000000 },
+    area: { min: 100, max: 100000 },
   });
   const [search, setSearch] = useState<string>(query.replace("-", " "));
 

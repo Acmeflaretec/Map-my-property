@@ -58,6 +58,9 @@ const getBuilderById = async (
 const sendInquiry = async (data: any) =>
   request({ endpoint: `/contact`, method: "POST", data });
 
+const sendProjectInquiry = async (data: any) =>
+  request({ endpoint: `/projectEnquiry`, method: "POST", data });
+
 const getBlogs = async (data: any): Promise<{ data: { data: BlogType[] } }> =>
   request({
     endpoint: `/blogs?${buildQueryParams(data)}`,
@@ -79,6 +82,7 @@ export {
   getProjectById,
   getBuilderById,
   sendInquiry,
+  sendProjectInquiry,
   getBlogs,
   getBlogsById,
 };

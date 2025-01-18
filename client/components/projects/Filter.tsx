@@ -1,10 +1,7 @@
 "use client";
 import React from "react";
 import { Icons } from "../common/Icons";
-import FilterSection, {
-  bedroomOptions,
-  residentTypeOptions,
-} from "./FilterSection";
+import FilterSection from "./FilterSection";
 import RangeSlider from "./RangeSlider";
 
 interface Props {
@@ -21,6 +18,9 @@ interface Props {
 }
 
 const Filter: React.FC<Props> = ({ filter, setFilter }) => {
+  const options1: string[] = ["1BHK", "2BHK", "3BHK", "4BHK", "studio"];
+  const options2: string[] = ["apartments", "villas", "plots", "townships"];
+
   return (
     <div className="flex h-fit flex-col border border-stone-300 rounded-xl p-2 xl:p-6 py-8 gap-6">
       <h1 className="flex gap-3 uppercase font-bold">
@@ -45,7 +45,7 @@ const Filter: React.FC<Props> = ({ filter, setFilter }) => {
           Bedrooms
         </p>
         <FilterSection
-          options={bedroomOptions}
+          options={options1}
           selectedKey={filter.bedroom}
           onSelect={(key) =>
             setFilter((prev) => ({
@@ -74,7 +74,7 @@ const Filter: React.FC<Props> = ({ filter, setFilter }) => {
           Resident Type
         </p>
         <FilterSection
-          options={residentTypeOptions}
+          options={options2}
           selectedKey={filter.resident_type}
           onSelect={(key) =>
             setFilter((prev) => ({
@@ -90,8 +90,8 @@ const Filter: React.FC<Props> = ({ filter, setFilter }) => {
           Area
         </p>
         <RangeSlider
-          min={1000}
-          max={10000000}
+          min={100}
+          max={100000}
           setFilter={(value) => setFilter((prev) => ({ ...prev, area: value }))}
         />
       </div>

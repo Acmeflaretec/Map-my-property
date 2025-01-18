@@ -232,6 +232,8 @@ export const propertyData: ProjectType = {
     testimonials: [],
   },
   href: "/property/Subha-Belgravia-Villas",
+  areas: [987, 678, 1024],
+  bedrooms: ["1BHK", "2BHK", "3BHK", "4BHK"],
   faqs: [
     {
       title: "What is the carpet area of the flat?",

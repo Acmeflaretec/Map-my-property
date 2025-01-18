@@ -75,6 +75,8 @@ export interface ProjectType {
   masterPlan: PlanType;
   plans: PlanType[];
   location: string;
+  areas: number[];
+  bedrooms: string[]; 
   builder: BuilderType;
   href: string;
   faqs: FaqType[];
