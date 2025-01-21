@@ -2,7 +2,7 @@ import { Autocomplete, Button, Grid, TextField, IconButton, Rating } from '@mui/
 import Box from 'components/Box'
 import Input from 'components/Input'
 import PageLayout from 'layouts/PageLayout'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageList from './ImageList';
 import Typography from 'components/Typography'
 import { useAddBuilders } from 'queries/ProductQuery'
@@ -12,12 +12,27 @@ import { Delete } from '@mui/icons-material';
 
 const AddBuilders = () => {
   const navigat = useNavigate()
-  const [details, setDetails] = useState({
+  const storageKey = 'addBuilderData';
+  const initialDetails = {
+
     features: [{ text: '', helpertext: '' }],
     reviews: [{ name: '', rating: 0, review: '', image: '' }],
     // addresses: [{ street: '', city: '', state: '', zip: '', country: '', phone: '' }],
     // FAQs: [{ questions: '', answer: '' }],
-  })
+  }
+  // const [details, setDetails] = useState()
+  const [details, setDetails] = useState(() => {
+    const savedData = localStorage.getItem(storageKey);
+    return savedData ? JSON.parse(savedData) : initialDetails;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(details));
+  }, [details]);
+  const handleClear = () => {
+    localStorage.removeItem(storageKey);
+    setDetails(initialDetails);
+  };
 
   const fileInputRef = React.useRef(null);
   const handleFileSelect = () => {
@@ -26,7 +41,14 @@ const AddBuilders = () => {
 
   const handlelogoFileChange = (event) => {
     const file = event.target.files[0];
-    setDetails(prev => ({ ...prev, logo: file }));
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setDetails(prev => ({ ...prev, logo: base64String }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const { mutateAsync: AddBuilders, isLoading: loading } = useAddBuilders()
@@ -66,8 +88,16 @@ const AddBuilders = () => {
       // details?.image?.forEach((image) => {
       //   formData.append('images', image, image.name);
       // });
-      typeof (details.image) == 'object' && formData.append("images", details?.image, details?.image?.name);
-      typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
+      // typeof (details.image) == 'object' && formData.append("images", details?.image, details?.image?.name);
+      if (details.image && typeof details.image === 'string' && details.image.startsWith('data:image/')) {
+        const blob = dataURLtoFile(details.image, `file-images.png`);
+        formData.append(`images`, blob);
+      }
+      // typeof (details.logo) == 'object' && formData.append("logo", details?.logo, details?.logo?.name);
+      if (details.logo && typeof details.logo === 'string' && details.logo.startsWith('data:image/')) {
+        const blob = dataURLtoFile(details.logo, `file-logo.png`);
+        formData.append(`logo`, blob);
+      }
       for (const key in details) {
         if (details.hasOwnProperty(key) && !['image', 'FAQs', 'reviews', 'addresses', 'features', 'logo'].includes(key)) {
           formData.append(key, details[key]);
@@ -89,7 +119,11 @@ const AddBuilders = () => {
             formData.append(`reviewsName`, review.name);
             formData.append(`reviewsRating`, review.rating);
             formData.append(`reviewsReview`, review.review);
-            formData.append(`reviews`, review.image);
+            if (review.image && typeof review.image === 'string' && review.image.startsWith('data:image/')) {
+              const blob = dataURLtoFile(review.image, `file-${i}.png`);
+              // formData.append(`reviews`, review.image);
+              formData.append(`reviews`, blob);
+            }
           } else {
             toast.error(`reviews ${i + 1} field image is required`)
             flag = false
@@ -169,9 +203,16 @@ const AddBuilders = () => {
 
   const handleFileChange = (field, index, e) => {
     const file = e.target.files[0];
-    const updated = [...details[field]];
-    updated[index]['image'] = file;
-    setDetails((prev) => ({ ...prev, [field]: updated }));
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        const updated = [...details[field]];
+        updated[index]['image'] = base64String;
+        setDetails((prev) => ({ ...prev, [field]: updated }));
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
 
@@ -234,7 +275,7 @@ const AddBuilders = () => {
               onChange={handleChange}
             />
           </Grid>
-          
+
           <Grid item xs={12}>
             <Input
               id="description"
@@ -410,7 +451,7 @@ const AddBuilders = () => {
           <Grid item xs={12}>
             <Typography variant="h6">Reviews</Typography>
             {details.reviews.map((review, index) => (
-              <Box key={index} mt={2} display="flex" flexDirection="column" style={{marginBottom:'10px'}}>
+              <Box key={index} mt={2} display="flex" flexDirection="column" style={{ marginBottom: '10px' }}>
                 <Input
                   placeholder="Reviewer Name"
                   value={review.name}
@@ -418,14 +459,14 @@ const AddBuilders = () => {
                     handleReviewChange(index, 'name', e.target.value)
                   }
                   fullWidth
-                  style={{marginBottom:'10px'}}
+                  style={{ marginBottom: '10px' }}
                 />
                 <Rating
                   value={review.rating}
                   onChange={(e, value) =>
                     handleReviewChange(index, 'rating', value)
                   }
-                  style={{marginBottom:'10px'}}
+                  style={{ marginBottom: '10px' }}
                 />
                 {/* <TextField
                   type="file"
@@ -433,7 +474,7 @@ const AddBuilders = () => {
                   onChange={(e) => handleFileChange('reviews', index, e)}
                 /> */}
                 <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-                  <Button variant="outlined" component="label" style={{ color: 'gray'}}>
+                  <Button variant="outlined" component="label" style={{ color: 'gray' }}>
                     Upload Image
                     <input
                       type="file"
@@ -442,11 +483,22 @@ const AddBuilders = () => {
                     />
                   </Button>
                   {review.image && (
+                    // <Box mt={1}>
+                    //   <img
+                    //     src={
+                    //       typeof review.image === 'object'
+                    //         ? URL.createObjectURL(review.image)
+                    //         : `${process.env.REACT_APP_API_URL}/uploads/${review.image}`
+                    //     }
+                    //     alt={`Review ${index + 1}`}
+                    //     style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                    //   />
+                    // </Box>
                     <Box mt={1}>
                       <img
                         src={
-                          typeof review.image === 'object'
-                            ? URL.createObjectURL(review.image)
+                          review.image.startsWith('data:image/')
+                            ? review.image
                             : `${process.env.REACT_APP_API_URL}/uploads/${review.image}`
                         }
                         alt={`Review ${index + 1}`}
@@ -463,7 +515,7 @@ const AddBuilders = () => {
                     handleReviewChange(index, 'review', e.target.value)
                   }
                   fullWidth
-                  style={{marginTop:'10px'}}
+                  style={{ marginTop: '10px' }}
                   multiline
                   rows={3}
                 />
@@ -515,7 +567,12 @@ const AddBuilders = () => {
               {details?.logo ? (
                 <img
                   style={{ width: 240, height: 135, padding: 22 }}
-                  src={typeof (details?.logo) == 'object' ? URL.createObjectURL(details?.logo) : `${process.env.REACT_APP_API_URL}/${details?.logo}`}
+                  // src={typeof (details?.logo) == 'object' ? URL.createObjectURL(details?.logo) : `${process.env.REACT_APP_API_URL}/${details?.logo}`}
+                  src={
+                    details?.logo.startsWith('data:image/')
+                      ? details?.logo
+                      : `${process.env.REACT_APP_API_URL}/uploads/${details?.logo}`
+                  }
                 />
               ) : (
                 <React.Fragment>
@@ -562,16 +619,34 @@ const AddBuilders = () => {
               />
             </Box>
           </Grid>
-          <Grid item xs={12} sm={8}></Grid>
-          <Grid item xs={12} sm={4} mt={'auto'}>
-            <Button sx={{ mr: 0, width: '100%' }} onClick={handleSubmit} disabled={disable} variant='contained'>
-              Add Builders
-            </Button>
-          </Grid>
+          {/* <Grid item xs={12} sm={8}></Grid> */}
         </Grid>
+          <Grid item container spacing={2} xs={12}>
+            <Grid item xs={12} sm={8}></Grid>
+            <Grid item xs={12} sm={4} mt={'auto'}>
+              <Box style={{ display: 'flex' }}>
+                <Button sx={{ mr: 3, width: '100%' }} onClick={handleSubmit} disabled={disable} variant='contained'>
+                  Add Builders
+                </Button>
+                <Button sx={{ mr: 0, width: '100%' }} onClick={handleClear} variant='contained'>Clear</Button>
+              </Box>
+            </Grid>
+          </Grid>
       </Grid>
-    </PageLayout>
+    </PageLayout >
   )
 }
+
+const dataURLtoFile = (dataurl, filename) => {
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+};
 
 export default AddBuilders

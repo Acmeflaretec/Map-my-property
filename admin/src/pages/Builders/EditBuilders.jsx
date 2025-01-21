@@ -6,7 +6,7 @@ import Typography from 'components/Typography';
 import toast from 'react-hot-toast';
 import { useGetBuildersById, useUpdateBuilders } from 'queries/ProductQuery';
 import { useNavigate, useParams } from 'react-router-dom';
-import ImageList from './ImageList';
+import ImageSelecter from './ImageSelecter';
 import { Delete } from '@mui/icons-material';
 
 const EditBuilders = () => {
@@ -129,6 +129,7 @@ const EditBuilders = () => {
           .then((res) => {
             if (res) {
               toast.success(res?.message ?? "Builders updated successfully");
+              localStorage.removeItem(storageKey);
               navigate('/builders');
             }
           })
@@ -516,7 +517,7 @@ const EditBuilders = () => {
 
           <Grid item container spacing={2} xs={12} sm={12} md={6}>
             <Grid sx={{ width: '100%' }}>
-              <ImageList data={details?.image} dispatch={setDetails} />
+              <ImageSelecter data={details?.image} dispatch={setDetails} />
             </Grid>
             <Grid item xs={12} >
               <Typography variant="h6">Add logo</Typography>
