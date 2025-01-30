@@ -4,11 +4,12 @@ interface RangeSliderProps {
   min: number;
   max: number;
   setFilter: (value: { min: number; max: number }) => void;
+  filter: { min: number; max: number };
 }
 
-const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, setFilter }) => {
-  const [fromValue, setFromValue] = useState(min);
-  const [toValue, setToValue] = useState(max);
+const RangeSlider: React.FC<RangeSliderProps> = ({ min, max, setFilter, filter }) => {
+  const [fromValue, setFromValue] = useState(filter?.min ?? min);
+  const [toValue, setToValue] = useState(filter?.max ?? max);
   const sliderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

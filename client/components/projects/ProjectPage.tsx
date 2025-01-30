@@ -14,12 +14,14 @@ const ProjectPage: React.FC = () => {
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const params = useSearchParams();
   const query = params.get("q") ?? "";
+  const price = params.get("price") ?? "";
+  const [min, max] = price ? price?.split("-") : [100000, 100000000];
   const [data, setData] = useState<ProjectType[]>([]);
   const [filter, setFilter] = useState({
     bedroom: "",
     resident_type: params.get("resident_type") ?? "",
     location: params.get("location") ?? "",
-    price: { min: 100000, max: 1000000000 },
+    price: { min: Number(min) ?? 100000, max: Number(max) ?? 100000000 },
     area: { min: 100, max: 100000 },
   });
   const [search, setSearch] = useState<string>(query.replace("-", " "));
@@ -44,7 +46,9 @@ const ProjectPage: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [filter, search]);
-
+  useEffect(() => {
+    setSearch(params.get("q")?.replace("-", " ") ?? "");
+  }, [params]);
   return (
     <div className="flex gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 w-full justify-between min-h-screen">
       <div className="w-1/3 static hidden xl:flex flex-col gap-8">

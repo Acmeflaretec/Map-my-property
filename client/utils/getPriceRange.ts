@@ -19,3 +19,32 @@ export default function getPriceRange(
 
   return `${formattedMinPrice} to ${formattedMaxPrice}`;
 }
+
+export const getShortPriceRange = (range: string): string => {
+  const [min, max] = range.split(" - ").map(Number);
+
+  const formatValue = (value: number): string => {
+    if (value >= 10000000) {
+      return `${value / 10000000}Cr`;
+    } else if (value >= 100000) {
+      return `${value / 100000}L`;
+    }
+    return value.toString();
+  };
+
+  if (max >= 1000000000) {
+    return `above ${formatValue(min)}`;
+  }
+
+  const formattedMin = formatValue(min);
+  const formattedMax = formatValue(max);
+
+  if (
+    (min < 10000000 && max < 10000000) ||
+    (min >= 10000000 && max >= 10000000)
+  ) {
+    return `${formattedMin} - ${formattedMax}`;
+  }
+
+  return `${formattedMin} - ${formattedMax}`;
+};

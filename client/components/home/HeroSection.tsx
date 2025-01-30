@@ -4,6 +4,7 @@ import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";
 import Banner from "./Banner";
 import Dropdown from "./Dropdown";
+import { getShortPriceRange } from "@/utils/getPriceRange";
 
 const HeroSection: React.FC = () => {
   const [location, setLocation] = useState<string>("");
@@ -85,11 +86,11 @@ const HeroSection: React.FC = () => {
               }
               value={filter.price}
               options={[
-                { value: "below 10L", label: "below 10L" },
-                { value: "10L - 50L", label: "10L - 50L" },
-                { value: "50L - 1Cr", label: "50L - 1Cr" },
-                { value: "1Cr - 2Cr", label: "1Cr - 2Cr" },
-                { value: "above 2Cr", label: "above 2Cr" },
+                { value: "100000 - 1000000", label: "below 10L" },
+                { value: "1000000 - 5000000", label: "10L - 50L" },
+                { value: "5000000 - 10000000", label: "50L - 1Cr" },
+                { value: "10000000 - 20000000", label: "1Cr - 2Cr" },
+                { value: "20000000 - 1000000000", label: "above 2Cr" },
               ]}
             >
               <p className="flex justify-between gap-1">₹ Budget</p>
@@ -97,7 +98,7 @@ const HeroSection: React.FC = () => {
             </Dropdown>
             {filter?.price && (
               <p className="flex items-center text-xs lg:text-sm gap-1 bg-[#F2E6B8] rounded-xl min-w-20 px-1 py-[2px] w-fit">
-                {filter?.price}
+                {getShortPriceRange(filter?.price)}
                 <Icons.close
                   className="border border-black rounded-full w-5 h-5 p-1 text-black cursor-pointer"
                   onClick={() => setFilter((prev) => ({ ...prev, price: "" }))}

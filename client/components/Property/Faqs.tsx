@@ -31,7 +31,7 @@ const Faqs: React.FC<{ data: FaqType[] }> = ({ data }) => {
                 } gap-3`}
                 onClick={() => toggleAccordion(index)}
               >
-                <span className="text-start">{item.title}</span>
+                <span className="text-start">{item.questions}</span>
                 <svg
                   data-accordion-icon
                   className={`w-3 h-3 shrink-0 transform transition-transform duration-500 ${
@@ -57,7 +57,7 @@ const Faqs: React.FC<{ data: FaqType[] }> = ({ data }) => {
                 activeIndex === index ? "max-h-[1000px]" : "max-h-0"
               }`}
             >
-              <p className="px-5 pb-8">{item.content}</p>
+              <p className="px-5 pb-8">{item.answer}</p>
             </div>
           </div>
         ))}

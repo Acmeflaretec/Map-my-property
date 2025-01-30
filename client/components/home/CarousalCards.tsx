@@ -31,13 +31,13 @@ const Cards = {
   ),
   type3: ({ data }: { data: BlogType }) => (
     <div className="max-w-60 h-80 bg-[#9cd9ffcf] border-2 rounded-3xl relative">
-      <div className="absolute w-full h-full pt-5  flex items-start justify-center">
+      <div className="absolute w-full h-full pt-5 flex items-start justify-center">
+        <h1 className="text-black font-semibold">{data?.title}</h1>
+      </div>
+      <div className="absolute w-full h-full pb-6 px-5 flex items-end justify-center leading-tight text-sm md:text-lg">
         <button className="bg-white text-xs md:text-sm px-2 md:px-5 py-[2px] rounded-md">
           Read more
         </button>
-      </div>
-      <div className="absolute w-full h-full pb-6 px-5 flex items-end justify-center text-white leading-tight text-sm md:text-lg">
-        <h1>{data?.title}</h1>
       </div>
       <Image
         width={100}

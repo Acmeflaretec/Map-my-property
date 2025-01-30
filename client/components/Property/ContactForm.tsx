@@ -135,19 +135,21 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
         />
         {renderError("contactNumber")}
       </div>
-      <div className="flex flex-col gap-2 w-full">
-        <p className="flex font-semibold gap-2">
-          <Icons.bed />
-          Bedrooms
-        </p>
-        <FilterSection
-          options={data?.bedrooms ?? []}
-          selectedKey={filter.bhkPreference}
-          onSelect={(key) =>
-            setFilter((prev) => ({ ...prev, bhkPreference: key }))
-          }
-        />
-      </div>
+      {!!data?.bedrooms?.length && (
+        <div className="flex flex-col gap-2 w-full">
+          <p className="flex font-semibold gap-2">
+            <Icons.bed />
+            Bedrooms
+          </p>
+          <FilterSection
+            options={data?.bedrooms ?? []}
+            selectedKey={filter.bhkPreference}
+            onSelect={(key) =>
+              setFilter((prev) => ({ ...prev, bhkPreference: key }))
+            }
+          />
+        </div>
+      )}
       <div className="flex flex-col gap-2 w-full">
         <p className="flex font-semibold gap-2">
           <Icons.area />

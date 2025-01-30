@@ -7,6 +7,7 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { Icons } from "../common/Icons";
 import Image from "next/image";
 import { TestimonialType } from "@/utils/interface";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 
 const Testimonials: React.FC<{ data: TestimonialType[] }> = ({ data }) => {
    return (
@@ -47,15 +48,15 @@ const Testimonials: React.FC<{ data: TestimonialType[] }> = ({ data }) => {
                         <div className="flex flex-col gap-2 bg-white w-full h-full p-4 rounded-3xl border-2 border-stone-200">
                            <div className="flex items-center gap-2">
                               <Image
-                                 src={`/assets/${item?.image}`}
+                                 src={generateImageUrl(item?.image)}
                                  width={40}
                                  height={40}
                                  alt="login"
                                  className="w-10 h-10 rounded-full"
                               />
-                              <p>{item?.author}</p>
+                              <p>{item?.name}</p>
                            </div>
-                           <p className="text-xs lg:text-sm">{item?.description}</p>
+                           <p className="text-xs lg:text-sm">{item?.review}</p>
                         </div>
                      </SwiperSlide>
                   );

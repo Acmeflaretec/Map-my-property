@@ -7,7 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({ selected, children, ...props }) => (
   <button
     {...props}
-    className={`gap-2 flex items-center z-20 h-fit w-full justify-center text-sm p-2 rounded-lg border-2 text-black ${
+    className={`flex items-center z-20 h-fit w-fit min-w-20 justify-center text-sm p-2 rounded-lg border-2 text-black ${
       selected ? "border-[#8E7D3A] bg-[#FFFBEA]" : "bg-white border-stone-400"
     }`}
   >
@@ -20,7 +20,7 @@ const FilterSection: React.FC<{
   selectedKey: string;
   onSelect: (key: string) => void;
 }> = ({ options, selectedKey, onSelect }) => (
-  <div className="flex gap-2">
+  <div className="flex flex-wrap gap-2">
     {options.map((option) => (
       <Button
         key={option}

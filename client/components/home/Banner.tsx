@@ -134,7 +134,7 @@ const Banner: React.FC = () => {
           <CustomButton
             type="primary"
             href={
-              data[currentIndex]?.href ? data[currentIndex]?.href : "/property"
+              data[currentIndex]?.url ? data[currentIndex]?.url : "/property"
             }
           >
             Explore Now <Icons.rightArrow />

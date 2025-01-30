@@ -40,6 +40,7 @@ const Page: React.FC<Props> = async ({ params }) => {
   const _id = resolvedParams?.slug;
   const res = _id?.length === 24 ? await getProjectById(_id) : null;
   const data = res?.data?.data;
+  console.log(data)
   if (!data) {
     return (
       <main className="flex items-center justify-center min-h-screen">

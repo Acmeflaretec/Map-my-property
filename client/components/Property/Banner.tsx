@@ -24,7 +24,7 @@ const Banner: React.FC<{ data: ProjectType }> = ({ data }) => {
       <Carousel data={data?.imageGallery} />
       <div className="flex flex-col gap-4 p-2">
         <h1 className="font-bold text-base md:text-xl">Project Overview</h1>
-        <p className="text-sm md:text-xl md:w-1/2 max-w-4xl">{data?.description}</p>
+        <p className="text-sm md:text-base">{data?.description}</p>
       </div>
     </div>
   );

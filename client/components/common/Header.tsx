@@ -18,14 +18,14 @@ const navLinks = [
   { path: "/contact", label: "Connect Us" },
 ];
 const helperLinks = [
-  { path: "/property", label: "Upcomming Projects" },
-  { path: "/property", label: "Cities" },
-  { path: "/property", label: "New Launch" },
-  { path: "/property", label: "Luxury Homes" },
-  { path: "/property", label: "Apartments" },
-  { path: "/property", label: "Villas" },
-  { path: "/property", label: "Plots" },
-  { path: "/property", label: "Farm Plots" },
+  { path: "/property?q=upcomming-projects", label: "Upcomming Projects" },
+  { path: "/property?q=cities", label: "Cities" },
+  { path: "/property?q=new-launch", label: "New Launch" },
+  { path: "/property?q=luxury-homes", label: "Luxury Homes" },
+  { path: "/property?q=apartments", label: "Apartments" },
+  { path: "/property?q=villas", label: "Villas" },
+  { path: "/property?q=plots", label: "Plots" },
+  { path: "/property?q=farm-plots", label: "Farm Plots" },
 ];
 
 const CustomLink: React.FC<CustomLinkProps> = ({ path, children }) => {

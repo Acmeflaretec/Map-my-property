@@ -7,13 +7,13 @@ export interface BannerType {
   title: string;
   description: string;
   src: string;
-  href: string;
+  url: string;
 }
 
 export interface TestimonialType {
-  title: string;
-  description: string;
-  author: string;
+  name: string;
+  rating: string;
+  review: string;
   image: string;
 }
 
@@ -35,8 +35,8 @@ export interface BuilderType {
 }
 
 export interface FaqType {
-  title: string;
-  content: string;
+  questions: string;
+  answer: string;
 }
 export interface FeatureItem {
   text: string;

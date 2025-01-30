@@ -117,7 +117,10 @@ const Calculator: React.FC = () => {
             <p className="text-sm md:text-base">
               Search Properties Based on Calculated Loan
             </p>
-            <CustomButton type="primary">
+            <CustomButton
+              type="primary"
+              href={`/property?price=100000-${amount}`}
+            >
               Search <Icons.search />
             </CustomButton>
           </div>

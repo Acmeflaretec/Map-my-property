@@ -5,7 +5,7 @@ import FilterSection from "./FilterSection";
 import RangeSlider from "./RangeSlider";
 
 interface Props {
-  filter: { bedroom: string; resident_type: string; location: string };
+  filter: { bedroom: string; resident_type: string; location: string; price: { min: number; max: number }; area: { min: number; max: number } };
   setFilter: React.Dispatch<
     React.SetStateAction<{
       bedroom: string;
@@ -62,10 +62,11 @@ const Filter: React.FC<Props> = ({ filter, setFilter }) => {
         </p>
         <RangeSlider
           min={100000}
-          max={1000000000}
+          max={100000000}
           setFilter={(value) =>
             setFilter((prev) => ({ ...prev, price: value }))
           }
+          filter = {filter?.price}
         />
       </div>
       <div className="flex flex-col gap-2 w-full">
@@ -93,6 +94,7 @@ const Filter: React.FC<Props> = ({ filter, setFilter }) => {
           min={100}
           max={100000}
           setFilter={(value) => setFilter((prev) => ({ ...prev, area: value }))}
+          filter = {filter?.area}
         />
       </div>
     </div>
