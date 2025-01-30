@@ -307,10 +307,10 @@ const getFilteredProjects = async (req, res) => {
     } = req.query;
 
     const query = {};
-
-    // if (search) {
-    //   query.title = { $regex: search, $options: 'i' };
-    // }
+    query.isAvailable = true;
+    if (search) {
+      query.title = { $regex: search, $options: 'i' };
+    }
     if (search) {
       const tagProjects = await Tags.find({
         $or: [{ title: { $regex: search, $options: 'i' } }]
