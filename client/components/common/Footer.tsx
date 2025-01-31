@@ -24,8 +24,9 @@ const Footer: React.FC = () => {
                 height={100}
                 className="w-full h-full"
               />
-              <span className="self-center whitespace-nowrap text-xs lg:text-sm">
-              23rd, The Ruby, 29, Senapati Bapat Marg, Mumbai
+              <span className="text-center whitespace-nowrap text-xs lg:text-sm">
+                7th Cross Rd, 6th Phase, KR Layout, J. P. Nagar, <br />
+                Bengaluru, Karnataka 560078, India
               </span>
             </Link>
           </div>
@@ -82,10 +83,10 @@ const Footer: React.FC = () => {
             . All Rights Reserved.
           </span>
           <div className="flex mt-4 sm:justify-center sm:mt-0 gap-4 text-sm text-stone-500">
-            <Link href="#" className="hover:underline">
+            <Link href="/privacy-policy" className="hover:underline">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:underline">
+            <Link href="/terms-and-conditions" className="hover:underline">
               Terms &amp; Conditions
             </Link>
           </div>
