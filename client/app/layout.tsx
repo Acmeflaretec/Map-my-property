@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import CustomToaster from "@/components/ui/CustomToaster";
+import { Suspense } from "react";
 
 const questrial = Questrial({
   subsets: ["latin"],
@@ -28,9 +29,11 @@ export default function RootLayout({
         className={`${questrial.variable} antialiased font-questrial flex flex-col items-center w-screen overflow-x-hidden`}
       >
         <CustomToaster />
-        <Header />
-        {children}
-        <Footer />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Header />
+          {children}
+          <Footer />
+        </Suspense>
       </body>
     </html>
   );
