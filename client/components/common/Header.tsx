@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Icons } from "./Icons";
 
 interface CustomLinkProps {
@@ -18,7 +18,7 @@ const navLinks = [
   { path: "/contact", label: "Connect Us" },
 ];
 const helperLinks = [
-  { path: "/property?q=upcomming-projects", label: "Upcomming Projects" },
+  { path: "/property?q=upcoming-projects", label: "Upcoming Projects" },
   { path: "/property?q=cities", label: "Cities" },
   { path: "/property?q=new-launch", label: "New Launch" },
   { path: "/property?q=luxury-homes", label: "Luxury Homes" },
@@ -30,9 +30,15 @@ const helperLinks = [
 
 const CustomLink: React.FC<CustomLinkProps> = ({ path, children }) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const currentPath =
+    searchParams.size > 0 ? `${pathname}?${searchParams.toString()}` : pathname;
   return (
     <Link
-      className={`hover:text-black ${pathname === path && "text-black"}`}
+      className={`hover:text-black ${
+        (currentPath === path || pathname === path) && "text-black font-medium"
+      }`}
       href={path}
     >
       {children}
@@ -68,7 +74,7 @@ const Header: React.FC = () => {
           onClick={toggleMenu}
         />
       </div>
-      <div className="hidden md:flex w-full border-b"/>
+      <div className="hidden md:flex w-full border-b" />
       <div className="hidden md:flex px-4 md:px-8 gap-8 py-1 text-xs lg:text-sm text-stone-500 xl:max-w-screen-xl justify-end w-full items-center">
         {helperLinks.map(({ path, label }, idx) => (
           <CustomLink key={idx} path={path}>

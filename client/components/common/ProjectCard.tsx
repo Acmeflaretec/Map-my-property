@@ -23,17 +23,21 @@ const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
           className="h-3/4"
         />
         <div className="flex justify-between items-center p-1 pr-2 h-1/4 bg-gradient-to-r from-[#f4f3f3] to-white bg-opacity-50">
-          <div className="flex justify-start items-center gap-1">
-            <img
-              src={generateImageUrl(data?.builder?.image)}
-              height={40}
-              width={40}
-              alt={"builder-profile"}
-              className="rounded-full h-8 w-8 border-2"
-            />
-            <div>
-              <p className="text-xs">{data?.builder?.title}</p>
-              <p className="text-[10px]">{data?.builder?.subtitle}</p>
+          <div className="relative overflow-hidden flex justify-start items-center gap-1 lg:w-3/5">
+            <div className="flex items-center w-8 lg:w-1/4">
+              <img
+                src={generateImageUrl(data?.builder?.image)}
+                height={40}
+                width={40}
+                alt={"builder-profile"}
+                className="rounded-full h-8 w-8 border-2"
+              />
+            </div>
+            <div className="flex flex-col lg:w-3/4">
+              <p className="text-xs truncate">{data?.builder?.title}</p>
+              <p className="text-[10px] truncate max-w-28 md:max-w-48">
+                {data?.builder?.subtitle}
+              </p>
             </div>
           </div>
           <button className="bg-[#0C0E0D] hidden lg:flex items-center z-30 h-fit text-[10px] text-white p-[2px] pl-3 pr-1 rounded-lg">
