@@ -108,6 +108,8 @@ const AddCategory = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",
+                borderRadius: "10px",
+                overflow: "hidden",
               }}
               onClick={handleFileSelect}
             >
@@ -147,7 +149,7 @@ const AddCategory = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <Typography sx={{ mt: 1, fontSize: 13 }}>
+                  <Typography sx={{ mt: 1, fontSize: 13, color: "#fff" }}>
                     Upload Thumbnail
                   </Typography>
                 </React.Fragment>
