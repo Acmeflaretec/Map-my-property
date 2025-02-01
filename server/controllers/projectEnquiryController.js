@@ -34,7 +34,7 @@ const getEnquiries = async (req, res) => {
         const options = {
             page: parseInt(page, 10),
             limit: parseInt(perPage, 10),
-            populate: { path: 'projectId', select: 'name location' },
+            populate: { path: 'projectId', select: 'title builder location builder' },
             sort: { [sortBy]: order === 'desc' ? -1 : 1  },
         };
 
