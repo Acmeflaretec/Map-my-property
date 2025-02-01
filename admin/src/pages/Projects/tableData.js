@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Typography from "components/Typography";
 import Box from "components/Box";
 import Avatar from "components/Avatar";
@@ -6,10 +6,10 @@ import Badge from "components/Badge";
 import Table from "examples/Tables/Table";
 import { useGetProjects } from "queries/ProductQuery";
 import { Link } from "react-router-dom";
-import { Icon, TextField, Button,Pagination  } from "@mui/material";
-import PropTypes from 'prop-types';
+import { Icon, TextField, Button, Pagination } from "@mui/material";
+import PropTypes from "prop-types";
 
-function Author({id, image, name, desc }) {
+function Author({ id, image, name, desc }) {
   return (
     <Box key={id} display="flex" alignItems="center" px={1} py={0.5}>
       <Box mr={2}>
@@ -17,10 +17,10 @@ function Author({id, image, name, desc }) {
       </Box>
       <Box display="flex" flexDirection="column">
         <Typography variant="button" fontWeight="medium">
-          {name.slice(0,50)}
+          {name.slice(0, 50)}
         </Typography>
         <Typography variant="caption" color="secondary">
-          {desc.slice(0,30)}
+          {desc.slice(0, 30)}
         </Typography>
       </Box>
     </Box>
@@ -36,9 +36,9 @@ Author.propTypes = {
 const TableData = () => {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const [sortBy, setSortBy] = useState('createdAt');
-  const [order, setOrder] = useState('desc');
-  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [order, setOrder] = useState("desc");
+  const [search, setSearch] = useState("");
 
   const { data, isLoading } = useGetProjects({ page, perPage, sortBy, order, search });
 
@@ -54,14 +54,26 @@ const TableData = () => {
     { name: "status", align: "center" },
     { name: "createdon", align: "center" },
     { name: "Lastupdated", align: "center" },
-    // { name: "variant", align: "center" },
     { name: "action", align: "center" },
-  ]
+  ];
 
-  const rows = data?.docs?.map(item => ({
-    projects: <Author id={item._id} image={`${process.env.REACT_APP_API_URL}/uploads/${item?.imageGallery?.[0]?.src}`} name={item?.title} desc={item?.subtitle} />,
+  const rows = data?.docs?.map((item) => ({
+    projects: (
+      <Author
+        id={item._id}
+        image={`${process.env.REACT_APP_API_URL}/uploads/${item?.imageGallery?.[0]?.src}`}
+        name={item?.title}
+        desc={item?.subtitle}
+      />
+    ),
     status: (
-      <Badge variant="gradient" badgeContent={item?.isAvailable ? 'Active' : 'Blocked'} color={item?.isAvailable ? "success" : 'secondary'} size="xs" container />
+      <Badge
+        variant="gradient"
+        badgeContent={item?.isAvailable ? "Active" : "Blocked"}
+        color={item?.isAvailable ? "success" : "secondary"}
+        size="xs"
+        container
+      />
     ),
     createdon: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
@@ -92,27 +104,29 @@ const TableData = () => {
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between" py={2}>
+      <Box display="flex" alignItems="center" justifyContent="space-between" py={2} px={2}>
         <TextField
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           variant="outlined"
           size="small"
-          style={{marginLeft:'5px'}}
+          style={{ marginLeft: "5px" }}
         />
         <Box>
-          <Button onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}>
+          <Button onClick={() => setOrder(order === "asc" ? "desc" : "asc")}>
             Sort by {sortBy} ({order})
           </Button>
         </Box>
       </Box>
       {isLoading ? (
-        <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography>
+        <Typography fontSize={14} sx={{ paddingX: 5 }}>
+          loading...
+        </Typography>
       ) : (
         <Table columns={columns} rows={rows} />
       )}
-      
+
       {/* <TablePagination
         component="div"
         count={data?.totalDocs || 0}
@@ -121,7 +135,7 @@ const TableData = () => {
         rowsPerPage={perPage}
         onRowsPerPageChange={(event) => setPerPage(parseInt(event.target.value, 10))}
       /> */}
-      <Box style={{display:'flex',justifyContent:'center', Margin:'10px'}}>
+      <Box style={{ display: "flex", justifyContent: "center", Margin: "10px" }}>
         <Pagination
           count={Math.ceil((data?.totalDocs || 0) / perPage)}
           page={page}

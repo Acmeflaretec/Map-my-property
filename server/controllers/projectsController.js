@@ -226,6 +226,7 @@ const updateprojects = async (req, res) => {
       expertOpinions,
       questions,
       features,
+      category_id,
       builder,
       reviewsName,
       reviewsRating,
@@ -371,6 +372,7 @@ const updateprojects = async (req, res) => {
           title,
           subtitle,
           description,
+          category: category_id,
           expertOpinions,
           location,
           faqs: faqsValue,
@@ -389,16 +391,21 @@ const updateprojects = async (req, res) => {
         },
       }
     );
+console.log(req.body);
 
     if (projectUpdateResult.modifiedCount > 0 && builder) {
-      await Builders.updateMany(
-        { projects: _id },
+      await Builders.updateOne(
+        { projects: { $in: [_id] } },
         { $pull: { projects: _id } }
       );
-      await Builders.updateMany(
-        { _id: { $in: builder } },
-        { $push: { projects: _id } }
+      await Builders.updateOne({ _id: builder }, { $push: { projects: _id } });
+    }
+    if (category_id) {
+      await Category.updateOne(
+        { projects: { $in: [_id] } },
+        { $pull: { projects: _id } }
       );
+      await Category.updateOne({ _id: category_id }, { $push: { projects: _id } });
     }
 
     res.status(200).json({ message: "projects updated successfully !" });
