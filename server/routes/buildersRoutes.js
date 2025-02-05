@@ -8,7 +8,7 @@ const {
   getAdminBuilders,
   getSelectBuilders,
   getBuilderByUrl,
-} = require("../controllers/BuildersController");
+} = require("../controllers/buildersController");
 const { upload } = require("../middlewares/multer");
 
 router.post(
