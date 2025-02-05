@@ -32,11 +32,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   robots: {
     index: true,
     follow: true,
@@ -86,8 +81,6 @@ export const metadata: Metadata = {
   category: "property mapping",
   classification: "Business",
   referrer: "origin-when-cross-origin",
-  colorScheme: "light dark",
-  themeColor: [{ media: "(prefers-color-scheme: light)", color: "#ffffff" }],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
