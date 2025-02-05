@@ -1,47 +1,76 @@
-const Builders = require('../models/builders');
+const Builders = require("../models/builders");
 
-
-const getAdminbuilders = async (req, res) => {
+const getAdminBuilders = async (req, res) => {
   try {
-    const { page = 1, perPage = 10, sortBy = 'createdAt', order = 'desc', search = '' } = req.query;
-    const query = search ? { name: { $regex: search, $options: 'i' } } : {};
+    const {
+      page = 1,
+      perPage = 10,
+      sortBy = "createdAt",
+      order = "desc",
+      search = "",
+    } = req.query;
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
 
     const options = {
       page: parseInt(page, 10),
       limit: parseInt(perPage, 10),
-      sort: { [sortBy]: order === 'desc' ? -1 : 1 }
+      sort: { [sortBy]: order === "desc" ? -1 : 1 },
     };
 
     const builders = await Builders.paginate(query, options);
 
-
     res.status(200).json(builders);
   } catch (error) {
     console.log(error);
-    res.status(400).json({ message: error?.message ?? "Something went wrong !" });
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
   }
 };
 
-
-const getbuildersById = async (req, res) => {
+const getBuilderById = async (req, res) => {
   try {
-    const data = await Builders.findOne({ _id: req.params.id }).populate('projects')
-    res.status(200).json({ data, message: 'builders found successfully' });
+    const data = await Builders.findOne({ _id: req.params.id }).populate(
+      "projects"
+    );
+    res.status(200).json({ data, message: "builders found successfully" });
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ message: error?.message ?? "Something went wrong !" });
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
   }
-}
+};
 
+const getBuilderByUrl = async (req, res) => {
+  try {
+    const data = await Builders.findOne({ url: req.params.id }).populate(
+      "projects"
+    );
+    res.status(200).json({ data, message: "builders found successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
+  }
+};
 
-const addbuilders = async (req, res) => {
-  console.log('addbuilders');
-
+const addBuilder = async (req, res) => {
   try {
     const {
-      title, subtitle, description,  reviewsName, reviewsRating, reviewsReview,
+      title,
+      subtitle,
+      description,
+      reviewsName,
+      reviewsRating,
+      reviewsReview,
       // addressStreet, addressCity, addressState, addressZip, addressCountry, addressPhone,,questions, answer,
-      featuresText, featuresHelpertext, vision, location
+      featuresText,
+      featuresHelpertext,
+      vision,
+      url,
+      location,
     } = req?.body;
 
     // let faqsValue = [];
@@ -56,20 +85,32 @@ const addbuilders = async (req, res) => {
     // }
     let featuresValue = [];
     if (featuresText) {
-      const featuresArray = Array.isArray(featuresText) ? featuresText : [featuresText];
-      const featuresDetailsArray = Array.isArray(featuresHelpertext) ? featuresHelpertext : [featuresHelpertext];
+      const featuresArray = Array.isArray(featuresText)
+        ? featuresText
+        : [featuresText];
+      const featuresDetailsArray = Array.isArray(featuresHelpertext)
+        ? featuresHelpertext
+        : [featuresHelpertext];
       const configurationInside = featuresArray.map((text, index) => ({
         text,
-        helpertext: featuresDetailsArray[index]
+        helpertext: featuresDetailsArray[index],
       }));
 
-      featuresValue = configurationInside[0]?.text ? configurationInside : undefined;
+      featuresValue = configurationInside[0]?.text
+        ? configurationInside
+        : undefined;
     }
     let reviewValue = [];
     if (reviewsName) {
-      const reviewsNameArray = Array.isArray(reviewsName) ? reviewsName : [reviewsName];
-      const reviewsRatingArray = Array.isArray(reviewsRating) ? reviewsRating : [reviewsRating];
-      const reviewsReviewArray = Array.isArray(reviewsReview) ? reviewsReview : [reviewsReview];
+      const reviewsNameArray = Array.isArray(reviewsName)
+        ? reviewsName
+        : [reviewsName];
+      const reviewsRatingArray = Array.isArray(reviewsRating)
+        ? reviewsRating
+        : [reviewsRating];
+      const reviewsReviewArray = Array.isArray(reviewsReview)
+        ? reviewsReview
+        : [reviewsReview];
       const configurationInside = reviewsNameArray.map((name, index) => ({
         name,
         rating: reviewsRatingArray[index],
@@ -77,7 +118,9 @@ const addbuilders = async (req, res) => {
         image: req.files.reviews && req.files.reviews[index].filename,
       }));
 
-      reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
+      reviewValue = configurationInside[0]?.name
+        ? configurationInside
+        : undefined;
     }
     // let addressValue = [];
     // if (addressStreet) {
@@ -100,29 +143,51 @@ const addbuilders = async (req, res) => {
     //   addressValue = configurationInside[0]?.street ? configurationInside : undefined;
     // }
 
-    const logo = req?.files?.logo[0]?.filename
+    const logo = req?.files?.logo[0]?.filename;
     const builders = new Builders({
-      title, subtitle, description, testimonials: reviewValue,  vision, location,
-      features: featuresValue, logo, image: req?.files?.images[0]?.filename,
+      title,
+      subtitle,
+      description,
+      testimonials: reviewValue,
+      vision,
+      location,
+      url,
+      features: featuresValue,
+      logo,
+      image: req?.files?.images[0]?.filename,
       // address: addressValue, faqs: faqsValue,
     });
-    const savedBuilder = await builders.save();
+    await builders.save();
 
     res.status(200).json({ message: "Builders added successfully !" });
-
-
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ message: error?.message ?? "Something went wrong !" });
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
   }
 };
 
-const updatebuilders = async (req, res) => {
+const updateBuilder = async (req, res) => {
   try {
-    const { _id, image, isAvailable, title, subtitle, description,  reviewsName, reviewsRating,reviewsReview,
+    const {
+      _id,
+      image,
+      isAvailable,
+      title,
+      subtitle,
+      description,
+      reviewsName,
+      reviewsRating,
+      reviewsReview,
       //  addressStreet, addressCity, addressState, addressZip, addressCountry, addressPhone,questions, answer,
-      featuresText, featuresHelpertext, vision, location, logo
-    } = req?.body
+      featuresText,
+      featuresHelpertext,
+      vision,
+      url,
+      location,
+      logo,
+    } = req?.body;
 
     // let faqsValue = [];
     // if (questions) {
@@ -136,34 +201,54 @@ const updatebuilders = async (req, res) => {
     // }
     let featuresValue = [];
     if (featuresText) {
-      const featuresArray = Array.isArray(featuresText) ? featuresText : [featuresText];
-      const featuresDetailsArray = Array.isArray(featuresHelpertext) ? featuresHelpertext : [featuresHelpertext];
+      const featuresArray = Array.isArray(featuresText)
+        ? featuresText
+        : [featuresText];
+      const featuresDetailsArray = Array.isArray(featuresHelpertext)
+        ? featuresHelpertext
+        : [featuresHelpertext];
       const configurationInside = featuresArray.map((text, index) => ({
         text,
-        helpertext: featuresDetailsArray[index]
+        helpertext: featuresDetailsArray[index],
       }));
 
-      featuresValue = configurationInside[0]?.text ? configurationInside : undefined;
+      featuresValue = configurationInside[0]?.text
+        ? configurationInside
+        : undefined;
     }
 
     let reviewValue = [];
     let k = 0;
-    console.log('req?.body?.reviewsImagePocision', req?.body);
-    console.log('req?files', req?.files);
+    console.log("req?.body?.reviewsImagePocision", req?.body);
+    console.log("req?files", req?.files);
 
     if (reviewsName) {
-      const reviewsNameArray = Array.isArray(reviewsName) ? reviewsName : [reviewsName];
-      const reviewsRatingArray = Array.isArray(reviewsRating) ? reviewsRating : [reviewsRating];
-      const reviewsReviewArray = Array.isArray(reviewsReview) ? reviewsReview : [reviewsReview];
+      const reviewsNameArray = Array.isArray(reviewsName)
+        ? reviewsName
+        : [reviewsName];
+      const reviewsRatingArray = Array.isArray(reviewsRating)
+        ? reviewsRating
+        : [reviewsRating];
+      const reviewsReviewArray = Array.isArray(reviewsReview)
+        ? reviewsReview
+        : [reviewsReview];
       const configurationInside = reviewsNameArray.map((name, index) => ({
         name,
         rating: reviewsRatingArray[index],
         review: reviewsReviewArray[index],
         // image: req?.body?.reviewsImagePocision[index] === '' ? (k++,req.files.reviews[k-1].filename) : req?.body?.reviewsImagePocision[index] ,
-        image: Array.isArray(req?.body?.reviewsImagePocision) ? (req?.body?.reviewsImagePocision[index] === '' ? (k++, req.files.reviews[k - 1].filename) : req?.body?.reviewsImagePocision[index]) : (req?.body?.reviewsImagePocision === '' ? (req.files.reviews[0].filename) : req?.body?.reviewsImagePocision),
+        image: Array.isArray(req?.body?.reviewsImagePocision)
+          ? req?.body?.reviewsImagePocision[index] === ""
+            ? (k++, req.files.reviews[k - 1].filename)
+            : req?.body?.reviewsImagePocision[index]
+          : req?.body?.reviewsImagePocision === ""
+          ? req.files.reviews[0].filename
+          : req?.body?.reviewsImagePocision,
       }));
 
-      reviewValue = configurationInside[0]?.name ? configurationInside : undefined;
+      reviewValue = configurationInside[0]?.name
+        ? configurationInside
+        : undefined;
     }
 
     // let addressValue = [];
@@ -186,58 +271,71 @@ const updatebuilders = async (req, res) => {
 
     //   addressValue = configurationInside[0]?.street ? configurationInside : undefined;
     // }
-    let logos = logo
+    let logos = logo;
     if (req?.files?.logo?.length > 0) {
-      logos = req.files.logo[0].filename
+      logos = req.files.logo[0].filename;
     }
-    let images = image
-    if (req?.files?.images?.length >0) {
-      images = req.files.images[0].filename
+    let images = image;
+    if (req?.files?.images?.length > 0) {
+      images = req.files.images[0].filename;
     }
 
-     await Builders.updateOne({ _id }, {
-      $set: {
-        isAvailable, image: images, title, subtitle, description, testimonials: reviewValue,
-        // address: addressValue,  faqs: faqsValue,
-        logo: logos, features: featuresValue, vision, location,
-
+    await Builders.updateOne(
+      { _id },
+      {
+        $set: {
+          isAvailable,
+          image: images,
+          title,
+          subtitle,
+          description,
+          testimonials: reviewValue,
+          // address: addressValue,  faqs: faqsValue,
+          logo: logos,
+          features: featuresValue,
+          vision,
+          url,
+          location,
+        },
       }
-    })
+    );
 
     res.status(200).json({ message: "builders updated successfully !" });
   } catch (error) {
-    console.log(error.message)
-    res.status(400).json({ message: error?.message ?? "Something went wrong !" });
+    console.log(error.message);
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
   }
-}
+};
 
-const deletebuilders = async (req, res) => {
+const deleteBuilder = async (req, res) => {
   try {
-    await Builders.deleteOne({ _id: req.params.id })
-    res.status(200).json({ message: 'builders deleted successfully' });
+    await Builders.deleteOne({ _id: req.params.id });
+    res.status(200).json({ message: "builders deleted successfully" });
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ message: error?.message ?? "Something went wrong !" });
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
   }
-}
+};
 
-const getSelectbuilders = async (req, res) => {
+const getSelectBuilders = async (req, res) => {
   try {
-    const data = await Builders.find({ isAvailable: true })
-    res.status(200).json({ data })
+    const data = await Builders.find({ isAvailable: true });
+    res.status(200).json({ data });
   } catch (error) {
     console.log(error);
   }
 };
 
-
-
-
 module.exports = {
-  getbuildersById,
-  updatebuilders,
-  addbuilders,
-  deletebuilders,
-  getAdminbuilders,
-  getSelectbuilders,
-}  
+  getBuilderById,
+  updateBuilder,
+  addBuilder,
+  deleteBuilder,
+  getAdminBuilders,
+  getSelectBuilders,
+  getBuilderByUrl,
+};

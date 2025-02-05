@@ -3,7 +3,7 @@ const Category = require("../models/category");
 const Builders = require("../models/builders");
 const Tags = require("../models/tags");
 
-const getAdminprojects = async (req, res) => {
+const getAdminProjects = async (req, res) => {
   try {
     const {
       page = 1,
@@ -30,7 +30,7 @@ const getAdminprojects = async (req, res) => {
   }
 };
 
-const getprojectsById = async (req, res) => {
+const getProjectById = async (req, res) => {
   try {
     const data = await Projects.findOne({ _id: req.params.id })
       .populate("category")
@@ -44,7 +44,21 @@ const getprojectsById = async (req, res) => {
   }
 };
 
-const addprojects = async (req, res) => {
+const getProjectByUrl = async (req, res) => {
+  try {
+    const data = await Projects.findOne({ href: req.params.url })
+      .populate("category")
+      .populate("builder");
+    res.status(200).json({ data, message: "projects found successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res
+      .status(400)
+      .json({ message: error?.message ?? "Something went wrong !" });
+  }
+};
+
+const addProject = async (req, res) => {
   try {
     const {
       title,
@@ -214,7 +228,7 @@ const addprojects = async (req, res) => {
   }
 };
 
-const updateprojects = async (req, res) => {
+const updateProject = async (req, res) => {
   try {
     const {
       _id,
@@ -391,7 +405,6 @@ const updateprojects = async (req, res) => {
         },
       }
     );
-console.log(req.body);
 
     if (projectUpdateResult.modifiedCount > 0 && builder) {
       await Builders.updateOne(
@@ -405,7 +418,10 @@ console.log(req.body);
         { projects: { $in: [_id] } },
         { $pull: { projects: _id } }
       );
-      await Category.updateOne({ _id: category_id }, { $push: { projects: _id } });
+      await Category.updateOne(
+        { _id: category_id },
+        { $push: { projects: _id } }
+      );
     }
 
     res.status(200).json({ message: "projects updated successfully !" });
@@ -417,7 +433,7 @@ console.log(req.body);
   }
 };
 
-const deleteprojects = async (req, res) => {
+const deleteProject = async (req, res) => {
   try {
     await Projects.deleteOne({ _id: req.params.id });
     res.status(200).json({ message: "projects deleted successfully" });
@@ -429,7 +445,7 @@ const deleteprojects = async (req, res) => {
   }
 };
 
-const getSelectprojects = async (req, res) => {
+const getSelectProjects = async (req, res) => {
   try {
     const data = await Projects.find({ isAvailable: true });
     res.status(200).json({ data });
@@ -551,11 +567,12 @@ const getFilteredProjects = async (req, res) => {
 };
 
 module.exports = {
-  addprojects,
-  getprojectsById,
-  updateprojects,
-  deleteprojects,
-  getAdminprojects,
-  getSelectprojects,
+  addProject,
+  getProjectById,
+  updateProject,
+  deleteProject,
+  getAdminProjects,
+  getSelectProjects,
   getFilteredProjects,
+  getProjectByUrl,
 };

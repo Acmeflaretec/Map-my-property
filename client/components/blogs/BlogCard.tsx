@@ -13,6 +13,7 @@ interface BlogCardProps {
     subtitle: string;
     description: string;
     image: string;
+    url: string;
   };
 }
 
@@ -21,7 +22,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
   return (
     <div
       className="relative rounded-2xl h-[14rem] flex justify-center items-center overflow-hidden group font-bricolage cursor-pointer"
-      onClick={() => router.push(`blogs/${data?._id}`)}
+      onClick={() => router.push(`blogs/${data?.url}`)}
     >
       <img
         src={generateImageUrl(data?.image)}

@@ -1,73 +1,70 @@
-const mongoose = require('mongoose')
-const mongoosePaginate = require('mongoose-paginate-v2');
+const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
-const buildersSchema = new mongoose.Schema({
-
+const buildersSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     subtitle: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    projects: [{
+    projects: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: "Projects"
-    }],
+        ref: "Projects",
+      },
+    ],
     description: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     vision: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     location: {
-        type: String,
+      type: String,
     },
-    features: [{
+    features: [
+      {
         text: String,
-        helpertext: String
-    }],
-    // faqs: [{
-    //     questions: String,
-    //     answer: String
-    // }],
+        helpertext: String,
+      },
+    ],
+    url: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     image: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     logo: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     isAvailable: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
-
-    // address: [{
-    //     street: String,
-    //     city: String,
-    //     state: String,
-    //     zip: String,
-    //     country: String,
-    //     phone: String,
-    // }],
-    testimonials: [{
+    testimonials: [
+      {
         name: String,
         rating: String,
         review: String,
         image: String,
-    }],
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
-},
-    {
-        timestamps: true
-    });
-
-
-    buildersSchema.plugin(mongoosePaginate);
-module.exports = mongoose.model('Builders', buildersSchema)
+buildersSchema.plugin(mongoosePaginate);
+module.exports = mongoose.model("Builders", buildersSchema);

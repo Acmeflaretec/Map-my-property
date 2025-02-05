@@ -30,6 +30,7 @@ export interface BuilderType {
     helpertext: string;
   }[];
   location: string;
+  url: string;
   projects: ProjectType[];
   testimonials: TestimonialType[];
 }

@@ -43,7 +43,7 @@ const getProjectById = async (
   data: any
 ): Promise<{ data: { data: ProjectType } }> =>
   request({
-    endpoint: `/projects/${data}`,
+    endpoint: `/projects/url/${data}`,
     method: "GET",
   });
 
@@ -51,7 +51,7 @@ const getBuilderById = async (
   data: any
 ): Promise<{ data: { data: BuilderType } }> =>
   request({
-    endpoint: `/builders/${data}`,
+    endpoint: `/builders/url/${data}`,
     method: "GET",
   });
 
@@ -71,7 +71,7 @@ const getBlogsById = async (
   id: string
 ): Promise<{ data: { data: BlogType } }> =>
   request({
-    endpoint: `/blogs/${id}`,
+    endpoint: `/blogs/url/${id}`,
     method: "GET",
   });
 

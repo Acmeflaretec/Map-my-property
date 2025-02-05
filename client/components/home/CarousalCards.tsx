@@ -54,7 +54,7 @@ const CarousalCards: React.FC<{ data: BlogType }> = ({ data }) => {
   const type = `type${data?.type ?? 1}`;
   const Card = Cards[type as keyof typeof Cards] || null;
   return (
-    <Link href={`/blogs/${data?._id}`}>
+    <Link href={`/blogs/${data?.url}`}>
       <Card data={data} />
     </Link>
   );

@@ -9,7 +9,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const _id = resolvedParams?.id;
-  const res = _id?.length === 24 ? await getBlogsById(_id) : null;
+  const res = await getBlogsById(_id);
   const data = res?.data?.data;
   if (data) {
     return {

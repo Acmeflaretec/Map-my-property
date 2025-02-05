@@ -87,7 +87,7 @@ const HeroSection: React.FC = () => {
             {data?.description?.substring(0, 100)}...
           </p>
           <Link
-            href={`blogs/${data?._id}`}
+            href={`blogs/${data?.url}`}
             className="hidden md:block h-1 rounded-full text-blue-400"
           >
             Read more
@@ -99,7 +99,7 @@ const HeroSection: React.FC = () => {
         <h1 className="font-bold text-lg">{data?.title}</h1>
         <p className="text-base">{data?.description?.substring(0, 200)}...</p>
         <Link
-          href={`blogs/${data?._id}`}
+          href={`blogs/${data?.url}`}
           className="h-1 rounded-full text-blue-400"
         >
           Read more

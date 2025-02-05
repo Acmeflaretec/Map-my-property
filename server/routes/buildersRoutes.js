@@ -1,25 +1,38 @@
-const { Router } = require('express');
+const { Router } = require("express");
 const router = Router();
-const authorization = require("../middlewares/authorization");
-const { addbuilders,deletebuilders, getbuildersById, updatebuilders,getAdminbuilders,getSelectbuilders,
- } = require('../controllers/buildersController');    
-const { upload } = require('../middlewares/multer');
-  
-// router.post('/', upload.array('images', 10), addbuilders);
-router.post('/',upload.fields([
-    { name: 'images', maxCount: 1 },
-    { name: 'logo', maxCount: 1 },
-    { name: 'reviews', maxCount: 10 }
-  ]), addbuilders);
-router.get('/adminbuilders', getAdminbuilders);
-router.delete('/:id',  deletebuilders);
-router.get('/:id', getbuildersById);
-router.patch('/', upload.fields([
-    { name: 'images', maxCount: 1 },
-    { name: 'logo', maxCount: 1 },
-    { name: 'reviews', maxCount: 10 }
-  ]), updatebuilders);
-// router.patch('/', upload.array('images', 10), updatebuilders);
-router.get('/', getSelectbuilders); 
+const {
+  addBuilder,
+  deleteBuilder,
+  getBuilderById,
+  updateBuilder,
+  getAdminBuilders,
+  getSelectBuilders,
+  getBuilderByUrl,
+} = require("../controllers/BuildersController");
+const { upload } = require("../middlewares/multer");
+
+router.post(
+  "/",
+  upload.fields([
+    { name: "images", maxCount: 1 },
+    { name: "logo", maxCount: 1 },
+    { name: "reviews", maxCount: 10 },
+  ]),
+  addBuilder
+);
+router.get("/adminBuilders", getAdminBuilders);
+router.delete("/:id", deleteBuilder);
+router.get("/url/:id", getBuilderByUrl);
+router.get("/:id", getBuilderById);
+router.patch(
+  "/",
+  upload.fields([
+    { name: "images", maxCount: 1 },
+    { name: "logo", maxCount: 1 },
+    { name: "reviews", maxCount: 10 },
+  ]),
+  updateBuilder
+);
+router.get("/", getSelectBuilders);
 
 module.exports = router;

@@ -33,7 +33,7 @@ const Blog = ({
     try {
       if (params?.id) {
         const _id = params?.id;
-        const res = _id?.length === 24 ? await getBlogsById(_id) : null;
+        const res = await getBlogsById(_id);
         const data = res?.data?.data || null;
         setData(data);
       }
@@ -154,21 +154,21 @@ const Blog = ({
                   </h5>
                   <div className="flex items-center sm:justify-end">
                     <a
-                      href={`https://www.linkedin.com/sharing/share-offsite/?url=https://www.alamrigroups.com/blogs/${data?._id}`}
+                      href={`https://www.linkedin.com/sharing/share-offsite/?url=https://www.mapmyproperty.in/blogs/${data?.url}`}
                       target="_blank"
                       className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-md  text-black bg-opacity-10 duration-300 hover:bg-opacity-100 hover:text-gray-500 sm:ml-3"
                     >
                       <Icons.linkedIn />
                     </a>
                     <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=https://www.alamrigroups.com/blogs/${data?._id}`}
+                      href={`https://www.facebook.com/sharer/sharer.php?u=https://www.mapmyproperty.in/blogs/${data?.url}`}
                       target="_blank"
                       className="ml-1 mb-3 inline-flex h-9 w-9 items-center justify-center rounded-md  text-black bg-opacity-10 duration-300 hover:bg-opacity-100 hover:text-gray-500"
                     >
                       <Icons.facebook />
                     </a>
                     <a
-                      href={`https://twitter.com/intent/tweet?url=https://www.alamrigroups.com/blogs/${data?._id}text=Check%20this%20out`}
+                      href={`https://twitter.com/intent/tweet?url=https://www.mapmyproperty.in/blogs/${data?.url}text=Check%20this%20out`}
                       target="_blank"
                       className="ml-1 mb-3 inline-flex h-9 w-9 items-center justify-center rounded-md  text-black bg-opacity-10 duration-300 hover:bg-opacity-100 hover:text-gray-500"
                     >
