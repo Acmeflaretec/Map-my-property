@@ -12,6 +12,7 @@ export const builderData: BuilderType = {
   vision:
     "Our team of Brigadiers—based in several major cities in South India, Dubai and San Francisco—work across a diverse portfolio of domains and projects, and draw upon a national and international pool of professional associates. To date, we have completed over 100 buildings; worked on numerous interesting projects and initiatives, many of which inhabit realms unrelated to our business; and engaged with the community through a variety of CSR initiatives. In the process, we have earned important certifications, won prestigious awards and created urban landmarks.",
   location: "Chandapura, Bangalore",
+  url:"subha-constructions",
   features: [
     { text: "10+ Projects", helpertext: "Ongoing" },
     { text: "70+ Projects", helpertext: "Completed" },
