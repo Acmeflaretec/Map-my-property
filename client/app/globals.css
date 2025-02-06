@@ -179,3 +179,9 @@ body {
   height: 0;
   z-index: 1;
 }
+
+.embed-responsive-item {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+}

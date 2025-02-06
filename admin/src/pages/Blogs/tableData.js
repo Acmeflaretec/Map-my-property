@@ -2,23 +2,41 @@
 import Box from "components/Box";
 import Typography from "components/Typography";
 import Table from "examples/Tables/Table";
-import { useGetBlogs,useUpdateBlogBanner } from "queries/StoreQuery";
-import { Avatar, Icon,Switch } from "@mui/material";
+import { useGetBlogs, useUpdateBlogBanner } from "queries/StoreQuery";
+import { Avatar, Icon, Switch } from "@mui/material";
 import Badge from "components/Badge";
 import { Link } from "react-router-dom";
 
 function Blogs({ image, name, desc }) {
   return (
-    <Box display="flex" alignItems="center" px={1} py={0.5}>
+    <Box display="flex" alignItems="center" px={1} py={0.5} style={{ textTransform: "capitalize" }}>
       <Box mr={2}>
         <Avatar src={image} alt={name} size="sm" variant="rounded" />
       </Box>
       <Box display="flex" flexDirection="column">
-        <Typography variant="button" fontWeight="medium">
+        <Typography
+          variant=""
+          fontWeight="medium"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "300px",
+          }}
+        >
           {name}
         </Typography>
-        <Typography variant="caption" color="secondary">
-          {desc?.substring(0, 40)}
+        <Typography
+          variant="caption"
+          color="secondary"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "300px",
+          }}
+        >
+          {desc}
         </Typography>
       </Box>
     </Box>
@@ -33,23 +51,41 @@ const TableData = () => {
     { name: "url", align: "center" },
     { name: "status", align: "center" },
     { name: "banner", align: "center" },
-    { name: "createdon", align: "center" },
-    { name: "Lastupdated", align: "center" },
+    { name: "createdOn", align: "center" },
     { name: "Important", align: "center" },
     { name: "action", align: "center" },
-  ]
-  const handleBannerChange = (blogId, isBanner) => {    
+  ];
+  const handleBannerChange = (blogId, isBanner) => {
     isBanner && updateBanner({ blogId, banner: isBanner });
   };
-  const rows = data?.data?.map(item => ({
-    Blogs: <Blogs image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`} name={item?.title} desc={item?.subtitle} />,
+  const rows = data?.data?.map((item) => ({
+    Blogs: (
+      <Blogs
+        image={`${process.env.REACT_APP_API_URL}/uploads/${item?.image}`}
+        name={item?.title}
+        desc={item?.subtitle}
+      />
+    ),
     url: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        <a href={item?.url}>{item?.url.substring(0, 40)}</a>
+      <Typography
+        variant="caption"
+        color="secondary"
+        fontWeight="medium"
+        style={{ textTransform: "lowercase" }}
+      >
+        <a href={`https://www.mapmyproperty.in/blogs/${item?.url}`}>
+          /{item?.url.substring(0, 40)}
+        </a>
       </Typography>
     ),
     status: (
-      <Badge variant="gradient" badgeContent={item?.status ? 'Available' : 'Unavailable'} color={item?.status ? "success" : 'secondary'} size="xs" container />
+      <Badge
+        variant="gradient"
+        badgeContent={item?.status ? "Available" : "Unavailable"}
+        color={item?.status ? "success" : "secondary"}
+        size="xs"
+        container
+      />
     ),
     banner: (
       <Switch
@@ -58,18 +94,19 @@ const TableData = () => {
         color="primary"
       />
     ),
-    createdon: (
+    createdOn: (
       <Typography variant="caption" color="secondary" fontWeight="medium">
         {new Date(item?.createdAt).toDateString()}
       </Typography>
     ),
-    Lastupdated: (
-      <Typography variant="caption" color="secondary" fontWeight="medium">
-        {new Date(item?.updatedAt).toDateString()}
-      </Typography>
-    ),
     Important: (
-      <Badge variant="gradient" badgeContent={item?.isImportant ? 'Important' : 'Not-Important'} color={item?.isImportant ? "success" : 'secondary'} size="xs" container />
+      <Badge
+        variant="gradient"
+        badgeContent={item?.isImportant ? "Important" : "Not-Important"}
+        color={item?.isImportant ? "success" : "secondary"}
+        size="xs"
+        container
+      />
     ),
     action: (
       <Link to={`/blogs/editBlog/${item?._id}`}>
@@ -78,8 +115,14 @@ const TableData = () => {
         </Icon>
       </Link>
     ),
-  }))
-  return isLoading ? <Typography fontSize={14} sx={{ paddingX: 5 }}>loading...</Typography> : <Table columns={columns} rows={rows} />
+  }));
+  return isLoading ? (
+    <Typography fontSize={14} sx={{ paddingX: 5 }}>
+      loading...
+    </Typography>
+  ) : (
+    <Table columns={columns} rows={rows} />
+  );
 };
 
 export default TableData;

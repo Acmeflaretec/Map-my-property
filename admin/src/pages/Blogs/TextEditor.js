@@ -1,97 +1,62 @@
 import React from "react";
-import "quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
+import { Editor } from "@tinymce/tinymce-react";
 import PropTypes from "prop-types";
 import { useMediaQuery, useTheme } from "@mui/material";
 
 const TextEditor = ({ value, onChange }) => {
   const theme = useTheme();
-  const md = useMediaQuery(theme.breakpoints.up('sm'));
-  var modules = {
-    toolbar: [
-      [{ size: ["small", false, "large", "huge"] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      ["link"],
-      [
-        {
-          color: [
-            "#000000",
-            "#e60000",
-            "#ff9900",
-            "#ffff00",
-            "#008a00",
-            "#0066cc",
-            "#9933ff",
-            "#ffffff",
-            "#facccc",
-            "#ffebcc",
-            "#ffffcc",
-            "#cce8cc",
-            "#cce0f5",
-            "#ebd6ff",
-            "#bbbbbb",
-            "#f06666",
-            "#ffc266",
-            "#ffff66",
-            "#66b966",
-            "#66a3e0",
-            "#c285ff",
-            "#888888",
-            "#a10000",
-            "#b26b00",
-            "#b2b200",
-            "#006100",
-            "#0047b2",
-            "#6b24b2",
-            "#444444",
-            "#5c0000",
-            "#663d00",
-            "#666600",
-            "#003700",
-            "#002966",
-            "#3d1466",
-            "custom-color",
-          ],
-        },
-      ],
-    ],
-  };
+  const md = useMediaQuery(theme.breakpoints.up("sm"));
 
-  var formats = [
-    "header",
-    "height",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "color",
-    "link",
-  ];
-
-  const handleProcedureContentChange = (content) => {
-    onChange({ target: { name: "description", value: content } });
+  const handleEditorChange = (content) => {
+    onChange({
+      target: {
+        name: "description",
+        value: content,
+      },
+    });
   };
 
   return (
-    <div style={{ display: "grid", justifyContent: "center" }}>
-      <ReactQuill
-        theme="snow"
-        modules={modules}
-        formats={formats}
-        value={value}
-        placeholder="write your content ...."
-        onChange={handleProcedureContentChange}
-        style={{
-          height: "320px",
-          width: md ? '570px' : '100%'
-        }}
-      ></ReactQuill>
-    </div>
+    <Editor
+      apiKey={process.env.REACT_APP_TINY_API_KEY}
+      init={{
+        height: 500,
+        menubar: true,
+        plugins: [
+          "advlist",
+          "autolink",
+          "lists",
+          "link",
+          "image",
+          "charmap",
+          "preview",
+          "anchor",
+          "searchreplace",
+          "visualblocks",
+          "code",
+          "fullscreen",
+          "insertdatetime",
+          "media",
+          "table",
+          "help",
+          "wordcount",
+        ],
+        toolbar:
+          "undo redo | formatselect | " +
+          "bold italic backcolor | alignleft aligncenter " +
+          "alignright alignjustify | bullist numlist outdent indent | " +
+          "removeformat | help",
+        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+      }}
+      value={value}
+      onEditorChange={handleEditorChange}
+    />
   );
 };
+
 TextEditor.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
 };
+
 export default TextEditor;
