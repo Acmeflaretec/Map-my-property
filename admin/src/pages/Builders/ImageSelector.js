@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
 import { ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 
-const ImageSelecter = ({ data , dispatch }) => {
+const ImageSelector = ({ data , dispatch }) => {
    const fileInputRef = React.useRef(null);
 
    const handleImageChange = (e) => {
@@ -32,7 +32,7 @@ const ImageSelecter = ({ data , dispatch }) => {
 
    const handleRemoveImage = (index) => {
       if (data?.length === 1) {
-         toast.error('Atleast 1 image is required')
+         toast.error('At least 1 image is required')
          return
       }
       const image = data.filter((_, i) => i !== index);
@@ -45,8 +45,8 @@ const ImageSelecter = ({ data , dispatch }) => {
          if (extension === 'mp4' || extension === 'avi' || extension === 'mov') {
             return (
                <video
-                  style={{ width: 120, height: 100, borderRadius: '20px', border: 'solid 1px #D3D3D3' }}
-                  width="120" height="100" controls loop muted autoPlay>
+                  style={{ width: 200, height: 110, borderRadius: '15px', border: 'solid 1px #D3D3D3' }}
+                  width="200" height="110" controls loop muted autoPlay>
                   <source src={URL.createObjectURL(image)} type={`video/${extension}`} />
                   Your browser does not support the video tag.
                </video>
@@ -54,7 +54,7 @@ const ImageSelecter = ({ data , dispatch }) => {
          } else {
             return (
                <img
-                  style={{ width: 120, height: 100, borderRadius: '20px', border: 'solid 1px #D3D3D3' }}
+                  style={{ width: 200, height: 110, borderRadius: '15px', border: 'solid 1px #D3D3D3' }}
                   src={URL.createObjectURL(image)}
                   alt="Product Image"
                />
@@ -65,7 +65,7 @@ const ImageSelecter = ({ data , dispatch }) => {
          if (extension === 'mp4' || extension === 'avi' || extension === 'mov') {
             return (
                <video
-                  style={{ width: 120, height: 100, borderRadius: '20px', border: 'solid 1px #D3D3D3' }}
+                  style={{ width: 200, height: 110, borderRadius: '15px', border: 'solid 1px #D3D3D3' }}
                   width="180" height="140" controls loop muted autoPlay>
                   <source src={`${process.env.REACT_APP_API_URL}/uploads/${image}`} type={`video/${extension}`} />
                   Your browser does not support the video tag.
@@ -74,7 +74,7 @@ const ImageSelecter = ({ data , dispatch }) => {
          } else {
             return (
                <img
-                  style={{ width: 120, height: 100, borderRadius: '20px', border: 'solid 1px #D3D3D3' }}
+                  style={{ width: 200, height: 110, borderRadius: '15px', border: 'solid 1px #D3D3D3' }}
                   src={`${process.env.REACT_APP_API_URL}/uploads/${image}`}
                   alt="Product Image"
                />
@@ -96,10 +96,8 @@ const ImageSelecter = ({ data , dispatch }) => {
                            opacity: [0.9, 0.8, 0.7],
                         },
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        borderRadius: '15px'
+                        borderRadius: '15px',
+                        width:"200px"
                      }}
                      onClick={handleFileSelect}
                   >
@@ -166,7 +164,7 @@ const ImageSelecter = ({ data , dispatch }) => {
                      ) : (
                         <React.Fragment>
                            <svg
-                              style={{ width: 120, height: 100, borderRadius: '20px', border: 'solid 1px #D3D3D3' }}
+                              style={{ width: 200, height: 110, borderRadius: '15px', border: 'solid 1px #D3D3D3' }}
                               width="56"
                               height="56"
                               viewBox="0 0 56 56"
@@ -218,7 +216,7 @@ const ImageSelecter = ({ data , dispatch }) => {
                >
                   <React.Fragment>
                      <svg
-                        style={{ width: 120, height: 100, borderRadius: '20px', border: 'solid 1px #D3D3D3' }}
+                        style={{ width: 200, height: 110, borderRadius: '15px', border: 'solid 1px #D3D3D3' }}
                         width="56"
                         height="56"
                         viewBox="0 0 56 56"
@@ -264,9 +262,9 @@ const ImageSelecter = ({ data , dispatch }) => {
    )
 }
 
-ImageSelecter.propTypes = {
+ImageSelector.propTypes = {
    data: PropTypes.array.isRequired,
    dispatch: PropTypes.func.isRequired,
 };
 
-export default ImageSelecter
+export default ImageSelector
