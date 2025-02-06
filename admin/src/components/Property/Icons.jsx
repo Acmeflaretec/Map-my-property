@@ -1,9 +1,7 @@
 import React from "react";
 
-type IconProps = React.SVGAttributes<SVGSVGElement>;
-
 export const Icons = {
-  bedroom: (props: IconProps) => (
+  bedroom: (props) => (
     <svg
       {...props}
       width="37"
@@ -18,7 +16,7 @@ export const Icons = {
       />
     </svg>
   ),
-  area: (props: IconProps) => (
+  area: (props) => (
     <svg
       {...props}
       width="34"
@@ -35,7 +33,7 @@ export const Icons = {
       />
     </svg>
   ),
-  parking: (props: IconProps) => (
+  parking: (props) => (
     <svg
       {...props}
       width="37"
@@ -54,17 +52,12 @@ export const Icons = {
       </g>
       <defs>
         <clipPath id="clip0_469_1488">
-          <rect
-            width="37"
-            height="37"
-            fill="white"
-            transform="translate(0 0.5)"
-          />
+          <rect width="37" height="37" fill="white" transform="translate(0 0.5)" />
         </clipPath>
       </defs>
     </svg>
   ),
-  bathroom: (props: IconProps) => (
+  bathroom: (props) => (
     <svg
       {...props}
       width="37"
@@ -87,7 +80,7 @@ export const Icons = {
       />
     </svg>
   ),
-  balcony: (props: IconProps) => (
+  balcony: (props) => (
     <svg
       {...props}
       width="37"
@@ -102,7 +95,7 @@ export const Icons = {
       />
     </svg>
   ),
-  gymnasium: (props: IconProps) => (
+  gymnasium: (props) => (
     <svg
       {...props}
       width="38"
@@ -117,7 +110,7 @@ export const Icons = {
       />
     </svg>
   ),
-  indoorGames: (props: IconProps) => (
+  indoorGames: (props) => (
     <svg
       {...props}
       width="36"
@@ -138,7 +131,7 @@ export const Icons = {
       />
     </svg>
   ),
-  games: (props: IconProps) => (
+  games: (props) => (
     <svg
       {...props}
       width="37"
@@ -167,7 +160,7 @@ export const Icons = {
       />
     </svg>
   ),
-  clubhouse: (props: IconProps) => (
+  clubhouse: (props) => (
     <svg
       {...props}
       width="39"
@@ -182,7 +175,7 @@ export const Icons = {
       />
     </svg>
   ),
-  jogging: (props: IconProps) => (
+  jogging: (props) => (
     <svg
       {...props}
       width="38"
@@ -205,7 +198,7 @@ export const Icons = {
       />
     </svg>
   ),
-  yoga: (props: IconProps) => (
+  yoga: (props) => (
     <svg
       {...props}
       width="37"
@@ -234,7 +227,7 @@ export const Icons = {
       />
     </svg>
   ),
-  lift: (props: IconProps) => (
+  lift: (props) => (
     <svg
       {...props}
       width="35"
@@ -259,7 +252,7 @@ export const Icons = {
       />
     </svg>
   ),
-  swimmingPool: (props: IconProps) => (
+  swimmingPool: (props) => (
     <svg
       {...props}
       width="36"
@@ -276,7 +269,7 @@ export const Icons = {
       />
     </svg>
   ),
-  petsPark: (props: IconProps) => (
+  petsPark: (props) => (
     <svg
       {...props}
       width="37"
@@ -293,7 +286,7 @@ export const Icons = {
       />
     </svg>
   ),
-  landscape: (props: IconProps) => (
+  landscape: (props) => (
     <svg
       {...props}
       width="37"
@@ -310,7 +303,7 @@ export const Icons = {
       />
     </svg>
   ),
-  education: (props: IconProps) => (
+  education: (props) => (
     <svg
       {...props}
       width="37"
@@ -325,7 +318,7 @@ export const Icons = {
       />
     </svg>
   ),
-  church: (props: IconProps) => (
+  church: (props) => (
     <svg
       {...props}
       width="37"
@@ -340,7 +333,7 @@ export const Icons = {
       />
     </svg>
   ),
-  transport: (props: IconProps) => (
+  transport: (props) => (
     <svg
       {...props}
       width="37"
@@ -355,7 +348,7 @@ export const Icons = {
       />
     </svg>
   ),
-  shoppingCart: (props: IconProps) => (
+  shoppingCart: (props) => (
     <svg
       {...props}
       width="37"

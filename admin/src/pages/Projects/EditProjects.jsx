@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import { useGetProjectsById, useUpdateProjects, useGetSelectBuilders } from "queries/ProductQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import { Delete, Add } from "@mui/icons-material";
-import { Icons } from "components/Property/Icons.tsx";
+import { Icons } from "components/Property/Icons.jsx";
 import IconPickerPopup from "./IconPickerPopup";
 import FieldSection from "./FieldSection";
 import { useGetCategory } from "queries/ProductQuery";
@@ -61,6 +61,9 @@ const EditProjects = () => {
       }
       if (!category?._id) {
         return toast.error("category is required");
+      }
+      if (!details?.href) {
+        return toast.error("url is required");
       }
       if (!details?.location) {
         return toast.error("location is required");
@@ -511,16 +514,16 @@ const EditProjects = () => {
                 onChange={handleChange}
               />
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               <Input
                 required
-                placeholder="URL (href)"
+                placeholder="Slug URL (href)"
                 id="href"
                 name="href"
                 value={details.href}
                 onChange={handleChange}
               />
-            </Grid> */}
+            </Grid>
             <Grid item xs={12}>
               <Input
                 required

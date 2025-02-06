@@ -11,16 +11,41 @@ import PropTypes from "prop-types";
 
 function Author({ id, image, name, desc }) {
   return (
-    <Box key={id} display="flex" alignItems="center" px={1} py={0.5}>
+    <Box
+      key={id}
+      display="flex"
+      alignItems="center"
+      px={1}
+      py={0.5}
+      style={{ textTransform: "capitalize" }}
+    >
       <Box mr={2}>
         <Avatar src={image} alt={name} size="sm" variant="rounded" />
       </Box>
       <Box display="flex" flexDirection="column">
-        <Typography variant="button" fontWeight="medium">
-          {name.slice(0, 50)}
+        <Typography
+          variant="button"
+          fontWeight="medium"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "350px",
+          }}
+        >
+          {name}
         </Typography>
-        <Typography variant="caption" color="secondary">
-          {desc.slice(0, 30)}
+        <Typography
+          variant="caption"
+          color="secondary"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "350px",
+          }}
+        >
+          {desc}
         </Typography>
       </Box>
     </Box>

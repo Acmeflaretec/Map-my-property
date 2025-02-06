@@ -1,61 +1,50 @@
-import { Autocomplete, Button, Grid, TextField, IconButton, Rating } from '@mui/material'
-import Box from 'components/Box'
-import Input from 'components/Input'
-import PageLayout from 'layouts/PageLayout'
-import React, { useState, useEffect } from 'react'
-import Typography from 'components/Typography'
-import { useGetCategory, useAddProjects, useGetSelectBuilders } from 'queries/ProductQuery'
-import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
-import { Delete, Add } from '@mui/icons-material';
-import { Icons } from 'components/Property/Icons.tsx'
-import IconPickerPopup from './IconPickerPopup'
-import FieldSection from './FieldSection'
+import { Autocomplete, Button, Grid, TextField, IconButton, Rating } from "@mui/material";
+import Box from "components/Box";
+import Input from "components/Input";
+import PageLayout from "layouts/PageLayout";
+import React, { useState, useEffect } from "react";
+import Typography from "components/Typography";
+import { useGetCategory, useAddProjects, useGetSelectBuilders } from "queries/ProductQuery";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { Delete, Add } from "@mui/icons-material";
+import { Icons } from "components/Property/Icons.jsx";
+import IconPickerPopup from "./IconPickerPopup";
+import FieldSection from "./FieldSection";
 
 const AddProjects = () => {
-  const navigat = useNavigate()
+  const navigate = useNavigate();
 
-
-  const storageKey = 'addProjectData';
+  const storageKey = "addProjectData";
   const initialDetails = {
-    ExpertOpinions: [''],
-    Bedrooms: [''],
-    Areas: [''],
-    FAQs: [{ questions: '', answer: '' }],
-    reviews: [{ name: '', rating: 0, review: '', src: '' }],
-    masterPlan: [{ title: '', desc: '', src: '' }],
-    imageGallery: [{ title: '', desc: '', src: '' }],
-    floorPlans: [{ title: '', desc: '', src: '' }],
-    accommodation: [{ unit: '', area: '', price: '' }],
-    features: [{ title: '', items: [{ text: '', helpertext: '', icon: '' }] }]
-  }
+    ExpertOpinions: [""],
+    Bedrooms: [""],
+    Areas: [""],
+    FAQs: [{ questions: "", answer: "" }],
+    reviews: [{ name: "", rating: 0, review: "", src: "" }],
+    masterPlan: [{ title: "", desc: "", src: "" }],
+    imageGallery: [{ title: "", desc: "", src: "" }],
+    floorPlans: [{ title: "", desc: "", src: "" }],
+    accommodation: [{ unit: "", area: "", price: "" }],
+    features: [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+  };
   // const [details, setDetails] = useState()
 
+  const [details, setDetails] = useState(() => {
+    const savedData = localStorage.getItem(storageKey);
+    return savedData ? JSON.parse(savedData) : initialDetails;
+  });
 
-
-    const [details, setDetails] = useState(() => {
-      const savedData = localStorage.getItem(storageKey);
-      return savedData ? JSON.parse(savedData) : initialDetails;
-    });
-
-
-
-
-
-
-
-  const [builder, setBuilders] = useState()
+  const [builder, setBuilders] = useState();
   const { data, isLoading } = useGetCategory({ pageNo: 1, pageCount: 100 });
-  const { mutateAsync: AddProjects, isLoading: loading } = useAddProjects()
+  const { mutateAsync: AddProjects, isLoading: loading } = useAddProjects();
   const { data: build } = useGetSelectBuilders({ pageNo: 1, pageCount: 100 });
   const handleChange = (e) => {
-    setDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setDetails((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  const [disable, setDisable] = useState(false)
+  const [disable, setDisable] = useState(false);
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const [selectedIconField, setSelectedIconField] = useState({});
-
-
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(details));
@@ -65,98 +54,120 @@ const AddProjects = () => {
     setDetails(initialDetails);
   };
 
-  console.log('selectedIconField', selectedIconField);
+  console.log("selectedIconField", selectedIconField);
 
-
-  const [category, setCategory] = useState()
+  const [category, setCategory] = useState();
 
   const handleSubmit = () => {
-    let flag = true
+    let flag = true;
 
     try {
       if (!details?.title) {
-        return toast.error("title is required")
+        return toast.error("title is required");
       }
       if (!details?.subtitle) {
-        return toast.error("subtitle is required")
+        return toast.error("subtitle is required");
       }
       if (!category?._id) {
-        return toast.error("category is required")
+        return toast.error("category is required");
       }
       if (!builder?._id) {
-        return toast.error("builder is required")
+        return toast.error("builder is required");
       }
       if (!details?.imageGallery[0]?.title) {
-        return toast.error("imageGallery is required")
+        return toast.error("imageGallery is required");
+      }
+      if (!details?.href) {
+        return toast.error("url is required");
+      }
+      if (!details?.location) {
+        return toast.error("location is required");
       }
       if (!details?.minPrice) {
-        return toast.error("minPrice is required")
+        return toast.error("minPrice is required");
       }
       if (!details?.maxPrice) {
-        return toast.error("maxPrice is required")
+        return toast.error("maxPrice is required");
       }
       if (!details?.description) {
-        return toast.error("description is required")
+        return toast.error("description is required");
       }
-      setDisable(true)
+      setDisable(true);
       const formData = new FormData();
       for (const key in details) {
-        if (details.hasOwnProperty(key) && !['ExpertOpinions', 'Bedrooms', 'Areas', 'features',
-          'FAQs', 'reviews', 'imageGallery', 'floorPlans', 'accommodation', 'masterPlan'].includes(key)) {
+        if (
+          details.hasOwnProperty(key) &&
+          ![
+            "ExpertOpinions",
+            "Bedrooms",
+            "Areas",
+            "features",
+            "FAQs",
+            "reviews",
+            "imageGallery",
+            "floorPlans",
+            "accommodation",
+            "masterPlan",
+          ].includes(key)
+        ) {
           formData.append(key, details[key]);
         }
       }
-      formData.append('category', category?._id);
-      formData.append('builder', builder?._id);
+      formData.append("category", category?._id);
+      formData.append("builder", builder?._id);
 
-      details.features.forEach(feature => {
-        feature.items.forEach(item => {
+      details.features.forEach((feature) => {
+        feature.items.forEach((item) => {
           formData.append(`features[${feature.title}][]`, JSON.stringify(item));
         });
       });
-      ['ExpertOpinions', 'Bedrooms', 'Areas'].forEach(field => {
-        details[field].forEach(value => {
+      ["ExpertOpinions", "Bedrooms", "Areas"].forEach((field) => {
+        details[field].forEach((value) => {
           if (value) {
             formData.append(field, value);
           }
         });
       });
 
-      details?.FAQs?.forEach(si => {
-        if (si.questions === '') {
-
+      details?.FAQs?.forEach((si) => {
+        if (si.questions === "") {
         } else {
-          formData.append('questions', si.questions);
-          formData.append('answer', si.answer);
+          formData.append("questions", si.questions);
+          formData.append("answer", si.answer);
         }
-
       });
       details?.reviews?.forEach((review, i) => {
-        if (review.name === '') {
-
+        if (review.name === "") {
         } else {
           if (review.src) {
             formData.append(`reviewsName`, review.name);
             formData.append(`reviewsRating`, review.rating);
             formData.append(`reviewsReview`, review.review);
-            if (review.src && typeof review.src === 'string' && review.src.startsWith('data:image/')) {
+            if (
+              review.src &&
+              typeof review.src === "string" &&
+              review.src.startsWith("data:image/")
+            ) {
               const blob = dataURLtoFile(review.src, `file-${i}.png`);
               // formData.append(`reviews`, review.src);
               formData.append(`reviews`, blob);
             }
           } else {
-            toast.error(`reviews ${i + 1} field image is required`)
-            flag = false
-            setDisable(false)
+            toast.error(`reviews ${i + 1} field image is required`);
+            flag = false;
+            setDisable(false);
           }
         }
       });
       if (details?.masterPlan) {
-        if (details.masterPlan[0].title === '') {
-
+        if (details.masterPlan[0].title === "") {
         } else {
           if (details.masterPlan[0].src) {
-            if (details.masterPlan[0].src && typeof details.masterPlan[0].src === 'string' && details.masterPlan[0].src.startsWith('data:image/')) {
+            if (
+              details.masterPlan[0].src &&
+              typeof details.masterPlan[0].src === "string" &&
+              details.masterPlan[0].src.startsWith("data:image/")
+            ) {
               const blob = dataURLtoFile(details.masterPlan[0].src, `file-0.png`);
               // formData.append(`masterPlan`, details.masterPlan[0].src);
               formData.append(`masterPlan`, blob);
@@ -164,18 +175,20 @@ const AddProjects = () => {
             formData.append(`masterPlanTitle`, details.masterPlan[0].title);
             formData.append(`masterPlanDesc`, details.masterPlan[0].desc);
           } else {
-            return toast.error(" masterPlan image is required")
-            setDisable(false)
+            return toast.error(" masterPlan image is required");
+            setDisable(false);
           }
-
         }
       }
       details?.imageGallery?.forEach((Gallery, i) => {
-        if (Gallery.title === '') {
-
+        if (Gallery.title === "") {
         } else {
           if (Gallery.src) {
-            if (Gallery.src && typeof Gallery.src === 'string' && Gallery.src.startsWith('data:image/')) {
+            if (
+              Gallery.src &&
+              typeof Gallery.src === "string" &&
+              Gallery.src.startsWith("data:image/")
+            ) {
               const blob = dataURLtoFile(Gallery.src, `file-${i}.png`);
               // formData.append(`imageGallery`, Gallery.src);
               formData.append(`imageGallery`, blob);
@@ -183,37 +196,32 @@ const AddProjects = () => {
             formData.append(`imageGalleryTitle`, Gallery.title);
             formData.append(`imageGalleryDesc`, Gallery.desc);
           } else {
-            toast.error(`image Gallery ${i + 1} field image is required`)
-            flag = false
-            setDisable(false)
+            toast.error(`image Gallery ${i + 1} field image is required`);
+            flag = false;
+            setDisable(false);
           }
-
         }
       });
       details?.floorPlans?.forEach((Plans, i) => {
-        if (Plans.title === '') {
-
+        if (Plans.title === "") {
         } else {
           if (Plans.src) {
-            if (Plans.src && typeof Plans.src === 'string' && Plans.src.startsWith('data:image/')) {
+            if (Plans.src && typeof Plans.src === "string" && Plans.src.startsWith("data:image/")) {
               const blob = dataURLtoFile(Plans.src, `file-${i}.png`);
               // formData.append(`floorPlans`, Plans.src);
               formData.append(`floorPlans`, blob);
             }
             formData.append(`floorPlansTitle`, Plans.title);
             formData.append(`floorPlansDesc`, Plans.desc);
-
           } else {
-            toast.error(`floor Plans ${i + 1} field image is required`)
-            flag = false
-            setDisable(false)
+            toast.error(`floor Plans ${i + 1} field image is required`);
+            flag = false;
+            setDisable(false);
           }
-
         }
       });
-      details?.accommodation?.forEach(unit => {
-        if (unit.unit === '') {
-
+      details?.accommodation?.forEach((unit) => {
+        if (unit.unit === "") {
         } else {
           formData.append(`accommodationUnit`, unit.unit);
           formData.append(`accommodationArea`, unit.area);
@@ -221,39 +229,37 @@ const AddProjects = () => {
         }
       });
 
-
-
       if (flag) {
         AddProjects(formData)
           .then((res) => {
             toast.success(res?.message ?? "Projects added");
-            setDisable(false)
+            setDisable(false);
             localStorage.removeItem(storageKey);
-            navigat('/projects')
+            navigate("/projects");
           })
           .catch((err) => {
             toast.error(err?.message ?? "Something went wrong");
-            setDisable(false)
+            setDisable(false);
           });
       }
     } catch (error) {
-      setDisable(false)
-      console.error(error)
+      setDisable(false);
+      console.error(error);
     }
-  }
+  };
   const handleFieldChange = (field, index, value) => {
     const updated = [...details[field]];
     updated[index] = value;
-    setDetails(prevData => ({ ...prevData, [field]: updated }));
+    setDetails((prevData) => ({ ...prevData, [field]: updated }));
   };
 
   const handleAddFields = (field) => {
-    setDetails(prevData => ({ ...prevData, [field]: [...prevData[field], ''] }));
+    setDetails((prevData) => ({ ...prevData, [field]: [...prevData[field], ""] }));
   };
 
   const handleRemoveFields = (field, index) => {
     const updated = details[field].filter((_, i) => i !== index);
-    setDetails(prevData => ({ ...prevData, [field]: updated }));
+    setDetails((prevData) => ({ ...prevData, [field]: updated }));
   };
 
   const handleFeaturesChange = (index, key, value) => {
@@ -270,7 +276,11 @@ const AddProjects = () => {
     setDetails({ ...details, features: updatedFeatures });
   };
 
-  const handleAddFeature = () => setDetails(prev => ({ ...prev, features: [...prev.features, { title: '', items: [{ text: '', helpertext: '', icon: '' }] }] }));
+  const handleAddFeature = () =>
+    setDetails((prev) => ({
+      ...prev,
+      features: [...prev.features, { title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+    }));
 
   const handleRemoveFeature = (index) => {
     const updatedFeatures = details.features.filter((_, i) => i !== index);
@@ -278,7 +288,10 @@ const AddProjects = () => {
   };
 
   const handleAddFeatureItem = (featureIndex) => {
-    const updatedItems = [...details.features[featureIndex].items, { text: '', helpertext: '', icon: '' }];
+    const updatedItems = [
+      ...details.features[featureIndex].items,
+      { text: "", helpertext: "", icon: "" },
+    ];
     const updatedFeatures = [...details.features];
     updatedFeatures[featureIndex].items = updatedItems;
     setDetails({ ...details, features: updatedFeatures });
@@ -291,30 +304,27 @@ const AddProjects = () => {
     setDetails({ ...details, features: updatedFeatures });
   };
 
-
-
-
-
-
   const handleAddFAQs = () => {
-    setDetails(prevData => ({ ...prevData, FAQs: [...prevData.FAQs, { questions: '', answer: '' }] }));
+    setDetails((prevData) => ({
+      ...prevData,
+      FAQs: [...prevData.FAQs, { questions: "", answer: "" }],
+    }));
   };
   const handleFAQsChange = (index, field, value) => {
     const newFAQs = [...details.FAQs];
-    newFAQs[index] = { ...newFAQs[index], [field]: value };;
-    setDetails(prevData => ({ ...prevData, FAQs: newFAQs }));
+    newFAQs[index] = { ...newFAQs[index], [field]: value };
+    setDetails((prevData) => ({ ...prevData, FAQs: newFAQs }));
   };
 
   const handleRemoveFAQs = (index) => {
     const newFAQs = details.FAQs.filter((_, i) => i !== index);
-    setDetails(prevData => ({ ...prevData, FAQs: newFAQs }));
+    setDetails((prevData) => ({ ...prevData, FAQs: newFAQs }));
   };
-
 
   const handleAddReview = () => {
     setDetails((prevData) => ({
       ...prevData,
-      reviews: [...prevData.reviews, { name: '', rating: 0, review: '' }],
+      reviews: [...prevData.reviews, { name: "", rating: 0, review: "" }],
     }));
   };
 
@@ -328,8 +338,6 @@ const AddProjects = () => {
     const newReviews = details.reviews.filter((_, i) => i !== reviewIndex);
     setDetails((prevData) => ({ ...prevData, reviews: newReviews }));
   };
-
-
 
   const handleIconPickerOpen = (featureIndex, itemIndex) => {
     setSelectedIconField({ featureIndex, itemIndex });
@@ -346,10 +354,9 @@ const AddProjects = () => {
     const updatedItems = [...updatedFeatures[featureIndex].items];
     updatedItems[itemIndex] = { ...updatedItems[itemIndex], icon: iconName };
     updatedFeatures[featureIndex].items = updatedItems;
-    setDetails(prev => ({ ...prev, features: updatedFeatures }));
+    setDetails((prev) => ({ ...prev, features: updatedFeatures }));
     setIconPickerOpen(false);
   };
-
 
   const handleNestedChange = (field, index, subField, value) => {
     const updated = [...details[field]];
@@ -367,14 +374,17 @@ const AddProjects = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result;
-        handleNestedChange(field, index, 'src', base64String);
+        handleNestedChange(field, index, "src", base64String);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleAddField = (field) => {
-    const newItem = field === 'accommodation' ? { unit: '', area: '', price: '' } : { title: '', desc: '', src: '' };
+    const newItem =
+      field === "accommodation"
+        ? { unit: "", area: "", price: "" }
+        : { title: "", desc: "", src: "" };
     setDetails((prev) => ({ ...prev, [field]: [...prev[field], newItem] }));
   };
 
@@ -383,33 +393,36 @@ const AddProjects = () => {
     setDetails((prev) => ({ ...prev, [field]: updated }));
   };
 
-
-  console.log('details', details);
+  console.log("details", details);
   // console.log('builders', builder);
 
   return (
-    <PageLayout
-      title={'Add Projects'}
-    >
-      <Grid container spacing={5} display={'flex'} direction={'row'} p={8} >
-        <Grid item container spacing={2} xs={12} >
-          <Grid item xs={12} >
+    <PageLayout title={"Add Projects"}>
+      <Grid container spacing={5} display={"flex"} direction={"row"} px={8} pb={8}>
+        <Grid item container spacing={2} xs={12}>
+          <Grid item xs={12} display={"flex"} alignItems={"center"} gap={1}>
+            <Typography variant="h6">Basic Details</Typography>
+            <Typography variant="caption" color="error">
+              *required
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
             <Input
               required
-              placeholder="Item Title"
+              placeholder="Project Title"
               id="title"
               name="title"
-              value={details?.title || ''}
+              value={details?.title || ""}
               onChange={handleChange}
             />
           </Grid>
           <Grid item xs={12}>
             <Input
               required
-              placeholder="Item sub title"
+              placeholder="Project sub title"
               id="subtitle"
               name="subtitle"
-              value={details?.subtitle || ''}
+              value={details?.subtitle || ""}
               onChange={handleChange}
             />
           </Grid>
@@ -424,7 +437,7 @@ const AddProjects = () => {
               autoHighlight
               getOptionLabel={(option) => option.name}
               renderOption={(props, option) => (
-                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                <Box component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
                   <img
                     loading="lazy"
                     width="20"
@@ -434,8 +447,12 @@ const AddProjects = () => {
                     {option?.name} <br />
                     {option?.desc}
                   </Typography>
-                  <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
-                    {option?.isAvailable ? 'available' : 'NA'}
+                  <Typography
+                    sx={{ ml: "auto" }}
+                    color={option?.isAvailable ? "success" : "error"}
+                    variant="caption"
+                  >
+                    {option?.isAvailable ? "available" : "NA"}
                   </Typography>
                 </Box>
               )}
@@ -461,7 +478,7 @@ const AddProjects = () => {
               autoHighlight
               getOptionLabel={(option) => option.title}
               renderOption={(props, option) => (
-                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                <Box component="li" sx={{ "& > img": { mr: 2, flexShrink: 0 } }} {...props}>
                   <img
                     loading="lazy"
                     width="20"
@@ -471,8 +488,12 @@ const AddProjects = () => {
                     {option?.title} <br />
                     {option?.subtitle}
                   </Typography>
-                  <Typography sx={{ ml: 'auto' }} color={option?.isAvailable ? 'success' : 'error'} variant="caption">
-                    {option?.isAvailable ? 'available' : 'NA'}
+                  <Typography
+                    sx={{ ml: "auto" }}
+                    color={option?.isAvailable ? "success" : "error"}
+                    variant="caption"
+                  >
+                    {option?.isAvailable ? "available" : "NA"}
                   </Typography>
                 </Box>
               )}
@@ -492,7 +513,7 @@ const AddProjects = () => {
               id="description"
               placeholder="More about"
               name="description"
-              value={details?.description || ''}
+              value={details?.description || ""}
               onChange={handleChange}
               multiline
               rows={5}
@@ -501,7 +522,7 @@ const AddProjects = () => {
           <Grid item xs={6}>
             <Input
               required
-              type='number'
+              type="number"
               placeholder="Min Price"
               id="minPrice"
               name="minPrice"
@@ -513,7 +534,7 @@ const AddProjects = () => {
           <Grid item xs={6}>
             <Input
               required
-              type='number'
+              type="number"
               placeholder="Max Price"
               id="maxPrice"
               name="maxPrice"
@@ -525,30 +546,61 @@ const AddProjects = () => {
           <Grid item xs={12}>
             <Input
               required
-              placeholder="URL (href)"
+              placeholder="Slug URL (href)"
               id="href"
               name="href"
               value={details.href}
               onChange={handleChange}
             />
           </Grid>
-
-
-
-
           <Grid item xs={12}>
+            <Input
+              required
+              placeholder="Project Location"
+              id="location"
+              name="location"
+              value={details?.location || ""}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6">Property Features</Typography>
             {details.features.map((feature, index) => (
               <Box key={index} mt={2} p={2} border={1}>
-                <Typography variant="h6">Feature Title</Typography>
-                <Input fullWidth placeholder="Feature Title" value={feature.title} onChange={(e) => handleFeaturesChange(index, 'title', e.target.value)} />
+                <Typography variant="h6">Feature {index + 1}</Typography>
+                <Input
+                  fullWidth
+                  placeholder="Feature Title"
+                  value={feature.title}
+                  onChange={(e) => handleFeaturesChange(index, "title", e.target.value)}
+                />
                 {feature.items.map((item, itemIndex) => (
                   <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
                     {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
                     <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
-                      {Icons[item.icon] ? Icons[item.icon]({ width: '24px', height: '24px' }) : <Add />}
+                      {Icons[item.icon] ? (
+                        Icons[item.icon]({ width: "24px", height: "24px" })
+                      ) : (
+                        <Add />
+                      )}
                     </IconButton>
-                    <Input placeholder="Text" style={{ marginRight: '5px' }} value={item.text} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'text', e.target.value)} fullWidth />
-                    <Input placeholder="Helpertext" value={item.helpertext} onChange={(e) => handleFeatureItemsChange(index, itemIndex, 'helpertext', e.target.value)} fullWidth />
+                    <Input
+                      placeholder="Text"
+                      style={{ marginRight: "5px" }}
+                      value={item.text}
+                      onChange={(e) =>
+                        handleFeatureItemsChange(index, itemIndex, "text", e.target.value)
+                      }
+                      fullWidth
+                    />
+                    <Input
+                      placeholder="Helpertext"
+                      value={item.helpertext}
+                      onChange={(e) =>
+                        handleFeatureItemsChange(index, itemIndex, "helpertext", e.target.value)
+                      }
+                      fullWidth
+                    />
                     <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
                       <Delete />
                     </IconButton>
@@ -558,41 +610,39 @@ const AddProjects = () => {
                 <Button onClick={() => handleRemoveFeature(index)}>Remove Feature</Button>
               </Box>
             ))}
-            <Box style={{ marginTop: '10px' }}>
-              <Button onClick={handleAddFeature} variant="contained" color="primary" fullWidth className="mt-4">Add Feature</Button>
+            <Box style={{ marginTop: "10px" }}>
+              <Button
+                onClick={handleAddFeature}
+                variant="contained"
+                color="primary"
+                fullWidth
+                className="mt-4"
+              >
+                Add Feature
+              </Button>
             </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Input
-              required
-              placeholder="Location Embed url"
-              id="location"
-              name="location"
-              value={details?.location || ''}
-              onChange={handleChange}
-            />
           </Grid>
           <FieldSection
             label="Expert Opinions"
             values={details.ExpertOpinions}
-            onChange={(index, value) => handleFieldChange('ExpertOpinions', index, value)}
-            onAdd={() => handleAddFields('ExpertOpinions')}
-            onRemove={(index) => handleRemoveFields('ExpertOpinions', index)}
+            onChange={(index, value) => handleFieldChange("ExpertOpinions", index, value)}
+            onAdd={() => handleAddFields("ExpertOpinions")}
+            onRemove={(index) => handleRemoveFields("ExpertOpinions", index)}
           />
           <FieldSection
             label="Bedrooms (BHK)"
             values={details.Bedrooms}
-            onChange={(index, value) => handleFieldChange('Bedrooms', index, value)}
-            onAdd={() => handleAddFields('Bedrooms')}
-            onRemove={(index) => handleRemoveFields('Bedrooms', index)}
+            onChange={(index, value) => handleFieldChange("Bedrooms", index, value)}
+            onAdd={() => handleAddFields("Bedrooms")}
+            onRemove={(index) => handleRemoveFields("Bedrooms", index)}
           />
 
           <FieldSection
             label="Area (sq/ft)"
             values={details.Areas}
-            onChange={(index, value) => handleFieldChange('Areas', index, value)}
-            onAdd={() => handleAddFields('Areas')}
-            onRemove={(index) => handleRemoveFields('Areas', index)}
+            onChange={(index, value) => handleFieldChange("Areas", index, value)}
+            onAdd={() => handleAddFields("Areas")}
+            onRemove={(index) => handleRemoveFields("Areas", index)}
           />
 
           <Grid item xs={12}>
@@ -601,25 +651,25 @@ const AddProjects = () => {
               <Input
                 placeholder=" Master Plan Title"
                 value={details.masterPlan[0].title}
-                style={{ marginRight: '5px' }}
+                style={{ marginRight: "5px" }}
                 fullWidth
-                onChange={(e) => handleNestedChange("masterPlan", 0, 'title', e.target.value)}
+                onChange={(e) => handleNestedChange("masterPlan", 0, "title", e.target.value)}
               />
               <Input
                 placeholder="Description"
                 value={details.masterPlan[0].desc}
                 fullWidth
-                onChange={(e) => handleNestedChange("masterPlan", 0, 'desc', e.target.value)}
+                onChange={(e) => handleNestedChange("masterPlan", 0, "desc", e.target.value)}
               />
             </Box>
-            <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-              <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+            <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+              <Button
+                variant="outlined"
+                component="label"
+                style={{ color: "gray", marginTop: "5px" }}
+              >
                 Upload Image
-                <input
-                  type="file"
-                  hidden
-                  onChange={(e) => handleFileChange('masterPlan', 0, e)}
-                />
+                <input type="file" hidden onChange={(e) => handleFileChange("masterPlan", 0, e)} />
               </Button>
               {details?.masterPlan[0]?.src && (
                 // <Box mt={1}>
@@ -636,74 +686,85 @@ const AddProjects = () => {
                 <Box mt={1}>
                   <img
                     src={
-                      details.masterPlan[0].src.startsWith('data:image/')
+                      details.masterPlan[0].src.startsWith("data:image/")
                         ? details.masterPlan[0].src
                         : `${process.env.REACT_APP_API_URL}/uploads/${details.masterPlan[0].src}`
                     }
                     alt={`masterPlan`}
-                    style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                    style={{ width: "100%", height: "100px", objectFit: "cover" }}
                   />
                 </Box>
               )}
-
             </Box>
           </Grid>
-          {['imageGallery', 'floorPlans', 'accommodation'].map((field) => (
+          {["imageGallery", "floorPlans", "accommodation"].map((field) => (
             <Grid item xs={12} key={field}>
-              <Typography variant="h6">{field.replace(/([A-Z])/g, ' $1').trim()}</Typography>
+              <Typography variant="h6" sx={{ textTransform: "capitalize" }}>
+                {field.replace(/([A-Z])/g, " $1").trim()}
+                {field === "imageGallery" && (
+                  <Typography variant="caption" color="error">
+                    {" "}
+                    *required
+                  </Typography>
+                )}
+              </Typography>
               {details[field].map((item, index) => (
                 <Box key={index} marginBottom={1}>
                   <Box display="flex" alignItems="center">
-                    {field !== 'accommodation' && (
+                    {field !== "accommodation" && (
                       <Input
                         placeholder="Title"
                         value={item.title}
                         required
-                        onChange={(e) => handleNestedChange(field, index, 'title', e.target.value)}
-                        style={{ marginRight: '5px' }}
+                        onChange={(e) => handleNestedChange(field, index, "title", e.target.value)}
+                        style={{ marginRight: "5px" }}
                         fullWidth
                       />
                     )}
-                    {field !== 'accommodation' && (
+                    {field !== "accommodation" && (
                       <Input
                         placeholder="Description"
                         value={item.desc}
-                        style={{ marginRight: '5px' }}
-                        onChange={(e) => handleNestedChange(field, index, 'desc', e.target.value)}
+                        style={{ marginRight: "5px" }}
+                        onChange={(e) => handleNestedChange(field, index, "desc", e.target.value)}
                         fullWidth
                       />
                     )}
 
-                    {field === 'accommodation' && (
+                    {field === "accommodation" && (
                       <Input
                         placeholder="Unit"
                         value={item.unit}
-                        style={{ marginRight: '5px' }}
-                        onChange={(e) => handleNestedChange(field, index, 'unit', e.target.value)}
+                        style={{ marginRight: "5px" }}
+                        onChange={(e) => handleNestedChange(field, index, "unit", e.target.value)}
                         fullWidth
                       />
                     )}
-                    {field === 'accommodation' && (
+                    {field === "accommodation" && (
                       <Input
                         placeholder="Area"
                         value={item.area}
-                        style={{ marginRight: '5px' }}
-                        onChange={(e) => handleNestedChange(field, index, 'area', e.target.value)}
+                        style={{ marginRight: "5px" }}
+                        onChange={(e) => handleNestedChange(field, index, "area", e.target.value)}
                         fullWidth
                       />
                     )}
-                    {field === 'accommodation' && (
+                    {field === "accommodation" && (
                       <Input
                         placeholder="Price"
                         value={item.price}
-                        onChange={(e) => handleNestedChange(field, index, 'price', e.target.value)}
+                        onChange={(e) => handleNestedChange(field, index, "price", e.target.value)}
                         fullWidth
                       />
                     )}
                   </Box>
-                  {field !== 'accommodation' && (
-                    <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} >
-                      <Button variant="outlined" component="label" style={{ color: 'gray', marginTop: '5px' }}>
+                  {field !== "accommodation" && (
+                    <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+                      <Button
+                        variant="outlined"
+                        component="label"
+                        style={{ color: "gray", marginTop: "5px" }}
+                      >
                         Upload Image
                         <input
                           type="file"
@@ -726,51 +787,57 @@ const AddProjects = () => {
                         <Box mt={1}>
                           <img
                             src={
-                              item.src.startsWith('data:image/')
+                              item.src.startsWith("data:image/")
                                 ? item.src
                                 : `${process.env.REACT_APP_API_URL}/uploads/${item.src}`
                             }
                             alt={`${item} ${index + 1}`}
-                            style={{ width: '100%', height: '100px', objectFit: 'cover' }}
+                            style={{ width: "100%", height: "100px", objectFit: "cover" }}
                           />
                         </Box>
                       )}
-
                     </Box>
                   )}
-                  <IconButton onClick={() => handleRemoveField(field, index)} >
+                  <IconButton onClick={() => handleRemoveField(field, index)}>
                     <Delete />
                   </IconButton>
                 </Box>
               ))}
-              <Button onClick={() => handleAddField(field)} variant="contained" color="primary" fullWidth className="mt-4">Add {field}</Button>
+              <Button
+                onClick={() => handleAddField(field)}
+                variant="contained"
+                color="primary"
+                fullWidth
+                className="mt-4"
+              >
+                Add {field}
+              </Button>
             </Grid>
-
-
           ))}
 
-
-
-
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <Grid container direction="row">
               {details?.FAQs?.map((FAQs, index) => (
                 <Grid item xs={12} key={index}>
-                  <Box key={index} display="flex" alignItems="center" style={{ marginBottom: '10px' }}>
+                  <Box
+                    key={index}
+                    display="flex"
+                    alignItems="center"
+                    style={{ marginBottom: "10px" }}
+                  >
                     <Input
                       placeholder={`questions ${index + 1}`}
                       value={FAQs.questions}
-                      onChange={(e) => handleFAQsChange(index, 'questions', e.target.value)}
+                      onChange={(e) => handleFAQsChange(index, "questions", e.target.value)}
                       fullWidth
                       required
-                      style={{ marginRight: '5px' }}
+                      style={{ marginRight: "5px" }}
                     />
                     <Input
                       placeholder="answer"
                       value={FAQs.answer}
-                      onChange={(e) => handleFAQsChange(index, 'answer', e.target.value)}
+                      onChange={(e) => handleFAQsChange(index, "answer", e.target.value)}
                       fullWidth
-
                       required
                     />
                     {details.FAQs.length > 1 && (
@@ -781,40 +848,41 @@ const AddProjects = () => {
                   </Box>
                 </Grid>
               ))}
-              <Button onClick={handleAddFAQs} variant="contained" color="primary" fullWidth >
+              <Button onClick={handleAddFAQs} variant="contained" color="primary" fullWidth>
                 Add FAQs
               </Button>
             </Grid>
           </Grid>
 
-
           <Grid item xs={12}>
             <Typography variant="h6">Reviews</Typography>
             {details.reviews.map((review, index) => (
-              <Box key={index} mt={2} display="flex" flexDirection="column" style={{ marginBottom: '10px' }}>
+              <Box
+                key={index}
+                mt={2}
+                display="flex"
+                flexDirection="column"
+                style={{ marginBottom: "10px" }}
+              >
                 <Input
                   placeholder="Reviewer Name"
                   value={review.name}
-                  onChange={(e) =>
-                    handleReviewChange(index, 'name', e.target.value)
-                  }
+                  onChange={(e) => handleReviewChange(index, "name", e.target.value)}
                   fullWidth
-                  style={{ marginBottom: '10px' }}
+                  style={{ marginBottom: "10px" }}
                 />
                 <Rating
                   value={review.rating}
-                  onChange={(e, value) =>
-                    handleReviewChange(index, 'rating', value)
-                  }
-                  style={{ marginBottom: '10px' }}
+                  onChange={(e, value) => handleReviewChange(index, "rating", value)}
+                  style={{ marginBottom: "10px" }}
                 />
-                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-                  <Button variant="outlined" component="label" style={{ color: 'gray' }}>
+                <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+                  <Button variant="outlined" component="label" style={{ color: "gray" }}>
                     Upload Image
                     <input
                       type="file"
                       hidden
-                      onChange={(e) => handleFileChange('reviews', index, e)}
+                      onChange={(e) => handleFileChange("reviews", index, e)}
                     />
                   </Button>
                   {review.src && (
@@ -831,29 +899,26 @@ const AddProjects = () => {
                     // </Box>
 
                     <Box mt={1}>
-                          <img
-                            src={
-                              review.src.startsWith('data:image/')
-                                ? review.src
-                                : `${process.env.REACT_APP_API_URL}/uploads/${review.src}`
-                            }
-                            alt={`Review ${index + 1}`}
-                            style={{ width: '100%', height: '100px', objectFit: 'cover' }}
-                          />
-                        </Box>
+                      <img
+                        src={
+                          review.src.startsWith("data:image/")
+                            ? review.src
+                            : `${process.env.REACT_APP_API_URL}/uploads/${review.src}`
+                        }
+                        alt={`Review ${index + 1}`}
+                        style={{ width: "100%", height: "100px", objectFit: "cover" }}
+                      />
+                    </Box>
                   )}
-
                 </Box>
                 <Input
                   placeholder="Review"
                   value={review.review}
-                  onChange={(e) =>
-                    handleReviewChange(index, 'review', e.target.value)
-                  }
+                  onChange={(e) => handleReviewChange(index, "review", e.target.value)}
                   fullWidth
                   multiline
                   rows={3}
-                  style={{ marginTop: '10px' }}
+                  style={{ marginTop: "10px" }}
                 />
                 {details.reviews.length > 1 && (
                   <IconButton onClick={() => handleRemoveReview(index)}>
@@ -872,16 +937,22 @@ const AddProjects = () => {
               Add Review
             </Button>
           </Grid>
-
         </Grid>
         <Grid item container spacing={2} xs={12}>
           <Grid item xs={12} sm={8}></Grid>
-          <Grid item xs={12} sm={4} mt={'auto'} >
-            <Box style={{display:'flex'}}>
-              <Button sx={{ mr: 5, width: '100%' }} onClick={handleSubmit} disabled={disable} variant='contained'>
+          <Grid item xs={12} sm={4} mt={"auto"}>
+            <Box style={{ display: "flex" }}>
+              <Button
+                sx={{ mr: 5, width: "100%" }}
+                onClick={handleSubmit}
+                disabled={disable}
+                variant="contained"
+              >
                 Add Projects
               </Button>
-              <Button sx={{ mr: 0, width: '100%' }} onClick={handleClear} variant='contained'>Clear</Button>
+              <Button sx={{ mr: 0, width: "100%" }} onClick={handleClear} variant="contained">
+                Clear
+              </Button>
             </Box>
           </Grid>
         </Grid>
@@ -891,14 +962,12 @@ const AddProjects = () => {
         onClose={handleIconPickerClose}
         onSelectIcon={handleIconSelect}
       />
-
     </PageLayout>
-  )
-}
-
+  );
+};
 
 const dataURLtoFile = (dataurl, filename) => {
-  const arr = dataurl.split(',');
+  const arr = dataurl.split(",");
   const mime = arr[0].match(/:(.*?);/)[1];
   const bstr = atob(arr[1]);
   let n = bstr.length;
@@ -909,10 +978,4 @@ const dataURLtoFile = (dataurl, filename) => {
   return new File([u8arr], filename, { type: mime });
 };
 
-
-
-export default AddProjects
-
-
-
-
+export default AddProjects;
