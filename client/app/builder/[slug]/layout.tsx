@@ -1,4 +1,5 @@
 import { getBuilderById } from "@/utils/api";
+import { generateImageUrl } from "@/utils/generateImageUrl";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 
@@ -15,6 +16,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: `${data?.title} | Map My Property`,
       description: data?.subtitle || "Explore your perfect property.",
+      openGraph: {
+        title: `${data?.title} | Map My Property`,
+        description: data?.subtitle || "Explore your perfect property.",
+        url: `https://www.mapmyproperty.in/builder/${_id}`,
+        siteName: "Map My Property",
+        images: [
+          {
+            url: generateImageUrl(data?.image),
+            width: 1200,
+            height: 630,
+            alt: "Map My Property Logo",
+          },
+        ],
+        locale: "en_US",
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${data?.title} | Map My Property`,
+        description: data?.subtitle || "Explore your perfect property.",
+        creator: "@mapmyproperty",
+        images: [generateImageUrl(data?.image)],
+      },
     };
   }
 
