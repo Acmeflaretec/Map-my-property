@@ -57,9 +57,9 @@ export const metadata: Metadata = {
     siteName: "Map My Property",
     images: [
       {
-        url: "https://www.mapmyproperty.in/logo-primary.svg",
-        width: 800,
-        height: 600,
+        url: "https://www.mapmyproperty.in/og-logo.png",
+        width: 1200,
+        height: 630,
         alt: "Map My Property Logo",
       },
     ],
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Map My Property",
     description: "Unlocking Your Properties Full Potential | Map My Property",
     creator: "@mapmyproperty",
-    images: ["https://www.mapmyproperty.in/logo-primary.svg"],
+    images: ["https://www.mapmyproperty.in/og-logo.png"],
   },
   verification: {
     google: "your-google-verification-code",
