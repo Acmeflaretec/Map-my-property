@@ -107,18 +107,6 @@ const Blog = ({
                     className="w-52 md:w-60 h-8"
                   />
                 </div>
-                <div className="mb-5 flex items-center">
-                  <p className="flex items-center text-xs md:text-sm font-medium text-black">
-                    <span className="hidden md:flex mr-2 md:text-sm">
-                      posted on&nbsp;
-                      <Icons.date />
-                    </span>
-                    &nbsp;
-                    {data?.createdAt
-                      ? new Date(data.createdAt).toDateString()
-                      : ""}
-                  </p>
-                </div>
               </div>
               <div className="mb-5">
                 <p className="hidden md:flex items-center text-xs md:text-sm font-medium text-black">

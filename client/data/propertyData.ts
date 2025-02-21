@@ -147,7 +147,7 @@ export const propertyData: ProjectType = {
       ],
     },
   ],
-  pricing: [
+  accommodation: [
     {
       unit: "3 BHK | Pooja Room | Family Room",
       area: "1200 - 1500 sq/ft",

@@ -43,12 +43,6 @@ const HeroSection: React.FC = () => {
           </h1>
           <div className="flex gap-4 items-center">
             <p className="flex text-xs md:text-sm gap-1 md:gap-2">
-              Posted
-              <Icons.date />
-              {data?.updatedAt ? new Date(data.createdAt).toDateString() : ""}
-            </p>{" "}
-            |
-            <p className="flex text-xs md:text-sm gap-1 md:gap-2">
               Last updated
               <Icons.date />
               {data?.updatedAt ? new Date(data.updatedAt).toDateString() : ""}
@@ -84,7 +78,7 @@ const HeroSection: React.FC = () => {
             {data?.subtitle}
           </p>
           <p className="hidden md:block md:text-base max-w-4xl text-white">
-            {data?.description?.substring(0, 100)}...
+            {data?.subtitle?.substring(0, 100)}...
           </p>
           <Link
             href={`blogs/${data?.url}`}
@@ -97,7 +91,7 @@ const HeroSection: React.FC = () => {
 
       <div className="flex md:hidden flex-col gap-2 p-2">
         <h1 className="font-bold text-lg">{data?.title}</h1>
-        <p className="text-base">{data?.description?.substring(0, 200)}...</p>
+        <p className="text-base">{data?.subtitle?.substring(0, 200)}...</p>
         <Link
           href={`blogs/${data?.url}`}
           className="h-1 rounded-full text-blue-400"

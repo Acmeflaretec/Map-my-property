@@ -79,7 +79,7 @@ const Page: React.FC<Props> = async ({ params }) => {
         <div className="flex flex-col lg:flex-row gap-4 w-full justify-between">
           <div className="flex flex-col w-full xl:w-2/3 gap-8 md:gap-12">
             {!!data?.features?.length && <Features data={data.features} />}
-            {!!data?.pricing?.length && <Pricing data={data.pricing} />}
+            {!!data?.accommodation?.length && <Pricing data={data.accommodation} />}
             {!!data?.plans?.length && <Plans data={data.plans} />}
             {!!data?.masterPlan && <MasterPlan data={data.masterPlan} />}
             {!!data?.faqs?.length && <Faqs data={data.faqs} />}

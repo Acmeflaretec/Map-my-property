@@ -129,7 +129,7 @@ const ContactCard: React.FC = () => {
             disabled={loading}
             className="w-full justify-center"
           >
-            Get Appoinment <Icons.phone />
+            Get Appointment <Icons.phone />
           </CustomButton>
           <CustomButton
             type="primary"

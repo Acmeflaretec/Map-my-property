@@ -72,7 +72,7 @@ export interface ProjectType {
   maxPrice: number;
   description: string;
   features: FeatureType[];
-  pricing: PricingType[];
+  accommodation: PricingType[];
   masterPlan: PlanType;
   plans: PlanType[];
   location: string;

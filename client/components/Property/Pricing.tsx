@@ -16,7 +16,7 @@ const Pricing: React.FC<{ data: PricingType[] }> = ({ data }) => {
     <>
       <div className="flex flex-col border rounded-2xl overflow-hidden">
         <div className="flex w-full gap-4 font-bold p-4 text-gray-700 bg-gray-100">
-          <p className="w-1/2 text-sm md:text-base">Accommodation Type</p>
+          <p className="w-1/2 text-sm md:text-base">Unit Type</p>
           <p className="w-1/4 text-sm md:text-base">Area / Plot Size</p>
           <p className="w-1/4 text-sm md:text-base">Approx. Price</p>
         </div>
