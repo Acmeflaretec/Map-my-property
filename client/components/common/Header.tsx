@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Icons } from "./Icons";
+import { easeInOut, motion } from "framer-motion";
 
 interface CustomLinkProps {
   path: string;
@@ -51,7 +52,12 @@ const Header: React.FC = () => {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
-    <header className="fixed top-0 z-50 bg-white backdrop-blur-lg flex flex-col items-center w-full bg-opacity-55 border">
+    <motion.header
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.5, duration: 1, ease: easeInOut }}
+      className="fixed top-0 z-50 bg-white backdrop-blur-lg flex flex-col items-center w-full bg-opacity-55 border-b"
+    >
       <div className="flex h-16 px-4 md:px-8 xl:max-w-screen-xl justify-between w-full items-center">
         <Link href={"/"} className="flex items-center w-3/4 md:w-1/3">
           <Image
@@ -106,7 +112,7 @@ const Header: React.FC = () => {
           </p>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
 

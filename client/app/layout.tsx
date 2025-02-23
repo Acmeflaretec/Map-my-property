@@ -5,6 +5,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import CustomToaster from "@/components/ui/CustomToaster";
 import { Suspense } from "react";
+import Loading from "@/components/common/Loading";
 
 const questrial = Questrial({
   subsets: ["latin"],
@@ -102,8 +103,10 @@ export default function RootLayout({
         <CustomToaster />
         <Suspense fallback={<div>Loading...</div>}>
           <Header />
-          {children}
-          <Footer />
+          <Loading>
+            {children}
+            <Footer />
+          </Loading>
         </Suspense>
       </body>
     </html>
