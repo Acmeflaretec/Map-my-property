@@ -162,7 +162,7 @@ const Banner: React.FC = () => {
           </div>
           <div className="hidden md:flex gap-4">
             <CustomButton type="secondary" href="/contact">
-              Get Enquired <Icons.phone />
+              Contact Us <Icons.phone />
             </CustomButton>
             <CustomButton
               type="primary"

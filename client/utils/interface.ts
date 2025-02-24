@@ -70,6 +70,7 @@ export interface ProjectType {
   imageGallery: GalleryType[];
   minPrice: number;
   maxPrice: number;
+  status: string;
   description: string;
   features: FeatureType[];
   accommodation: PricingType[];

@@ -7,6 +7,7 @@ import { BlogType } from "@/utils/interface";
 import { getBlogsById } from "@/utils/api";
 import toast from "react-hot-toast";
 import { generateImageUrl } from "@/utils/generateImageUrl";
+import { formatDescription } from "@/utils/formatDescription";
 
 const Blog = ({
   params: paramsPromise,
@@ -65,24 +66,6 @@ const Blog = ({
       </main>
     );
   }
-
-  const formatDescription = (desc: string | undefined) => {
-    if (!desc) return <div />;
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(desc, "text/html");
-
-    doc.querySelectorAll("iframe").forEach((iframe) => {
-      iframe.removeAttribute("style");
-      iframe.removeAttribute("width");
-      iframe.removeAttribute("height");
-      iframe.setAttribute("class", "embed-responsive-item");
-      iframe.setAttribute("width", "100%");
-      iframe.setAttribute("allowFullScreen", "true");
-    });
-
-    return <div dangerouslySetInnerHTML={{ __html: doc.body.innerHTML }} />;
-  };
 
   return (
     <section className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen max-w-screen-md 2xl:max-w-screen-lg">
@@ -147,7 +130,14 @@ const Blog = ({
                 </div>
               </div>
               <div className="mb-8 text-base font-medium leading-relaxed text-black sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                {formatDescription(data?.description)}
+                {data?.description && (
+                  <div
+                    className="formatted-content"
+                    dangerouslySetInnerHTML={formatDescription(
+                      data?.description
+                    )}
+                  />
+                )}
               </div>
               <div className="items-center justify-between sm:flex">
                 <div className="mb-5 flex items-center">

@@ -88,6 +88,7 @@ export const propertyData: ProjectType = {
   ],
   minPrice: 28293423,
   maxPrice: 68492000,
+  status:"Launching Soon",
   description:
     "Explore the best properties with ease - personalized serches, real-time updates, and expert guidance all in one place",
   location: "Chandapura, Bangalore",
