@@ -20,6 +20,7 @@ import { Icons } from "components/Property/Icons.jsx";
 import IconPickerPopup from "./IconPickerPopup";
 import FieldSection from "./FieldSection";
 import { useGetCategory } from "queries/ProductQuery";
+import TextEditor from "utils/TextEditor";
 
 const EditProjects = () => {
   const navigate = useNavigate();
@@ -480,16 +481,8 @@ const EditProjects = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Input
-                id="description"
-                placeholder="More about"
-                name="description"
-                value={details?.description || ""}
-                onChange={handleChange}
-                multiline
-                rows={5}
-              />
+            <Grid item xs={12} mb={2}>
+              <TextEditor value={details?.description || ""} onChange={handleChange} />
             </Grid>
             <Grid item xs={6}>
               <Input

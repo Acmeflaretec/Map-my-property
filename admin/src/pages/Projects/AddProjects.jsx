@@ -11,6 +11,7 @@ import { Delete, Add } from "@mui/icons-material";
 import { Icons } from "components/Property/Icons.jsx";
 import IconPickerPopup from "./IconPickerPopup";
 import FieldSection from "./FieldSection";
+import TextEditor from "utils/TextEditor";
 
 const AddProjects = () => {
   const navigate = useNavigate();
@@ -508,16 +509,8 @@ const AddProjects = () => {
               )}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Input
-              id="description"
-              placeholder="More about"
-              name="description"
-              value={details?.description || ""}
-              onChange={handleChange}
-              multiline
-              rows={5}
-            />
+          <Grid item xs={12} mb={2}>
+            <TextEditor value={details?.description || ""} onChange={handleChange} />
           </Grid>
           <Grid item xs={6}>
             <Input
