@@ -11,6 +11,7 @@ import { getProjects } from "@/utils/api";
 import toast from "react-hot-toast";
 
 const ProjectPage: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const params = useSearchParams();
   const query = params.get("q") ?? "";
@@ -34,9 +35,11 @@ const ProjectPage: React.FC = () => {
         area: JSON.stringify(filter.area),
         search,
       };
+      setLoading(true);
       const res = await getProjects(propertyFilter);
       const data = res?.data?.docs || null;
       setData(data?.length ? data : []);
+      setLoading(false);
     } catch (error: any) {
       toast.error(
         error.message || "Something went wrong. Please try again later."
@@ -85,7 +88,11 @@ const ProjectPage: React.FC = () => {
           <Filter filter={filter} setFilter={setFilter} />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-1 md:gap-2 lg:gap-4 justify-between">
-          {data?.length ? (
+          {loading ? (
+            <div className="col-span-3">
+              <p className="px-4 text-xs md:text-sm">loading...</p>
+            </div>
+          ) : data?.length ? (
             data.map((item, index) => <ProjectCard key={index} data={item} />)
           ) : (
             <div className="col-span-3">

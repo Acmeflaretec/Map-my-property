@@ -8,6 +8,7 @@ import { getBlogsById } from "@/utils/api";
 import toast from "react-hot-toast";
 import { generateImageUrl } from "@/utils/generateImageUrl";
 import { formatDescription } from "@/utils/formatDescription";
+import ContactCard from "@/components/common/ContactCard";
 
 const Blog = ({
   params: paramsPromise,
@@ -48,8 +49,8 @@ const Blog = ({
   };
 
   useEffect(() => {
-    if (params) fetchData();
-  }, [params]);
+    if (params?.id) fetchData();
+  }, [params?.id]);
 
   if (loading || !params) {
     return (
@@ -68,8 +69,8 @@ const Blog = ({
   }
 
   return (
-    <section className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen max-w-screen-md 2xl:max-w-screen-lg">
-      <div className="container p-4 w-full">
+    <section className="flex flex-col md:flex-row gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full min-h-screen">
+      <div className="container p-4 w-full max-w-screen-md 2xl:max-w-screen-lg">
         <div className="-mx-4 flex flex-wrap justify-center">
           <div className="w-full px-4">
             <div className="flex gap-1 pb-4">
@@ -171,6 +172,11 @@ const Blog = ({
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="w-1/3 static hidden xl:flex flex-col gap-8">
+        <div className="sticky top-48">
+          <ContactCard />
         </div>
       </div>
     </section>

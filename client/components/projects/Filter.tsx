@@ -20,13 +20,26 @@ interface Props {
 const Filter: React.FC<Props> = ({ filter, setFilter }) => {
   const options1: string[] = ["1BHK", "2BHK", "3BHK", "4BHK", "studio"];
   const options2: string[] = ["apartments", "villas", "plots", "townships"];
-
+  const clearFilter = () => {
+    setFilter({
+      bedroom: "",
+      resident_type: "",
+      location: "",
+      price: { min: 100000, max: 100000000 },
+      area: { min: 100, max: 100000 },
+    });
+  };
   return (
     <div className="flex h-fit flex-col border border-stone-300 rounded-xl p-2 xl:p-6 py-8 gap-6">
-      <h1 className="flex gap-3 uppercase font-bold">
-        <Icons.filter />
-        Filter
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="flex gap-3 uppercase font-bold">
+          <Icons.filter />
+          Filter
+        </h1>
+        <button onClick={clearFilter} className="bg-[#0C0E0D] flex items-center z-30 h-fit text-[10px] md:text-xs text-white p-[2px] px-2 rounded-lg">
+          Clear
+        </button>
+      </div>
       <div className="flex items-center border border-stone-300 rounded-lg text-sm p-2 w-full">
         <Icons.location />
         <input

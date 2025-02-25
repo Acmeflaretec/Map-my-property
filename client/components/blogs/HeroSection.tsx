@@ -37,7 +37,7 @@ const HeroSection: React.FC = () => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between">
-        <div className="flex flex-col gap-4 w-full md:w-3/5 xl:w-1/2 max-w-xl">
+        <div className="flex flex-col gap-4 w-full md:w-3/5 xl:w-1/2 max-w-xl xl:max-w-2xl">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-wide leading-tight">
             {data?.title}
           </h1>
