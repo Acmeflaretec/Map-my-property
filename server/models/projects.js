@@ -34,14 +34,7 @@ const projectsSchema = new mongoose.Schema(
       required: true,
     },
     href: { type: String, unique: true, required: true },
-
-    ongoing: {
-      type: String,
-    },
-    upcoming: {
-      type: String,
-    },
-    completed: {
+    status: {
       type: String,
     },
     location: {
