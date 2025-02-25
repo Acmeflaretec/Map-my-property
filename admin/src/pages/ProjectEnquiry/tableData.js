@@ -111,7 +111,7 @@ const TableData = () => {
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between" py={2}>
+      <Box display="flex" alignItems="center" justifyContent="space-between" py={2} px={2}>
         <TextField
           placeholder="Search..."
           value={search}

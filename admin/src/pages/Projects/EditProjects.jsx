@@ -7,6 +7,8 @@ import {
   IconButton,
   Box,
   Autocomplete,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import Input from "components/Input";
 import PageLayout from "layouts/PageLayout";
@@ -21,6 +23,8 @@ import IconPickerPopup from "./IconPickerPopup";
 import FieldSection from "./FieldSection";
 import { useGetCategory } from "queries/ProductQuery";
 import TextEditor from "utils/TextEditor";
+import avatarFemale from "assets/images/avatar-female.png";
+import avatarMale from "assets/images/avatar-male.png";
 
 const EditProjects = () => {
   const navigate = useNavigate();
@@ -337,8 +341,13 @@ const EditProjects = () => {
     setDetails((prev) => ({ ...prev, [field]: updated }));
   };
 
-  const handleFileChange = (field, index, e) => {
-    const file = e.target.files[0];
+  const handleFileChange = async (field, index, e) => {
+    let file = e?.target?.files?.[0];
+    if (!file) {
+      const response = await fetch(e);
+      const blob = await response.blob();
+      file = new File([blob], "avatar.png", { type: blob.type });
+    }
     if (field === "testimonials") {
       handleNestedChange(field, index, "image", file);
     } else {
@@ -380,9 +389,12 @@ const EditProjects = () => {
               </Typography>
             </Grid>
             <Grid item xs={12}>
+              <Typography variant="caption">
+                Project Title <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Input
                 required
-                placeholder="Item Title"
+                placeholder="Project Title"
                 id="title"
                 name="title"
                 value={details?.title || ""}
@@ -390,16 +402,22 @@ const EditProjects = () => {
               />
             </Grid>
             <Grid item xs={12}>
+              <Typography variant="caption">
+                Project Subtitle <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Input
                 required
-                placeholder="Item sub title"
+                placeholder="Project sub title"
                 id="subtitle"
                 name="subtitle"
                 value={details?.subtitle || ""}
                 onChange={handleChange}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="caption">
+                Project Category <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Autocomplete
                 id="Category-select"
                 options={categories?.data}
@@ -440,7 +458,10 @@ const EditProjects = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="caption">
+                Builder <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Autocomplete
                 id="Builders-select"
                 options={build?.data}
@@ -481,10 +502,33 @@ const EditProjects = () => {
                 )}
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="caption">
+                Project Status <span style={{ color: "red" }}>*</span>
+              </Typography>
+              <Select
+                name="status"
+                value={details?.status || ""}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+              >
+                <MenuItem value="Pre Launch">Pre Launch</MenuItem>
+                <MenuItem value="Launch">Launch</MenuItem>
+                <MenuItem value="Under Construction">Under Construction</MenuItem>
+                <MenuItem value="Ready to Move In">Ready to Move In</MenuItem>
+              </Select>
+            </Grid>
             <Grid item xs={12} mb={2}>
+              <Typography variant="caption">
+                Project Overview <span style={{ color: "red" }}>*</span>
+              </Typography>
               <TextEditor value={details?.description || ""} onChange={handleChange} />
             </Grid>
             <Grid item xs={6}>
+              <Typography variant="caption">
+                Min property value <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Input
                 required
                 type="number"
@@ -497,6 +541,9 @@ const EditProjects = () => {
             </Grid>
 
             <Grid item xs={6}>
+              <Typography variant="caption">
+                Max property value <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Input
                 required
                 type="number"
@@ -508,6 +555,10 @@ const EditProjects = () => {
               />
             </Grid>
             <Grid item xs={12}>
+              <Typography variant="caption">
+                Property URL <span style={{ color: "red" }}>*</span> (avoid blank spaces, numbers or
+                special characters for better performance. use &apos;-&apos; to connect words.)
+              </Typography>
               <Input
                 required
                 placeholder="Slug URL (href)"
@@ -518,9 +569,12 @@ const EditProjects = () => {
               />
             </Grid>
             <Grid item xs={12}>
+              <Typography variant="caption">
+                Property Location <span style={{ color: "red" }}>*</span>
+              </Typography>
               <Input
                 required
-                placeholder="Property Location"
+                placeholder="Project Location"
                 id="location"
                 name="location"
                 value={details?.location || ""}
@@ -843,16 +897,87 @@ const EditProjects = () => {
                     style={{ marginBottom: "10px" }}
                   />
                   <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
-                    <Button variant="outlined" component="label" style={{ color: "gray" }}>
-                      Upload Image
-                      <input
-                        type="file"
-                        hidden
-                        onChange={(e) => handleFileChange("testimonials", index, e)}
-                      />
-                    </Button>
+                    <Box display={"flex"} alignItems={"center"}>
+                      <Box
+                        sx={{
+                          width: 90,
+                          height: 80,
+                          cursor: "pointer",
+                          backgroundColor: "#D3D3D3",
+                          "&:hover": {
+                            backgroundColor: "#424242",
+                            opacity: [0.9, 0.8, 0.7],
+                          },
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "10px",
+                          overflow: "hidden",
+                        }}
+                        onClick={(e) => handleFileChange("testimonials", index, avatarFemale)}
+                      >
+                        <img style={{ width: 90, height: 80 }} src={avatarFemale} />
+                      </Box>
+                      <Box
+                        sx={{
+                          width: 90,
+                          height: 80,
+                          cursor: "pointer",
+                          backgroundColor: "#D3D3D3",
+                          "&:hover": {
+                            backgroundColor: "#424242",
+                            opacity: [0.9, 0.8, 0.7],
+                          },
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "10px",
+                          overflow: "hidden",
+                          mx: 2,
+                        }}
+                        onClick={(e) => handleFileChange("testimonials", index, avatarMale)}
+                      >
+                        <img style={{ width: 90, height: 80 }} src={avatarMale} />
+                      </Box>
+                      <Box
+                        variant="outlined"
+                        component="label"
+                        sx={{
+                          width: 90,
+                          height: 80,
+                          cursor: "pointer",
+                          backgroundColor: "#D3D3D3",
+                          "&:hover": {
+                            backgroundColor: "#D3D3D3",
+                            opacity: [0.9, 0.8, 0.7],
+                          },
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "10px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <Typography variant="caption">Upload Image</Typography>
+                        <input
+                          type="file"
+                          hidden
+                          onChange={(e) => handleFileChange("testimonials", index, e)}
+                        />
+                      </Box>
+                    </Box>
                     {review.image && (
-                      <Box mt={1}>
+                      <Box
+                        sx={{
+                          width: 110,
+                          height: 80,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: "10px",
+                          overflow: "hidden",
+                        }}
+                      >
                         <img
                           src={
                             typeof review.image === "object"
@@ -860,7 +985,7 @@ const EditProjects = () => {
                               : `${process.env.REACT_APP_API_URL}/uploads/${review.image}`
                           }
                           alt={`Review ${index + 1}`}
-                          style={{ width: "100%", height: "100px", objectFit: "cover" }}
+                          style={{ width: "100%", height: 80 }}
                         />
                       </Box>
                     )}

@@ -1,4 +1,13 @@
-import { Autocomplete, Button, Grid, TextField, IconButton, Rating } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Grid,
+  TextField,
+  IconButton,
+  Rating,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Box from "components/Box";
 import Input from "components/Input";
 import PageLayout from "layouts/PageLayout";
@@ -12,12 +21,15 @@ import { Icons } from "components/Property/Icons.jsx";
 import IconPickerPopup from "./IconPickerPopup";
 import FieldSection from "./FieldSection";
 import TextEditor from "utils/TextEditor";
+import avatarFemale from "assets/images/avatar-female.png";
+import avatarMale from "assets/images/avatar-male.png";
 
 const AddProjects = () => {
   const navigate = useNavigate();
 
   const storageKey = "addProjectData";
   const initialDetails = {
+    status: "Pre Launch",
     ExpertOpinions: [""],
     Bedrooms: [""],
     Areas: [""],
@@ -369,8 +381,14 @@ const AddProjects = () => {
   //   const file = e.target.files[0];
   //   handleNestedChange(field, index, 'src', file);
   // };
-  const handleFileChange = (field, index, e) => {
-    const file = e.target.files[0];
+  const handleFileChange = async(field, index, e) => {
+    let file = e?.target?.files?.[0];
+
+    if (!file) {
+      const response = await fetch(e);
+      const blob = await response.blob();
+      file = new File([blob], "avatar.png", { type: blob.type });
+    }
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -408,6 +426,9 @@ const AddProjects = () => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="caption">
+              Project Title <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Input
               required
               placeholder="Project Title"
@@ -418,6 +439,9 @@ const AddProjects = () => {
             />
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="caption">
+              Project Subtitle <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Input
               required
               placeholder="Project sub title"
@@ -427,7 +451,10 @@ const AddProjects = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={12}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="caption">
+              Project Category <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Autocomplete
               id="category-select"
               options={data?.data}
@@ -468,7 +495,10 @@ const AddProjects = () => {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={12}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="caption">
+              Builder <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Autocomplete
               id="Builders-select"
               options={build?.data}
@@ -509,10 +539,33 @@ const AddProjects = () => {
               )}
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="caption">
+              Project Status <span style={{ color: "red" }}>*</span>
+            </Typography>
+            <Select
+              name="status"
+              value={details?.status || ""}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+            >
+              <MenuItem value="Pre Launch">Pre Launch</MenuItem>
+              <MenuItem value="Launch">Launch</MenuItem>
+              <MenuItem value="Under Construction">Under Construction</MenuItem>
+              <MenuItem value="Ready to Move In">Ready to Move In</MenuItem>
+            </Select>
+          </Grid>
           <Grid item xs={12} mb={2}>
+            <Typography variant="caption">
+              Project Overview <span style={{ color: "red" }}>*</span>
+            </Typography>
             <TextEditor value={details?.description || ""} onChange={handleChange} />
           </Grid>
           <Grid item xs={6}>
+            <Typography variant="caption">
+              Min property value <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Input
               required
               type="number"
@@ -525,6 +578,9 @@ const AddProjects = () => {
           </Grid>
 
           <Grid item xs={6}>
+            <Typography variant="caption">
+              Max property value <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Input
               required
               type="number"
@@ -537,6 +593,10 @@ const AddProjects = () => {
           </Grid>
 
           <Grid item xs={12}>
+            <Typography variant="caption">
+              Property URL <span style={{ color: "red" }}>*</span> (avoid blank spaces, numbers or
+              special characters for better performance. use &apos;-&apos; to connect words.)
+            </Typography>
             <Input
               required
               placeholder="Slug URL (href)"
@@ -547,6 +607,9 @@ const AddProjects = () => {
             />
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="caption">
+              Property Location <span style={{ color: "red" }}>*</span>
+            </Typography>
             <Input
               required
               placeholder="Project Location"
@@ -870,14 +933,75 @@ const AddProjects = () => {
                   style={{ marginBottom: "10px" }}
                 />
                 <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
-                  <Button variant="outlined" component="label" style={{ color: "gray" }}>
-                    Upload Image
-                    <input
-                      type="file"
-                      hidden
-                      onChange={(e) => handleFileChange("reviews", index, e)}
-                    />
-                  </Button>
+                  <Box display={"flex"} alignItems={"center"}>
+                    <Box
+                      sx={{
+                        width: 90,
+                        height: 80,
+                        cursor: "pointer",
+                        backgroundColor: "#D3D3D3",
+                        "&:hover": {
+                          backgroundColor: "#424242",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "10px",
+                        overflow: "hidden",
+                      }}
+                      onClick={(e) => handleFileChange("reviews", index, avatarFemale)}
+                    >
+                      <img style={{ width: 90, height: 80 }} src={avatarFemale} />
+                    </Box>
+                    <Box
+                      sx={{
+                        width: 90,
+                        height: 80,
+                        cursor: "pointer",
+                        backgroundColor: "#D3D3D3",
+                        "&:hover": {
+                          backgroundColor: "#424242",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "10px",
+                        overflow: "hidden",
+                        mx:2
+                      }}
+                      onClick={(e) => handleFileChange("reviews", index, avatarMale)}
+                    >
+                      <img style={{ width: 90, height: 80 }} src={avatarMale} />
+                    </Box>
+                    <Box
+                      variant="outlined"
+                      component="label"
+                      sx={{
+                        width: 90,
+                        height: 80,
+                        cursor: "pointer",
+                        backgroundColor: "#D3D3D3",
+                        "&:hover": {
+                          backgroundColor: "#D3D3D3",
+                          opacity: [0.9, 0.8, 0.7],
+                        },
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "10px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Typography variant="caption">Upload Image</Typography>
+                      <input
+                        type="file"
+                        hidden
+                        onChange={(e) => handleFileChange("reviews", index, e)}
+                      />
+                    </Box>
+                  </Box>
                   {review.src && (
                     // <Box mt={1}>
                     //   <img
@@ -891,7 +1015,16 @@ const AddProjects = () => {
                     //   />
                     // </Box>
 
-                    <Box mt={1}>
+                    <Box
+                    sx={{
+                      width: 110,
+                      height: 80,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "10px",
+                      overflow: "hidden",
+                    }}>
                       <img
                         src={
                           review.src.startsWith("data:image/")
@@ -899,7 +1032,7 @@ const AddProjects = () => {
                             : `${process.env.REACT_APP_API_URL}/uploads/${review.src}`
                         }
                         alt={`Review ${index + 1}`}
-                        style={{ width: "100%", height: "100px", objectFit: "cover" }}
+                        style={{ width: "100%", height: 80 }}
                       />
                     </Box>
                   )}
