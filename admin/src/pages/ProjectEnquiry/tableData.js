@@ -5,6 +5,7 @@ import Table from "examples/Tables/Table";
 import { Select, MenuItem, TextField, Button, Pagination, Icon } from "@mui/material";
 import { useGetProjectEnquiry, useUpdateProjectEnquiryStatus } from "queries/StoreQuery";
 import { Link } from "react-router-dom";
+import whatsapp from "assets/images/whatsapp.svg";
 
 const TableData = () => {
   const [page, setPage] = useState(1);
@@ -26,6 +27,7 @@ const TableData = () => {
 
   const columns = [
     { name: "User", align: "left" },
+    { name: "Phone", align: "center" },
     { name: "Project", align: "left", width: "10%" },
     { name: "CreatedAt", align: "center" },
     { name: "Status", align: "center" },
@@ -52,36 +54,58 @@ const TableData = () => {
                 {item?.email && item?.email}
                 <br />
               </a>
-              <a
-                target="_blank"
-                href={item?.contactNumber ? `tel:${item?.contactNumber}` : "#"}
-                rel="noreferrer"
-              >
-                {item?.contactNumber && item?.contactNumber}
-              </a>
             </Typography>
           </Box>
         </Box>
       </>
     ),
-
-    Project: (
+    Phone: (
       <Typography
         variant="caption"
         color="secondary"
         fontWeight="medium"
-        sx={{ textTransform: "capitalize" }}
+        sx={{ display: "flex", alignItems: "center" }}
       >
-        {item?.projectId?.title ? item?.projectId?.title : "-"}
-        <br />
-        <Link
-          to={`https://www.mapmyproperty.in/property/${item?.projectId?._id}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          view project
-        </Link>
+        {item?.contactNumber && (
+          <>
+            <a target="_blank" rel="noreferrer" href={`tel:+91${item?.contactNumber}`}>
+              {item?.contactNumber}
+            </a>
+            &nbsp;&nbsp;
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://api.whatsapp.com/send?phone=91${item?.contactNumber}&text=Hi%C2%A0there,%C2%A0Let%27s%C2%A0have%C2%A0a%C2%A0talk`}
+            >
+              <img src={whatsapp} height={20} width={20} />
+            </a>
+          </>
+        )}
       </Typography>
+    ),
+    Project: (
+      <Box display="flex" flexDirection="column">
+        <Typography
+          variant="caption"
+          color="secondary"
+          fontWeight="medium"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "200px",
+            textTransform: "capitalize",
+          }}
+        >
+          <Link
+            to={`https://www.mapmyproperty.in/property/${item?.projectId?._id}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {item?.projectId?.title ? item?.projectId?.title : "-"}
+          </Link>
+        </Typography>
+      </Box>
     ),
     CreatedAt: (
       <Typography variant="caption" color="secondary" fontWeight="medium">

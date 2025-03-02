@@ -5,8 +5,10 @@ import { Icons } from "../common/Icons";
 import Model from "../common/Model";
 import { PlanType } from "@/utils/interface";
 import { generateImageUrl } from "@/utils/generateImageUrl";
+import Magnifier from "./Magnifier";
 
 const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
+  const [zoom, setZoom] = useState(2);
   const [open, setOpen] = useState<boolean>(false);
   const toggleModal = () => {
     setOpen((prev) => !prev);
@@ -39,16 +41,32 @@ const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
         </div>
       </div>
       <Model isModalOpen={open} toggleModal={toggleModal}>
-        <div className="relative flex flex-col gap-8 w-full h-full max-h-[70vh] md:max-w-[80vw] p-4 rounded-2xl overflow-hidden">
-          <p className="text-lg font-bold">{data?.title}</p>
+        <div className="relative flex flex-col gap-2 w-full h-full max-h-[70vh] md:max-w-[80vw] p-4 rounded-2xl overflow-hidden">
+          <div className="flex justify-between md:px-4">
+            <p className="text-lg font-bold">{data?.title}</p>
+            <div className="flex gap-3 items-end md:h-full md:px-4">
+              {[2, 4, 6, 8].map((item) => (
+                <button
+                  key={item}
+                  className={`h-fit w-fit justify-center text-sm p-1 px-2 rounded-full border-2 text-black ${
+                    item === zoom
+                      ? "border-[#8E7D3A] bg-[#FFFBEA]"
+                      : "bg-white border-stone-400"
+                  }`}
+                  onClick={() => setZoom(item)}
+                >
+                  {item}x
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="relative h-full overflow-x-scroll w-[90vw] md:w-full">
             <div className="w-[800px]">
-              <Image
+              <Magnifier
                 src={generateImageUrl(data?.src)}
-                alt="master-plan"
+                size={250}
+                zoom={zoom}
                 className="h-full w-full min-h-96 object-contain"
-                width={800}
-                height={800}
               />
             </div>
           </div>

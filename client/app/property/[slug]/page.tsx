@@ -14,6 +14,7 @@ import ContactForm from "@/components/Property/ContactForm";
 import ContactCard from "@/components/common/ContactCard";
 import Overview from "@/components/Property/Overview";
 import { generateImageUrl } from "@/utils/generateImageUrl";
+import ProjectGallery from "@/components/Property/ProjectGallery";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -80,6 +81,7 @@ const Page: React.FC<Props> = async ({ params }) => {
         <div className="flex flex-col lg:flex-row gap-4 w-full justify-between">
           <div className="flex flex-col w-full xl:w-2/3 gap-8 md:gap-12">
             {!!data?.description && <Overview data={data.description} />}
+            {!!data?.imageGallery && <ProjectGallery data={data.imageGallery} />}
             {!!data?.features?.length && <Features data={data.features} />}
             {!!data?.accommodation?.length && <Pricing data={data.accommodation} />}
             {!!data?.plans?.length && <Plans data={data.plans} />}

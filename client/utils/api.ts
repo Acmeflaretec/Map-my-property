@@ -47,6 +47,14 @@ const getProjectById = async (
     method: "GET",
   });
 
+const getBuilders = async (
+  data: any
+): Promise<{ data: { data: BuilderType[] } }> =>
+  request({
+    endpoint: `/builders?${buildQueryParams(data)}`,
+    method: "GET",
+  });
+
 const getBuilderById = async (
   data: any
 ): Promise<{ data: { data: BuilderType } }> =>
@@ -80,6 +88,7 @@ export {
   getSections,
   getProjects,
   getProjectById,
+  getBuilders,
   getBuilderById,
   sendInquiry,
   sendProjectInquiry,

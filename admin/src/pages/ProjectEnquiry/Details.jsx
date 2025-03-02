@@ -50,7 +50,10 @@ const Details = () => {
                     Phone
                   </Typography>
                   <Typography fontSize={14} sx={{ flex: 1 }}>
-                    : &nbsp; <a target="_blank" rel="noreferrer" href={`tel:${enquiry?.contactNumber}`}>{enquiry?.contactNumber}</a>
+                    : &nbsp;{" "}
+                    <a target="_blank" rel="noreferrer" href={`tel:${enquiry?.contactNumber}`}>
+                      {enquiry?.contactNumber}
+                    </a>
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
@@ -58,33 +61,44 @@ const Details = () => {
                     Email
                   </Typography>
                   <Typography fontSize={14} sx={{ flex: 1 }}>
-                    : &nbsp; <a target="_blank" rel="noreferrer" href={`mailto:${enquiry?.email}`}>{enquiry?.email}</a>
+                    : &nbsp;{" "}
+                    <a target="_blank" rel="noreferrer" href={`mailto:${enquiry?.email}`}>
+                      {enquiry?.email}
+                    </a>
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
                   <Typography fontSize={14} sx={{ width: "150px" }}>
-                    Loan Assistance
+                    Mode of Tour
                   </Typography>
                   <Typography fontSize={14} sx={{ flex: 1 }}>
-                    : &nbsp; {enquiry?.loanAssistance ? "Yes" : "No"}
+                    : &nbsp; {enquiry?.mode}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
                   <Typography fontSize={14} sx={{ width: "150px" }}>
-                    BHK Preference
+                    Date
                   </Typography>
                   <Typography fontSize={14} sx={{ flex: 1 }}>
-                    : &nbsp; {enquiry?.bhkPreference}
+                    : &nbsp; {enquiry?.date}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
                   <Typography fontSize={14} sx={{ width: "150px" }}>
-                    Area Preference
+                    Time slot
                   </Typography>
                   <Typography fontSize={14} sx={{ flex: 1 }}>
-                    : &nbsp; {enquiry?.areaPreference}
+                    : &nbsp; {enquiry?.time}
                   </Typography>
                 </Grid>
+                {enquiry?.description && <Grid item xs={12} sx={{ display: "flex" }}>
+                  <Typography fontSize={14} sx={{ width: "150px" }}>
+                    Message
+                  </Typography>
+                  <Typography fontSize={14} sx={{ flex: 1 }}>
+                    : &nbsp; {enquiry?.description}
+                  </Typography>
+                </Grid>}
               </Grid>
               <Typography variant="body2" py={2} fontWeight={600}>
                 Project Details

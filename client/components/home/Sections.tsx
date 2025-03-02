@@ -7,7 +7,7 @@ import { SectionType } from "@/utils/interface";
 import toast from "react-hot-toast";
 
 const Sections: React.FC = () => {
-  const [data, setData] = useState<SectionType[] | []>(sectionData);
+  const [data, setData] = useState<SectionType[] | []>();
   const fetchData = async () => {
     try {
       const res = await getSections({});

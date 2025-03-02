@@ -3,7 +3,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <main className="w-screen xl:max-w-screen-xl overflow-hidden">
+    <main className="w-screen xl:max-w-screen-xl overflow-visible">
       <ProjectPage />
     </main>
   );

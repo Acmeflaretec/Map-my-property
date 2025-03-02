@@ -1,90 +1,110 @@
-const ProjectEnquiry = require('../models/projectEnquiry');
-const Project = require('../models/projects');
+const ProjectEnquiry = require("../models/projectEnquiry");
+const Project = require("../models/projects");
 
 const createEnquiry = async (req, res) => {
-    const { bhkPreference, name, contactNumber, email, projectId,loanAssistance,areaPreference } = req.body;
+  const {
+    name,
+    contactNumber,
+    email,
+    projectId,
+    mode,
+    date,
+    time,
+    description,
+  } = req.body;
 
-    try {
-        const newEnquiry = await ProjectEnquiry.create({
-            bhkPreference,
-            name,
-            contactNumber,
-            email,
-            projectId,
-            loanAssistance,
-            areaPreference
-        });
+  try {
+    const newEnquiry = await ProjectEnquiry.create({
+      name,
+      contactNumber,
+      email,
+      projectId,
+      mode,
+      date,
+      time,
+      description,
+    });
 
-        res.status(201).json({ message: 'Enquiry created successfully', enquiry: newEnquiry });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    res
+      .status(201)
+      .json({ message: "Enquiry created successfully", enquiry: newEnquiry });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 const getEnquiries = async (req, res) => {
-    const { page = 1, perPage = 10, sortBy = 'createdAt', order = 'desc', search = '' } = req.query;
+  const {
+    page = 1,
+    perPage = 10,
+    sortBy = "createdAt",
+    order = "desc",
+    search = "",
+  } = req.query;
 
+  try {
+    const query = search ? { name: { $regex: search, $options: "i" } } : {};
 
-    try {
-        const query = search
-            ? { name: { $regex: search, $options: 'i' } }
-            : {};
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(perPage, 10),
+      populate: { path: "projectId", select: "title builder location builder" },
+      sort: { [sortBy]: order === "desc" ? -1 : 1 },
+    };
 
-        const options = {
-            page: parseInt(page, 10),
-            limit: parseInt(perPage, 10),
-            populate: { path: 'projectId', select: 'title builder location builder' },
-            sort: { [sortBy]: order === 'desc' ? -1 : 1  },
-        };
+    const data = await ProjectEnquiry.paginate(query, options);
 
-        const data = await ProjectEnquiry.paginate(query, options);
-
-        res.status(200).json(data);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 const getEnquiryDetails = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-        const enquiry = await ProjectEnquiry.findById(id).populate('projectId');
+  try {
+    const enquiry = await ProjectEnquiry.findById(id).populate("projectId");
 
-        if (!enquiry) {
-            return res.status(404).json({ message: 'Enquiry not found' });
-        }
-
-        res.status(200).json(enquiry);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+    if (!enquiry) {
+      return res.status(404).json({ message: "Enquiry not found" });
     }
+
+    res.status(200).json(enquiry);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
 const updateEnquiryStatus = async (req, res) => {
-    console.log('updateEnquiryStatus');
-    
-    const { userId, newStatus } = req.body;
-    console.log('userId, newStatus',userId, newStatus);
+  console.log("updateEnquiryStatus");
 
-    try {
-        const enquiry = await ProjectEnquiry.findById(userId);
+  const { userId, newStatus } = req.body;
+  console.log("userId, newStatus", userId, newStatus);
 
-        if (!enquiry) {
-            return res.status(404).json({ message: 'Enquiry not found' });
-        }
-         enquiry.isViewed = !enquiry.isViewed;
+  try {
+    const enquiry = await ProjectEnquiry.findById(userId);
 
-        await enquiry.save();
-
-        res.status(200).json({ message: 'Enquiry status updated', enquiry });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+    if (!enquiry) {
+      return res.status(404).json({ message: "Enquiry not found" });
     }
+    enquiry.isViewed = !enquiry.isViewed;
+
+    await enquiry.save();
+
+    res.status(200).json({ message: "Enquiry status updated", enquiry });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-module.exports = { createEnquiry, getEnquiries, getEnquiryDetails, updateEnquiryStatus };
+module.exports = {
+  createEnquiry,
+  getEnquiries,
+  getEnquiryDetails,
+  updateEnquiryStatus,
+};

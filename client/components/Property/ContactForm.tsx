@@ -2,27 +2,31 @@
 import React, { useState } from "react";
 import CustomButton from "../ui/CustomButton";
 import { Icons } from "../common/Icons";
-import FilterSection from "../projects/FilterSection";
 import { ProjectType } from "@/utils/interface";
 import toast from "react-hot-toast";
 import { sendProjectInquiry } from "@/utils/api";
+import DatePicker from "./DatePicker";
+import ToggleButton from "../ui/ToggleButton";
 
 const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [checked, setChecked] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const areas = data?.areas?.map((item) => `${item} sq/ft`) || [];
-  const [formData, setFormData] = useState({
+  const initialState = {
     name: "",
-    email: "",
     contactNumber: "",
-  });
-  const [filter, setFilter] = useState({
-    bhkPreference: "none",
-    areaPreference: "none",
-  });
-
+    email: "",
+    date: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toDateString(),
+    time: "10:00 AM",
+    projectId: data?._id,
+    mode: "in_person",
+    description: "",
+  };
+  const [formData, setFormData] = useState(initialState);
+  const modes = [
+    { key: "in_person", label: "In Person", icon: "person" },
+    { key: "video_chat", label: "Video Chat", icon: "video" },
+  ];
   const renderError = (key: string) => (
     <p className="text-red-500 text-sm h-2">{errors[key]}</p>
   );
@@ -61,16 +65,9 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
     setLoading(true);
     setErrors({});
     try {
-      await sendProjectInquiry({
-        ...formData,
-        ...filter,
-        loanAssistance: checked,
-        projectId: data?._id,
-      });
+      await sendProjectInquiry(formData);
       toast.success("Your inquiry has been sent successfully!");
-      setFormData({ name: "", email: "", contactNumber: "" });
-      setFilter({ bhkPreference: "", areaPreference: "" });
-      setChecked(false);
+      setFormData(initialState);
     } catch {
       toast.error("Something went wrong. Please try again later.");
     } finally {
@@ -80,7 +77,8 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
 
   return (
     <div className="flex flex-col gap-4 border-2 rounded-3xl p-4">
-      <p>Enquire for more details about the property</p>
+      <p className="font-semibold">Schedule a Visit</p>
+      <DatePicker data={formData} dispatch={setFormData} />
       <div className="col-span-2 md:col-span-1">
         <label
           htmlFor="name"
@@ -135,67 +133,59 @@ const ContactForm: React.FC<{ data: ProjectType }> = ({ data }) => {
         />
         {renderError("contactNumber")}
       </div>
-      {!!data?.bedrooms?.length && (
-        <div className="flex flex-col gap-2 w-full">
-          <p className="flex font-semibold gap-2">
-            <Icons.bed />
-            Bedrooms
-          </p>
-          <FilterSection
-            options={data?.bedrooms ?? []}
-            selectedKey={filter.bhkPreference}
-            onSelect={(key) =>
-              setFilter((prev) => ({ ...prev, bhkPreference: key }))
-            }
-          />
+      <div className="col-span-2 md:col-span-1">
+        <p className="text-sm">How do you require the home tour ?</p>
+        <div className="flex gap-2 w-full mt-2">
+          {modes.map(({ key, label, icon }) => {
+            const Icon = Icons[icon as keyof typeof Icons] || null;
+            return (
+              <ToggleButton
+                key={key}
+                selected={formData.mode === key}
+                onClick={() => setFormData((prev) => ({ ...prev, mode: key }))}
+                className="w-full gap-2"
+              >
+                {Icon && <Icon />}
+                {label}
+              </ToggleButton>
+            );
+          })}
         </div>
-      )}
-      <div className="flex flex-col gap-2 w-full">
-        <p className="flex font-semibold gap-2">
-          <Icons.area />
-          Area
-        </p>
-        <FilterSection
-          options={areas}
-          selectedKey={filter.areaPreference}
-          onSelect={(key) =>
-            setFilter((prev) => ({ ...prev, areaPreference: key }))
-          }
+      </div>
+      <div className="col-span-2 md:col-span-1">
+        <label
+          htmlFor="phone"
+          className="block mb-2 text-sm font-medium text-gray-900"
+        >
+          Any specific requirements regarding the visit ?
+        </label>
+        <textarea
+          name="description"
+          id="description"
+          rows={4}
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="Enter details here"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg outline-none focus:border-[#8E7D3A] focus:bg-[#FFFBEA] block w-full p-2.5"
         />
       </div>
-      <div
-        onClick={() => setChecked(!checked)}
-        className="col-span-2 md:col-span-1 flex items-center gap-2 justify-start cursor-pointer w-fit"
-      >
-        <input
-          type="checkbox"
-          name="loan"
-          id="loan"
-          checked={checked}
-          onChange={() => setChecked(!checked)}
-          className="h-5 w-5 border border-gray-300 bg-gray-50"
-        />
-        <p className="text-sm">Do you require Home Loan assistance?</p>
-      </div>
-      <div className="flex h-full items-end pt-16">
-        <div className="flex gap-2 justify-around w-full border-t pt-4">
-          <CustomButton
-            type="secondary"
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full justify-center"
-          >
-            Get Enquired <Icons.phone />
-          </CustomButton>
-          <CustomButton
-            type="primary"
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full justify-center"
-          >
-            Book Now <Icons.rightArrow />
-          </CustomButton>
-        </div>
+      <div className="flex gap-2 justify-around w-full border-t pt-4">
+        <CustomButton
+          type="secondary"
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full justify-center"
+        >
+          Get Enquired <Icons.phone />
+        </CustomButton>
+        <CustomButton
+          type="primary"
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full justify-center"
+        >
+          Book Now <Icons.rightArrow />
+        </CustomButton>
       </div>
     </div>
   );

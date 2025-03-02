@@ -49,21 +49,24 @@ const ContactPage: React.FC = () => {
             Stay updated with the latest trends and properties
           </p>
           <div className="flex gap-6 items-center py-4">
-            <Link href={"https://www.facebook.com/"} target="_blank">
+            <Link
+              href={
+                "https://www.facebook.com/people/Map-My-Property/100095114943706/"
+              }
+              target="_blank"
+            >
               <Icons.facebook />
             </Link>
             <Link href={"https://www.linkedin.com/"} target="_blank">
               <Icons.linkedIn />
             </Link>
-            <Link
-              href={
-                "https://www.google.com/search?q=map+my+property&rlz=1C1PNFE_enIN1112IN1112&oq=map+my+pro&gs_lcrp=EgZjaHJvbWUqBwgAEAAYgAQyBwgAEAAYgAQyBggBEEUYOTIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIGCAUQRRg9MgYIBhBFGD0yBggHEEUYPNIBCDcxMjZqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8"
-              }
-              target="_blank"
-            >
+            <Link href={"https://g.co/kgs/3nyVvrn"} target="_blank">
               <Icons.google />
             </Link>
-            <Link href={"https://www.instagram.com/"} target="_blank">
+            <Link
+              href={"https://www.instagram.com/map_my_property"}
+              target="_blank"
+            >
               <Icons.instagram />
             </Link>
           </div>

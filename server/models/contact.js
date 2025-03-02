@@ -1,22 +1,25 @@
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
+const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const contactSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
-  },    
+    required: true,
+  },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   phoneNumber: {
     type: String,
-    required: true
+    required: true,
+  },
+  pathname: {
+    type: String,
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   is_verified: {
     type: Boolean,
@@ -24,4 +27,4 @@ const contactSchema = new mongoose.Schema({
   },
 });
 contactSchema.plugin(mongoosePaginate);
-module.exports = mongoose.model('Contact', contactSchema);
+module.exports = mongoose.model("Contact", contactSchema);

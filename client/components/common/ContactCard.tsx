@@ -4,8 +4,10 @@ import CustomButton from "../ui/CustomButton";
 import { Icons } from "./Icons";
 import toast from "react-hot-toast";
 import { sendInquiry } from "@/utils/api";
+import { usePathname } from "next/navigation";
 
 const ContactCard: React.FC = () => {
+  const pathname = usePathname();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -44,8 +46,9 @@ const ContactCard: React.FC = () => {
     setErrors({});
     setLoading(true);
     try {
-      await sendInquiry(formData);
+      await sendInquiry({ ...formData, pathname });
       toast.success("Your inquiry has been sent successfully!");
+      localStorage.setItem("enquiry", "true");
       setFormData({
         name: "",
         email: "",

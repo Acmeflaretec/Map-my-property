@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 
 const Banner: React.FC = () => {
   const router = useRouter();
+  const [search, setSearch] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [data, setData] = useState<BannerType[] | []>(bannerData);
   const [userInteracted, setUserInteracted] = useState(false);
@@ -154,9 +155,14 @@ const Banner: React.FC = () => {
               <input
                 placeholder="Explore the best properties"
                 className="text-xs px-2 w-full bg-transparent outline-none"
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <CustomButton type="primary" className="pl-2 pr-1 gap-1 text-xs">
+            <CustomButton
+              type="primary"
+              href={`/property?q=${search}`}
+              className="pl-2 pr-1 gap-1 text-xs"
+            >
               Search <Icons.search />
             </CustomButton>
           </div>

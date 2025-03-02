@@ -7,18 +7,19 @@ import Dropdown from "./Dropdown";
 import { getShortPriceRange } from "@/utils/getPriceRange";
 
 const HeroSection: React.FC = () => {
-  const [location, setLocation] = useState<string>("");
-  const [filter, setFilter] = useState({
-    location: "Chandapura, Bangalore",
-    resident_type: "",
-    price: "",
-  });
+  // const [location, setLocation] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  // const [filter, setFilter] = useState({
+  //   location: "Chandapura, Bangalore",
+  //   resident_type: "",
+  //   price: "",
+  // });
 
   return (
     <div className="relative flex flex-col items-center text-gray-800 mt-20 md:mt-28 mx-1 md:mx-4 lg:mt-32 h-[50vh] md:h-[70vh]">
       <Banner />
       <div className="absolute hidden md:flex bg-white border-2 mb-2 -bottom-12 w-[95%] lg:w-4/5 xl:w-2/3 h-28 rounded-3xl p-2">
-        <div className="w-[35%] p-2 lg:p-4 flex flex-col gap-2">
+        {/* <div className="w-[35%] p-2 lg:p-4 flex flex-col gap-2">
           <p className="flex gap-1 items-center">
             <Icons.location /> Location
           </p>
@@ -109,6 +110,23 @@ const HeroSection: React.FC = () => {
           <CustomButton
             type="primary"
             href={`/property?location=${filter.location}&price=${filter.price}&resident_type=${filter.resident_type}`}
+          >
+            Search <Icons.search />
+          </CustomButton>
+        </div> */}
+        <div className="flex items-center gap-[2px] z-20 w-full p-4">
+          <div className="flex items-center border border-stone-300 bg-white rounded-lg p-2 pl-4 h-fit w-full">
+            <Icons.search />
+            <input
+              placeholder="Explore the best properties"
+              className="px-2 w-full bg-transparent outline-none"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <CustomButton
+            type="primary"
+            href={`/property?q=${search}`}
+            className="pl-12 pr-10 gap-4 py-[10px]"
           >
             Search <Icons.search />
           </CustomButton>

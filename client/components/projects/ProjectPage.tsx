@@ -25,7 +25,7 @@ const ProjectPage: React.FC = () => {
     price: { min: Number(min) ?? 100000, max: Number(max) ?? 100000000 },
     area: { min: 100, max: 100000 },
   });
-  const [search, setSearch] = useState<string>(query.replace("-", " "));
+  const [search, setSearch] = useState<string>(query.replaceAll("-", " "));
 
   const fetchData = async () => {
     try {
@@ -46,18 +46,19 @@ const ProjectPage: React.FC = () => {
       );
     }
   };
+
   useEffect(() => {
-    fetchData();
+    const handler = setTimeout(() => {
+      fetchData();
+    }, 500);
+    return () => clearTimeout(handler);
   }, [filter, search]);
+
   useEffect(() => {
-    setSearch(params.get("q")?.replace("-", " ") ?? "");
+    setSearch(params.get("q")?.replaceAll("-", " ") ?? "");
   }, [params]);
   return (
     <div className="flex gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 w-full justify-between min-h-screen">
-      <div className="w-1/3 static hidden xl:flex flex-col gap-8">
-        <Filter filter={filter} setFilter={setFilter} />
-        <ContactCard />
-      </div>
       <div className="flex flex-col w-full mx-auto xl:w-2/3 max-w-[54rem] gap-4 xl:gap-8 p-2">
         <div className="flex gap-1 xl:gap-2 w-full">
           <div
@@ -101,6 +102,12 @@ const ProjectPage: React.FC = () => {
               </p>
             </div>
           )}
+        </div>
+      </div>
+      <div className="w-1/3 static hidden xl:flex flex-col gap-8">
+        {/* <Filter filter={filter} setFilter={setFilter} /> */}
+        <div className="sticky top-32">
+          <ContactCard />
         </div>
       </div>
     </div>
