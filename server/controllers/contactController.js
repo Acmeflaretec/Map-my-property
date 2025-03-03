@@ -1,4 +1,6 @@
 const Contact = require("../models/contact");
+const sendEmail = require("../utils/emailService");
+
 
 const createContact = async (req, res) => {
   const { name, email, phoneNumber, pathname } = req.body;
@@ -10,6 +12,22 @@ const createContact = async (req, res) => {
       phoneNumber,
       pathname,
     });
+
+    const emailContent = `
+      <div style="font-family: Arial, sans-serif; color: #333;">
+        <h2 style="color: #007bff;">Hello Admin,</h2>
+        <p>you have received a contact inquiry</p>
+        <h3>Contact Details:</h3>
+        <ul>
+          <li><strong>Name:</strong> ${name}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>Phone Number:</strong> ${phoneNumber}</li>
+        </ul>
+        <p>Best Regards,<br><strong>AcmeFlare Team</strong></p>
+      </div>
+    `;
+
+    await sendEmail( "Thank you for contacting us!", emailContent);
 
     res.status(201).json({
       message: "Contact message created successfully",

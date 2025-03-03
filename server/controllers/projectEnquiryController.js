@@ -1,5 +1,7 @@
 const ProjectEnquiry = require("../models/projectEnquiry");
 const Project = require("../models/projects");
+const sendEmail = require("../utils/emailService");
+
 
 const createEnquiry = async (req, res) => {
   const {
@@ -24,6 +26,26 @@ const createEnquiry = async (req, res) => {
       time,
       description,
     });
+
+    const emailContent = `
+      <div style="font-family: Arial, sans-serif; color: #333;">
+        <h2 style="color: #007bff;">Hello Admin,</h2>
+        <p>you have received a project Enquiry</p>
+        <h3>Enquiry Details:</h3>
+        <ul>
+          <li><strong>Name:</strong> ${name}</li>
+          <li><strong>Contact Number:</strong> ${contactNumber}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>Mode:</strong> ${mode}</li>
+          <li><strong>Date:</strong> ${date}</li>
+          <li><strong>Time:</strong> ${time}</li>
+          <li><strong>Description:</strong> ${description}</li>
+        </ul>
+        <p>Best Regards,<br><strong>AcmeFlare Team</strong></p>
+      </div>
+    `;
+
+    await sendEmail( "Enquiry Received Successfully!", emailContent);
 
     res
       .status(201)
