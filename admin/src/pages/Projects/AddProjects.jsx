@@ -40,6 +40,9 @@ const AddProjects = () => {
     floorPlans: [{ title: "", desc: "", src: "" }],
     accommodation: [{ unit: "", area: "", price: "" }],
     features: [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+    metaTitle: "",
+    metaDescription: "",
+    metaKeywords: "",
   };
   // const [details, setDetails] = useState()
 
@@ -617,6 +620,46 @@ const AddProjects = () => {
               name="location"
               value={details?.location || ""}
               onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6" mt={2}>SEO Meta Data</Typography>
+          </Grid>
+          
+          <Grid item xs={12}>
+            <Typography variant="caption">Meta Title</Typography>
+            <Input
+              placeholder="Meta Title"
+              id="metaTitle"
+              name="metaTitle"
+              value={details?.metaTitle || ""}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption">Meta Description</Typography>
+            <Input
+              placeholder="Meta Description"
+              id="metaDescription"
+              name="metaDescription"
+              value={details?.metaDescription || ""}
+              onChange={handleChange}
+              multiline
+              rows={3}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography variant="caption">Meta Keywords</Typography>
+            <Input
+              placeholder="Meta Keywords (comma separated)"
+              id="metaKeywords"
+              name="metaKeywords"
+              value={details?.metaKeywords || ""}
+              onChange={handleChange}
+              multiline
+              rows={3}
             />
           </Grid>
           <Grid item xs={12}>

@@ -40,7 +40,15 @@ const projectsSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-
+    metaTitle: {
+      type: String,
+    },
+    metaDescription: {
+      type: String,
+    },
+    metaKeywords: {
+      type: [String],
+    },
     expertOpinions: {
       type: [String],
     },

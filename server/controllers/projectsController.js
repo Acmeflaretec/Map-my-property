@@ -89,6 +89,9 @@ const addProject = async (req, res) => {
       accommodationUnit,
       accommodationArea,
       accommodationPrice,
+      metaTitle,
+      metaDescription,
+      metaKeywords,
     } = req?.body;
 
     let featuresArray;
@@ -185,6 +188,12 @@ const addProject = async (req, res) => {
           area: accommodationArea,
           price: accommodationPrice,
         };
+
+    // Format metaKeywords into array
+    const formattedMetaKeywords = metaKeywords
+      ? metaKeywords.split(',').map(keyword => keyword.trim()).filter(Boolean)
+      : [];
+
     const projects = new Projects({
       title,
       subtitle,
@@ -206,6 +215,9 @@ const addProject = async (req, res) => {
       plans: floorPlansTitle && floorPlans,
       accommodation: accommodationUnit && accommodation,
       features: featuresArray,
+      metaTitle,
+      metaDescription,
+      metaKeywords: formattedMetaKeywords,
     });
     await projects.save();
 
@@ -263,6 +275,9 @@ const updateProject = async (req, res) => {
       accommodationUnit,
       accommodationArea,
       accommodationPrice,
+      metaTitle,
+      metaDescription,
+      metaKeywords,
     } = req?.body;
 
     let featuresArray;
@@ -381,6 +396,11 @@ const updateProject = async (req, res) => {
           price: accommodationPrice,
         };
 
+    // Format metaKeywords into array
+    const formattedMetaKeywords = metaKeywords
+      ? metaKeywords.split(',').map(keyword => keyword.trim()).filter(Boolean)
+      : [];
+
     const projectUpdateResult = await Projects.updateOne(
       { _id },
       {
@@ -406,6 +426,9 @@ const updateProject = async (req, res) => {
           plans: floorPlansTitle && floorPlans,
           testimonials: reviewValue,
           accommodation: accommodationUnit && accommodation,
+          metaTitle,
+          metaDescription,
+          metaKeywords: formattedMetaKeywords,
         },
       }
     );
