@@ -23,6 +23,7 @@ import FieldSection from "./FieldSection";
 import TextEditor from "utils/TextEditor";
 import avatarFemale from "assets/images/avatar-female.png";
 import avatarMale from "assets/images/avatar-male.png";
+import EditorJSON from "./EditorJSON";
 
 const AddProjects = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const AddProjects = () => {
     Areas: [""],
     FAQs: [{ questions: "", answer: "" }],
     reviews: [{ name: "", rating: 0, review: "", src: "" }],
-    masterPlan: [{ title: "", desc: "", src: "" }],
+    masterPlan: { title: "", desc: "", src: "" },
     imageGallery: [{ title: "", desc: "", src: "" }],
     floorPlans: [{ title: "", desc: "", src: "" }],
     accommodation: [{ unit: "", area: "", price: "" }],
@@ -176,20 +177,20 @@ const AddProjects = () => {
         }
       });
       if (details?.masterPlan) {
-        if (details.masterPlan[0].title === "") {
+        if (details.masterPlan.title === "") {
         } else {
-          if (details.masterPlan[0].src) {
+          if (details.masterPlan.src) {
             if (
-              details.masterPlan[0].src &&
-              typeof details.masterPlan[0].src === "string" &&
-              details.masterPlan[0].src.startsWith("data:image/")
+              details.masterPlan.src &&
+              typeof details.masterPlan.src === "string" &&
+              details.masterPlan.src.startsWith("data:image/")
             ) {
-              const blob = dataURLtoFile(details.masterPlan[0].src, `file-0.png`);
-              // formData.append(`masterPlan`, details.masterPlan[0].src);
+              const blob = dataURLtoFile(details.masterPlan.src, `file-0.png`);
+              // formData.append(`masterPlan`, details.masterPlan.src);
               formData.append(`masterPlan`, blob);
             }
-            formData.append(`masterPlanTitle`, details.masterPlan[0].title);
-            formData.append(`masterPlanDesc`, details.masterPlan[0].desc);
+            formData.append(`masterPlanTitle`, details.masterPlan.title);
+            formData.append(`masterPlanDesc`, details.masterPlan.desc);
           } else {
             return toast.error(" masterPlan image is required");
             setDisable(false);
@@ -264,77 +265,137 @@ const AddProjects = () => {
     }
   };
   const handleFieldChange = (field, index, value) => {
-    const updated = [...details[field]];
-    updated[index] = value;
-    setDetails((prevData) => ({ ...prevData, [field]: updated }));
+    setDetails((prevData) => {
+      const currentArray = Array.isArray(prevData[field]) ? prevData[field] : [""];
+      const updated = [...currentArray];
+      updated[index] = value;
+      return { ...prevData, [field]: updated };
+    });
   };
 
   const handleAddFields = (field) => {
-    setDetails((prevData) => ({ ...prevData, [field]: [...prevData[field], ""] }));
+    setDetails((prevData) => {
+      const currentArray = Array.isArray(prevData[field]) ? prevData[field] : [""];
+      return { ...prevData, [field]: [...currentArray, ""] };
+    });
   };
 
   const handleRemoveFields = (field, index) => {
-    const updated = details[field].filter((_, i) => i !== index);
-    setDetails((prevData) => ({ ...prevData, [field]: updated }));
+    setDetails((prevData) => {
+      const currentArray = Array.isArray(prevData[field]) ? prevData[field] : [""];
+      const updated = currentArray.filter((_, i) => i !== index);
+      return { ...prevData, [field]: updated.length ? updated : [""] };
+    });
   };
 
   const handleFeaturesChange = (index, key, value) => {
-    const updatedFeatures = [...details.features];
-    updatedFeatures[index][key] = value;
-    setDetails({ ...details, features: updatedFeatures });
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const updatedFeatures = [...currentFeatures];
+      if (!updatedFeatures[index]) {
+        updatedFeatures[index] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+      }
+      updatedFeatures[index] = { ...updatedFeatures[index], [key]: value };
+      return { ...prev, features: updatedFeatures };
+    });
   };
 
   const handleFeatureItemsChange = (featureIndex, itemIndex, key, value) => {
-    const updatedItems = [...details.features[featureIndex].items];
-    updatedItems[itemIndex] = { ...updatedItems[itemIndex], [key]: value };
-    const updatedFeatures = [...details.features];
-    updatedFeatures[featureIndex].items = updatedItems;
-    setDetails({ ...details, features: updatedFeatures });
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const updatedFeatures = [...currentFeatures];
+      if (!updatedFeatures[featureIndex]) {
+        updatedFeatures[featureIndex] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+      }
+      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      const updatedItems = [...currentItems];
+      if (!updatedItems[itemIndex]) {
+        updatedItems[itemIndex] = { text: "", helpertext: "", icon: "" };
+      }
+      updatedItems[itemIndex] = { ...updatedItems[itemIndex], [key]: value };
+      updatedFeatures[featureIndex].items = updatedItems;
+      return { ...prev, features: updatedFeatures };
+    });
   };
 
-  const handleAddFeature = () =>
-    setDetails((prev) => ({
-      ...prev,
-      features: [...prev.features, { title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
-    }));
+  const handleAddFeature = () => {
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      return {
+        ...prev,
+        features: [...currentFeatures, { title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+      };
+    });
+  };
 
   const handleRemoveFeature = (index) => {
-    const updatedFeatures = details.features.filter((_, i) => i !== index);
-    setDetails({ ...details, features: updatedFeatures });
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const updatedFeatures = currentFeatures.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        features: updatedFeatures.length ? updatedFeatures : [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+      };
+    });
   };
 
   const handleAddFeatureItem = (featureIndex) => {
-    const updatedItems = [
-      ...details.features[featureIndex].items,
-      { text: "", helpertext: "", icon: "" },
-    ];
-    const updatedFeatures = [...details.features];
-    updatedFeatures[featureIndex].items = updatedItems;
-    setDetails({ ...details, features: updatedFeatures });
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const updatedFeatures = [...currentFeatures];
+      if (!updatedFeatures[featureIndex]) {
+        updatedFeatures[featureIndex] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+      }
+      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      updatedFeatures[featureIndex].items = [...currentItems, { text: "", helpertext: "", icon: "" }];
+      return { ...prev, features: updatedFeatures };
+    });
   };
 
   const handleRemoveFeatureItem = (featureIndex, itemIndex) => {
-    const updatedItems = details.features[featureIndex].items.filter((_, i) => i !== itemIndex);
-    const updatedFeatures = [...details.features];
-    updatedFeatures[featureIndex].items = updatedItems;
-    setDetails({ ...details, features: updatedFeatures });
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const updatedFeatures = [...currentFeatures];
+      if (!updatedFeatures[featureIndex]) {
+        return prev;
+      }
+      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      const updatedItems = currentItems.filter((_, i) => i !== itemIndex);
+      updatedFeatures[featureIndex].items = updatedItems.length ? updatedItems : [{ text: "", helpertext: "", icon: "" }];
+      return { ...prev, features: updatedFeatures };
+    });
   };
 
   const handleAddFAQs = () => {
-    setDetails((prevData) => ({
-      ...prevData,
-      FAQs: [...prevData.FAQs, { questions: "", answer: "" }],
-    }));
+    setDetails((prevData) => {
+      const currentFAQs = prevData.FAQs || [{ questions: "", answer: "" }];
+      return {
+        ...prevData,
+        FAQs: [...currentFAQs, { questions: "", answer: "" }],
+      };
+    });
   };
   const handleFAQsChange = (index, field, value) => {
-    const newFAQs = [...details.FAQs];
-    newFAQs[index] = { ...newFAQs[index], [field]: value };
-    setDetails((prevData) => ({ ...prevData, FAQs: newFAQs }));
+    setDetails((prevData) => {
+      const currentFAQs = prevData.FAQs || [{ questions: "", answer: "" }];
+      const newFAQs = [...currentFAQs];
+      if (!newFAQs[index]) {
+        newFAQs[index] = { questions: "", answer: "" };
+      }
+      newFAQs[index] = { ...newFAQs[index], [field]: value };
+      return { ...prevData, FAQs: newFAQs };
+    });
   };
 
   const handleRemoveFAQs = (index) => {
-    const newFAQs = details.FAQs.filter((_, i) => i !== index);
-    setDetails((prevData) => ({ ...prevData, FAQs: newFAQs }));
+    setDetails((prevData) => {
+      const currentFAQs = prevData.FAQs || [{ questions: "", answer: "" }];
+      const newFAQs = currentFAQs.filter((_, i) => i !== index);
+      return {
+        ...prevData,
+        FAQs: newFAQs.length ? newFAQs : [{ questions: "", answer: "" }],
+      };
+    });
   };
 
   const handleAddReview = () => {
@@ -366,16 +427,33 @@ const AddProjects = () => {
 
   const handleIconSelect = (iconName) => {
     const { featureIndex, itemIndex } = selectedIconField;
-    const updatedFeatures = [...details.features];
-    const updatedItems = [...updatedFeatures[featureIndex].items];
-    updatedItems[itemIndex] = { ...updatedItems[itemIndex], icon: iconName };
-    updatedFeatures[featureIndex].items = updatedItems;
-    setDetails((prev) => ({ ...prev, features: updatedFeatures }));
+    setDetails((prev) => {
+      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const updatedFeatures = [...currentFeatures];
+      if (!updatedFeatures[featureIndex]) {
+        updatedFeatures[featureIndex] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+      }
+      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      const updatedItems = [...currentItems];
+      if (!updatedItems[itemIndex]) {
+        updatedItems[itemIndex] = { text: "", helpertext: "", icon: "" };
+      }
+      updatedItems[itemIndex] = { ...updatedItems[itemIndex], icon: iconName };
+      updatedFeatures[featureIndex].items = updatedItems;
+      return { ...prev, features: updatedFeatures };
+    });
     setIconPickerOpen(false);
   };
 
   const handleNestedChange = (field, index, subField, value) => {
-    const updated = [...details[field]];
+    const currentArray = details[field] || [];
+    const updated = [...currentArray];
+    if (!updated[index]) {
+      updated[index] =
+        field === "accommodation"
+          ? { unit: "", area: "", price: "" }
+          : { title: "", desc: "", src: "" };
+    }
     updated[index][subField] = value;
     setDetails((prev) => ({ ...prev, [field]: updated }));
   };
@@ -384,7 +462,7 @@ const AddProjects = () => {
   //   const file = e.target.files[0];
   //   handleNestedChange(field, index, 'src', file);
   // };
-  const handleFileChange = async(field, index, e) => {
+  const handleFileChange = async (field, index, e) => {
     let file = e?.target?.files?.[0];
 
     if (!file) {
@@ -407,11 +485,13 @@ const AddProjects = () => {
       field === "accommodation"
         ? { unit: "", area: "", price: "" }
         : { title: "", desc: "", src: "" };
-    setDetails((prev) => ({ ...prev, [field]: [...prev[field], newItem] }));
+    const currentArray = details[field] || [];
+    setDetails((prev) => ({ ...prev, [field]: [...currentArray, newItem] }));
   };
 
   const handleRemoveField = (field, index) => {
-    const updated = details[field].filter((_, i) => i !== index);
+    const currentArray = details[field] || [];
+    const updated = currentArray.filter((_, i) => i !== index);
     setDetails((prev) => ({ ...prev, [field]: updated }));
   };
 
@@ -422,12 +502,13 @@ const AddProjects = () => {
     <PageLayout title={"Add Projects"}>
       <Grid container spacing={5} display={"flex"} direction={"row"} px={8} pb={8}>
         <Grid item container spacing={2} xs={12}>
-          <Grid item xs={12} display={"flex"} alignItems={"center"} gap={1}>
+          <Grid item xs={10} display={"flex"} alignItems={"center"} gap={1}>
             <Typography variant="h6">Basic Details</Typography>
             <Typography variant="caption" color="error">
               *required
             </Typography>
           </Grid>
+          <EditorJSON details={details} setDetails={setDetails} />
           <Grid item xs={12}>
             <Typography variant="caption">
               Project Title <span style={{ color: "red" }}>*</span>
@@ -623,9 +704,11 @@ const AddProjects = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6" mt={2}>SEO Meta Data</Typography>
+            <Typography variant="h6" mt={2}>
+              SEO Meta Data
+            </Typography>
           </Grid>
-          
+
           <Grid item xs={12}>
             <Typography variant="caption">Meta Title</Typography>
             <Input
@@ -664,20 +747,19 @@ const AddProjects = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6">Property Features</Typography>
-            {details.features.map((feature, index) => (
+            {(details?.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }]).map((feature, index) => (
               <Box key={index} mt={2} p={2} border={1}>
                 <Typography variant="h6">Feature {index + 1}</Typography>
                 <Input
                   fullWidth
                   placeholder="Feature Title"
-                  value={feature.title}
+                  value={feature?.title || ""}
                   onChange={(e) => handleFeaturesChange(index, "title", e.target.value)}
                 />
-                {feature.items.map((item, itemIndex) => (
+                {(feature?.items || [{ text: "", helpertext: "", icon: "" }]).map((item, itemIndex) => (
                   <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
-                    {/* <IconButton onClick={() => setIconPickerOpen(true) && setSelectedIconField({ featureIndex: index, itemIndex })}> */}
                     <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
-                      {Icons[item.icon] ? (
+                      {Icons[item?.icon] ? (
                         Icons[item.icon]({ width: "24px", height: "24px" })
                       ) : (
                         <Add />
@@ -686,7 +768,7 @@ const AddProjects = () => {
                     <Input
                       placeholder="Text"
                       style={{ marginRight: "5px" }}
-                      value={item.text}
+                      value={item?.text || ""}
                       onChange={(e) =>
                         handleFeatureItemsChange(index, itemIndex, "text", e.target.value)
                       }
@@ -694,7 +776,7 @@ const AddProjects = () => {
                     />
                     <Input
                       placeholder="Helpertext"
-                      value={item.helpertext}
+                      value={item?.helpertext || ""}
                       onChange={(e) =>
                         handleFeatureItemsChange(index, itemIndex, "helpertext", e.target.value)
                       }
@@ -723,14 +805,14 @@ const AddProjects = () => {
           </Grid>
           <FieldSection
             label="Expert Opinions"
-            values={details.ExpertOpinions}
+            values={Array.isArray(details?.ExpertOpinions) ? details.ExpertOpinions : [""]}
             onChange={(index, value) => handleFieldChange("ExpertOpinions", index, value)}
             onAdd={() => handleAddFields("ExpertOpinions")}
             onRemove={(index) => handleRemoveFields("ExpertOpinions", index)}
           />
           <FieldSection
             label="Bedrooms (BHK)"
-            values={details.Bedrooms}
+            values={Array.isArray(details?.Bedrooms) ? details.Bedrooms : [""]}
             onChange={(index, value) => handleFieldChange("Bedrooms", index, value)}
             onAdd={() => handleAddFields("Bedrooms")}
             onRemove={(index) => handleRemoveFields("Bedrooms", index)}
@@ -738,7 +820,7 @@ const AddProjects = () => {
 
           <FieldSection
             label="Area (sq/ft)"
-            values={details.Areas}
+            values={Array.isArray(details?.Areas) ? details.Areas : [""]}
             onChange={(index, value) => handleFieldChange("Areas", index, value)}
             onAdd={() => handleAddFields("Areas")}
             onRemove={(index) => handleRemoveFields("Areas", index)}
@@ -749,16 +831,26 @@ const AddProjects = () => {
             <Box display="flex" alignItems="center" marginBottom={1}>
               <Input
                 placeholder=" Master Plan Title"
-                value={details.masterPlan[0].title}
+                value={details.masterPlan?.title || ""}
                 style={{ marginRight: "5px" }}
                 fullWidth
-                onChange={(e) => handleNestedChange("masterPlan", 0, "title", e.target.value)}
+                onChange={(e) =>
+                  setDetails((prev) => ({
+                    ...prev,
+                    masterPlan: { ...prev.masterPlan, title: e.target.value },
+                  }))
+                }
               />
               <Input
                 placeholder="Description"
-                value={details.masterPlan[0].desc}
+                value={details.masterPlan?.desc || ""}
                 fullWidth
-                onChange={(e) => handleNestedChange("masterPlan", 0, "desc", e.target.value)}
+                onChange={(e) =>
+                  setDetails((prev) => ({
+                    ...prev,
+                    masterPlan: { ...prev.masterPlan, desc: e.target.value },
+                  }))
+                }
               />
             </Box>
             <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
@@ -770,24 +862,13 @@ const AddProjects = () => {
                 Upload Image
                 <input type="file" hidden onChange={(e) => handleFileChange("masterPlan", 0, e)} />
               </Button>
-              {details?.masterPlan[0]?.src && (
-                // <Box mt={1}>
-                //   <img
-                //     src={
-                //       typeof (details?.masterPlan[0]?.src) === 'object'
-                //         ? URL.createObjectURL(details?.masterPlan[0]?.src)
-                //         : `${process.env.REACT_APP_API_URL}/uploads/${details?.masterPlan[0]?.src}`
-                //     }
-                //     alt={`masterPlan`}
-                //     style={{ width: '100%', height: '100px', objectFit: 'cover' }}
-                //   />
-                // </Box>
+              {details?.masterPlan?.src && (
                 <Box mt={1}>
                   <img
                     src={
-                      details.masterPlan[0].src.startsWith("data:image/")
-                        ? details.masterPlan[0].src
-                        : `${process.env.REACT_APP_API_URL}/uploads/${details.masterPlan[0].src}`
+                      details.masterPlan.src.startsWith("data:image/")
+                        ? details.masterPlan.src
+                        : `${process.env.REACT_APP_API_URL}/uploads/${details.masterPlan.src}`
                     }
                     alt={`masterPlan`}
                     style={{ width: "100%", height: "100px", objectFit: "cover" }}
@@ -807,7 +888,7 @@ const AddProjects = () => {
                   </Typography>
                 )}
               </Typography>
-              {details[field].map((item, index) => (
+              {(details[field] || []).map((item, index) => (
                 <Box key={index} marginBottom={1}>
                   <Box display="flex" alignItems="center">
                     {field !== "accommodation" && (
@@ -872,17 +953,6 @@ const AddProjects = () => {
                         />
                       </Button>
                       {item.src && (
-                        // <Box mt={1}>
-                        //   <img
-                        //     src={
-                        //       typeof item.src === 'object'
-                        //         ? URL.createObjectURL(item.src)
-                        //         : `${process.env.REACT_APP_API_URL}/uploads/${item.src}`
-                        //     }
-                        //     alt={`${item} ${index + 1}`}
-                        //     style={{ width: '100%', height: '100px', objectFit: 'cover' }}
-                        //   />
-                        // </Box>
                         <Box mt={1}>
                           <img
                             src={
@@ -916,34 +986,34 @@ const AddProjects = () => {
 
           <Grid item xs={12}>
             <Grid container direction="row">
-              {details?.FAQs?.map((FAQs, index) => (
-                <Grid item xs={12} key={index}>
+              {(Array.isArray(details?.FAQs) ? details.FAQs : [{ questions: "", answer: "" }]).map((FAQ, index) => (
+                <Grid item xs={12} key={`faq-${index}`}>
                   <Box
-                    key={index}
                     display="flex"
                     alignItems="center"
                     style={{ marginBottom: "10px" }}
                   >
                     <Input
-                      placeholder={`questions ${index + 1}`}
-                      value={FAQs.questions}
+                      placeholder={`Question ${index + 1}`}
+                      value={FAQ?.questions || ""}
                       onChange={(e) => handleFAQsChange(index, "questions", e.target.value)}
                       fullWidth
                       required
                       style={{ marginRight: "5px" }}
                     />
                     <Input
-                      placeholder="answer"
-                      value={FAQs.answer}
+                      placeholder="Answer"
+                      value={FAQ?.answer || ""}
                       onChange={(e) => handleFAQsChange(index, "answer", e.target.value)}
                       fullWidth
                       required
                     />
-                    {details.FAQs.length > 1 && (
-                      <IconButton onClick={() => handleRemoveFAQs(index)}>
-                        <Delete />
-                      </IconButton>
-                    )}
+                    <IconButton 
+                      onClick={() => handleRemoveFAQs(index)}
+                      disabled={details?.FAQs?.length <= 1}
+                    >
+                      <Delete />
+                    </IconButton>
                   </Box>
                 </Grid>
               ))}
@@ -955,7 +1025,7 @@ const AddProjects = () => {
 
           <Grid item xs={12}>
             <Typography variant="h6">Reviews</Typography>
-            {details.reviews.map((review, index) => (
+            {(details?.reviews || []).map((review, index) => (
               <Box
                 key={index}
                 mt={2}
@@ -1012,7 +1082,7 @@ const AddProjects = () => {
                         justifyContent: "center",
                         borderRadius: "10px",
                         overflow: "hidden",
-                        mx:2
+                        mx: 2,
                       }}
                       onClick={(e) => handleFileChange("reviews", index, avatarMale)}
                     >
@@ -1046,28 +1116,17 @@ const AddProjects = () => {
                     </Box>
                   </Box>
                   {review.src && (
-                    // <Box mt={1}>
-                    //   <img
-                    //     src={
-                    //       typeof review.src === 'object'
-                    //         ? URL.createObjectURL(review.src)
-                    //         : `${process.env.REACT_APP_API_URL}/uploads/${review.src}`
-                    //     }
-                    //     alt={`Review ${index + 1}`}
-                    //     style={{ width: '100%', height: '100px', objectFit: 'cover' }}
-                    //   />
-                    // </Box>
-
                     <Box
-                    sx={{
-                      width: 110,
-                      height: 80,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: "10px",
-                      overflow: "hidden",
-                    }}>
+                      sx={{
+                        width: 110,
+                        height: 80,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "10px",
+                        overflow: "hidden",
+                      }}
+                    >
                       <img
                         src={
                           review.src.startsWith("data:image/")
