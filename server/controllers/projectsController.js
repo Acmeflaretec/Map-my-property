@@ -189,11 +189,6 @@ const addProject = async (req, res) => {
           price: accommodationPrice,
         };
 
-    // Format metaKeywords into array
-    const formattedMetaKeywords = metaKeywords
-      ? metaKeywords.split(',').map(keyword => keyword.trim()).filter(Boolean)
-      : [];
-
     const projects = new Projects({
       title,
       subtitle,
@@ -217,7 +212,7 @@ const addProject = async (req, res) => {
       features: featuresArray,
       metaTitle,
       metaDescription,
-      metaKeywords: formattedMetaKeywords,
+      metaKeywords,
     });
     await projects.save();
 
@@ -396,11 +391,6 @@ const updateProject = async (req, res) => {
           price: accommodationPrice,
         };
 
-    // Format metaKeywords into array
-    const formattedMetaKeywords = metaKeywords
-      ? metaKeywords.split(',').map(keyword => keyword.trim()).filter(Boolean)
-      : [];
-
     const projectUpdateResult = await Projects.updateOne(
       { _id },
       {
@@ -428,7 +418,7 @@ const updateProject = async (req, res) => {
           accommodation: accommodationUnit && accommodation,
           metaTitle,
           metaDescription,
-          metaKeywords: formattedMetaKeywords,
+          metaKeywords,
         },
       }
     );
@@ -531,6 +521,7 @@ const getFilteredProjects = async (req, res) => {
           { category: { $in: matchingCategoryIds } },
           { _id: { $in: tagProductIds } },
           { builder: { $in: matchingBuilderIds } },
+          { status: { $regex: search, $options: "i" } },
         ],
       });
     }
@@ -583,8 +574,25 @@ const getFilteredProjects = async (req, res) => {
     };
 
     const projects = await Projects.paginate(query, options);
-
-    res.status(200).json(projects);
+    if (projects.docs.length > 0) {
+      res.status(200).json({
+        data: projects,
+        message: `Showing 1 - ${
+          projects.docs.length < 10 ? projects.docs.length : 10
+        } of ${projects.totalDocs} ${
+          projects.totalDocs === 1 ? "property" : "properties"
+        }`,
+      });
+    } else {
+      const suggestedProjects = await Projects.paginate(
+        { isAvailable: true },
+        options
+      );
+      res.status(200).json({
+        data: suggestedProjects,
+        message: `Oops! No results found, Showing Map My Property's suggested properties`,
+      });
+    }
   } catch (error) {
     console.error(error.message);
     res

@@ -47,7 +47,7 @@ const projectsSchema = new mongoose.Schema(
       type: String,
     },
     metaKeywords: {
-      type: [String],
+      type: String,
     },
     expertOpinions: {
       type: [String],
