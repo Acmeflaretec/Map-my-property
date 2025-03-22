@@ -8,7 +8,6 @@ import { generateImageUrl } from "@/utils/generateImageUrl";
 import Magnifier from "./Magnifier";
 
 const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
-  const [zoom, setZoom] = useState(2);
   const [open, setOpen] = useState<boolean>(false);
   const toggleModal = () => {
     setOpen((prev) => !prev);
@@ -46,7 +45,7 @@ const MasterPlan: React.FC<{ data: PlanType }> = ({ data }) => {
             <p className="text-lg font-bold">{data?.title}</p>
           </div>
           <div className="relative h-full overflow-x-scroll w-[90vw] md:w-full">
-            <div className="w-[800px]">
+            <div className="w-full bg-black h-full">
               <Magnifier
                 src={generateImageUrl(data?.src)}
                 className="h-full w-full min-h-96 object-contain"
