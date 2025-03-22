@@ -34,11 +34,7 @@ const Carousal: React.FC = () => {
     fetchData();
   }, []);
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.89, y: 200, x: 100 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-      className="relative pl-2 mt-8 md:p-4"
-    >
+    <div className="relative pl-2 mt-8 md:p-4">
       <h1 className="font-black text-xl py-8">Fresh Reads From The Blogs</h1>
       <motion.div
         initial={{ scale: sm ? 0.68 : 0.85, y: 10 }}
@@ -95,7 +91,7 @@ const Carousal: React.FC = () => {
           })}
         </Swiper>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

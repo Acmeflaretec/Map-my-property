@@ -10,6 +10,44 @@ import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 
+const BuilderCard = ({ item, idx }: { item: BuilderType; idx: number }) => (
+  <Link
+    href={`/builder/${item?.url}`}
+    key={idx}
+    className="flex flex-col items-center justify-center gap-2 bg-white min-w-28 w-full h-32 p-4"
+  >
+    <div className="flex items-center gap-2">
+      <Image
+        src={generateImageUrl(item?.logo)}
+        width={40}
+        height={40}
+        alt={item?.title || "builder logo"}
+        className="w-16 h-16"
+      />
+    </div>
+    <p className="text-xs lg:text-sm font-semibold truncate w-28 text-center">
+      {item?.title}
+    </p>
+  </Link>
+);
+
+const MobileBuilders = ({ data }: { data: BuilderType[] }) => (
+  <div className="flex md:hidden flex-col items-center justify-center w-screen overflow-hidden">
+    <div className="relative flex overflow-x-hidden bg-gradient-to-b from-white via-[#e3e1f2] to-white">
+      <div className="pt-4 pb-6 animate-marquee whitespace-nowrap flex">
+        {data?.map((item, idx) => (
+          <BuilderCard key={`scroll1-${idx}`} item={item} idx={idx} />
+        ))}
+      </div>
+      <div className="absolute top-0 pt-4 pb-6 animate-marquee2 whitespace-nowrap flex">
+        {data?.map((item, idx) => (
+          <BuilderCard key={`scroll2-${idx}`} item={item} idx={idx} />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 const Builders: React.FC = () => {
   const [data, setData] = useState<BuilderType[] | []>();
   const fetchData = async () => {
@@ -31,7 +69,7 @@ const Builders: React.FC = () => {
   return (
     <div className="relative pl-2 md:px-4 pb-12">
       <h1 className="font-black text-xl pb-2">Our Trusted Builders</h1>
-      <div className="absolute top-0 right-2 z-10 flex gap-2">
+      <div className="hidden md:flex absolute top-0 right-2 z-10 gap-2">
         <button className="swiper-button3-next bg-white group !p-3 flex justify-center items-center border border-solid !w-10 !h-10 transition-all duration-500 rounded-full border-black border-opacity-20">
           <Icons.leftArrow className="text-black group-hover:text-opacity-50" />
         </button>
@@ -39,7 +77,7 @@ const Builders: React.FC = () => {
           <Icons.rightArrow className="text-black group-hover:text-opacity-50" />
         </button>
       </div>
-      <div className="pt-4 lg:pt-8">
+      <div className="hidden md:block pt-4 lg:pt-8">
         <Swiper
           loop={true}
           spaceBetween={20}
@@ -91,6 +129,7 @@ const Builders: React.FC = () => {
           })}
         </Swiper>
       </div>
+      <MobileBuilders data={data || []} />
     </div>
   );
 };

@@ -12,9 +12,9 @@ const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
     <Link
       href={`/property/${data?.href}`}
       key={data?.title}
-      className="flex flex-col w-fit max-w-[17rem] items-center rounded-2xl md:rounded-3xl p-1 border-2"
+      className="flex flex-col w-fit max-w-[17rem] items-center rounded-2xl md:rounded-3xl p-1 pt-0.5 border-2"
     >
-      <div className="h-32 md:h-48 min-w-[45vw] md:min-w-[14rem] lg:min-w-[16.5rem] max-w-[16.5rem] rounded-2xl md:rounded-3xl overflow-hidden border-2">
+      <div className="h-32 md:h-48 min-w-[45vw] md:min-w-[14rem] lg:min-w-[16.5rem] max-w-[16.5rem] rounded-2xl md:rounded-[20px] overflow-hidden border-2">
         <Image
           src={generateImageUrl(data?.imageGallery?.[0]?.src)}
           height={300}
@@ -40,21 +40,23 @@ const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
               </p>
             </div>
           </div>
-          <button className="bg-[#0C0E0D] hidden lg:flex items-center z-30 h-fit text-[10px] text-white p-[2px] pl-3 pr-1 rounded-lg">
+          <button className="bg-[#0C0E0D] hidden lg:flex items-center justify-stretch gap-1 z-30 h-6 text-[11px] text-white p-[2px] pl-2 rounded-lg">
             Detailed View
             <Icons.rightArrow />
           </button>
         </div>
       </div>
-      <div className="px-1 md:px-3 py-2 flex flex-col w-full gap-1 relative overflow-hidden">
-        <p className="text-sm md:text-xl font-bold max-w-[42vw] md:max-w-[12.5rem] lg:max-w-[14.5rem] truncate">
-          {data?.title}
-        </p>
-        <p className="text-[10px] md:text-xs">
-          {getPriceRange(data?.minPrice, data?.maxPrice)}
-          <br />
-          {data?.subtitle}
-        </p>
+      <div className="flex flex-col justify-between min-h-32 md:min-h-36 px-1 md:px-3 py-2.5 w-full gap-1  overflow-hidden">
+        <div className="flex flex-col gap-1 ">
+          <p className="text-sm md:text-xl font-bold max-w-[42vw] md:max-w-[12.5rem] lg:max-w-[14.5rem] truncate">
+            {data?.title}
+          </p>
+          <p className="text-[10px] md:text-xs">
+            {getPriceRange(data?.minPrice, data?.maxPrice)}
+            <br />
+            {data?.subtitle}
+          </p>
+        </div>
         <p className="flex text-[10px] md:text-xs items-center gap-1 md:gap-2">
           <Icons.location />
           {data?.location}

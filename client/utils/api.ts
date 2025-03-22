@@ -33,7 +33,7 @@ const getSections = async (
 
 const getProjects = async (
   data: any
-): Promise<{ data: { docs: ProjectType[] } }> =>
+): Promise<{ data: { data: { docs: ProjectType[] }; message: string } }> =>
   request({
     endpoint: `/projects?${buildQueryParams(data)}`,
     method: "GET",

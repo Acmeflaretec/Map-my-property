@@ -67,6 +67,9 @@ export interface ProjectType {
   _id: string;
   title: string;
   subtitle: string;
+  metaTitle: string;
+  metaKeywords: string;
+  metaDescription: string;
   imageGallery: GalleryType[];
   minPrice: number;
   maxPrice: number;
@@ -101,4 +104,17 @@ export interface BlogType {
   image: string;
   url: string;
   type: string;
+}
+
+export interface PaginatedResponse<T> {
+  docs: T[];
+  totalDocs: number;
+  limit: number;
+  totalPages: number;
+  page: number;
+  pagingCounter: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  prevPage: number | null;
+  nextPage: number | null;
 }

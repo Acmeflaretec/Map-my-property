@@ -4,6 +4,9 @@ export const propertyData: ProjectType = {
   _id: "123",
   title: "Subha Belgravia Villas at Subha Ecocity",
   subtitle: "Subha Belgravia Villas at Subha Ecocity",
+  metaTitle: "Subha Belgravia Villas at Subha Ecocity",
+  metaKeywords: "Subha Belgravia Villas at Subha Ecocity",
+  metaDescription: "Subha Belgravia Villas at Subha Ecocity",
   imageGallery: [
     {
       title: "Subha Belgravia - Front Faceing View",

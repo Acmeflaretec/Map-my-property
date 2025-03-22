@@ -28,7 +28,7 @@ const Model: React.FC<{
               <button
                 onClick={toggleModal}
                 type="button"
-                className="absolute hidden md:flex z-20 top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 justify-center items-center"
+                className="absolute hidden md:flex z-50 top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 justify-center items-center"
               >
                 <Icons.close />
                 <span className="sr-only">Close modal</span>

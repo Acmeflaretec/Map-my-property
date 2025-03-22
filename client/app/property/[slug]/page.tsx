@@ -23,15 +23,25 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const _id = resolvedParams?.slug;
-  const res = await getProjectById(_id)
+  const res = await getProjectById(_id);
   const data = res?.data?.data;
+
   if (data) {
     return {
-      title: `${data?.title} | Map My Property`,
-      description: data?.subtitle || "Explore your perfect property.",
+      title: `${data?.metaTitle || data?.title} | Map My Property`,
+      description:
+        data?.metaDescription ||
+        data?.subtitle ||
+        "Explore your perfect property.",
+      keywords:
+        data?.metaKeywords ||
+        "property mapping, land survey, property measurement, real estate mapping, property documentation, land mapping services, property survey",
       openGraph: {
-        title: `${data?.title} | Map My Property`,
-        description: data?.subtitle || "Explore your perfect property.",
+        title: `${data?.metaTitle || data?.title} | Map My Property`,
+        description:
+          data?.metaDescription ||
+          data?.subtitle ||
+          "Explore your perfect property.",
         url: `https://www.mapmyproperty.in/property/${_id}`,
         siteName: "Map My Property",
         images: [
@@ -47,8 +57,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       twitter: {
         card: "summary_large_image",
-        title: `${data?.title} | Map My Property`,
-        description: data?.subtitle || "Explore your perfect property.",
+        title: `${data?.metaTitle || data?.title} | Map My Property`,
+        description:
+          data?.metaDescription ||
+          data?.subtitle ||
+          "Explore your perfect property.",
         creator: "@mapmyproperty",
         images: [generateImageUrl(data?.imageGallery[0]?.src)],
       },
@@ -64,7 +77,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const Page: React.FC<Props> = async ({ params }) => {
   const resolvedParams = await params;
   const _id = resolvedParams?.slug;
-  const res =  await getProjectById(_id) 
+  const res = await getProjectById(_id);
   const data = res?.data?.data;
   if (!data) {
     return (
@@ -79,11 +92,15 @@ const Page: React.FC<Props> = async ({ params }) => {
       <div className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full">
         {data && <Banner data={data} />}
         <div className="flex flex-col lg:flex-row gap-4 w-full justify-between">
-          <div className="flex flex-col w-full xl:w-2/3 gap-8 md:gap-12">
+          <div className="flex flex-col w-full lg:w-2/3 gap-8 md:gap-12">
             {!!data?.description && <Overview data={data.description} />}
-            {!!data?.imageGallery && <ProjectGallery data={data.imageGallery} />}
+            {!!data?.imageGallery && (
+              <ProjectGallery data={data.imageGallery} />
+            )}
             {!!data?.features?.length && <Features data={data.features} />}
-            {!!data?.accommodation?.length && <Pricing data={data.accommodation} />}
+            {!!data?.accommodation?.length && (
+              <Pricing data={data.accommodation} />
+            )}
             {!!data?.plans?.length && <Plans data={data.plans} />}
             {!!data?.masterPlan && <MasterPlan data={data.masterPlan} />}
             {!!data?.faqs?.length && <Faqs data={data.faqs} />}
@@ -95,7 +112,7 @@ const Page: React.FC<Props> = async ({ params }) => {
               <Testimonials data={data.testimonials} />
             )}
           </div>
-          <div className="w-full flex flex-col gap-8 xl:w-1/3 min-h-screen">
+          <div className="w-full flex flex-col gap-8 lg:w-1/3 min-h-screen">
             <ContactForm data={data} />
             <div className="sticky top-32">
               <ContactCard />

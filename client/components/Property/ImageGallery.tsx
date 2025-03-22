@@ -11,7 +11,6 @@ const ImageGallery: React.FC<{
   open: boolean;
   toggleModal: React.MouseEventHandler<HTMLButtonElement>;
 }> = ({ data, open, toggleModal }) => {
-  const [zoom, setZoom] = useState(3);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -66,43 +65,12 @@ const ImageGallery: React.FC<{
                         {data[currentIndex]?.desc}
                       </p>
                     </div>
-                    <div className="hidden md:flex gap-3 w-1/2 items-end justify-end h-full">
-                      {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                        <button
-                          key={item}
-                          className={`h-fit w-fit justify-center text-sm p-1 px-2 rounded-full border-2 text-black ${
-                            item === zoom
-                              ? "border-[#8E7D3A] bg-[#FFFBEA]"
-                              : "bg-white border-stone-400"
-                          }`}
-                          onClick={() => setZoom(item)}
-                        >
-                          {item}x
-                        </button>
-                      ))}
-                    </div>
                   </div>
-                  <div className="md:hidden flex gap-3 w-full items-end justify-end h-full">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-                      <button
-                        key={item}
-                        className={`h-fit w-fit justify-center text-sm p-1 px-2 rounded-full border-2 text-black ${
-                          item === zoom
-                            ? "border-[#8E7D3A] bg-[#FFFBEA]"
-                            : "bg-white border-stone-400"
-                        }`}
-                        onClick={() => setZoom(item)}
-                      >
-                        {item}x
-                      </button>
-                    ))}
-                  </div>
-                  <div className="w-full flex flex-col md:flex-row gap-2 xl:gap-6">
+                  <div className="w-full h-full flex flex-col md:flex-row gap-2 xl:gap-6">
                     <div className="relative w-full flex flex-col md:flex-row">
-                      <div className="overflow-hidden w-full h-72 md:h-[65vh] flex bg-black">
+                      <div className="overflow-hidden w-full h-[65vh] flex bg-black">
                         <Magnifier
                           src={generateImageUrl(data[currentIndex]?.src)}
-                          zoom={zoom}
                         />
                       </div>
                       <button

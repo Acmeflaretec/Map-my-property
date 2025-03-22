@@ -49,7 +49,6 @@ const PlanCard: React.FC<{
             <div className="relative flex justify-end md:h-1/2 w-[90vw] md:w-2/3 p-2">
               <Magnifier
                 src={generateImageUrl(data[currentIndex]?.src)}
-                size={250}
                 className="h-full w-full md:w-2/3 max-h-72 min-h-60 object-contain"
               />
             </div>

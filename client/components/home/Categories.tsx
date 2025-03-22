@@ -63,11 +63,11 @@ const Categories: React.FC = () => {
           />
         </Link>
         <Link
-          href={"/property?q=planned-communites"}
+          href={"/property?q=planned-communities"}
           className="relative w-[49%] md:w-60 h-48 md:h-60 bg-[#F0F9FF] rounded-3xl p-4 overflow-hidden border-2"
         >
           <p className="font-black z-10 lg:text-lg relative">
-            Planned Communites
+            Planned Communities
           </p>
           <p className="text-sm md:text-base font-normal z-10 relative">
             320+ properties
