@@ -269,23 +269,17 @@ const AddProjects = () => {
       }
 
       if (flag) {
-        for (const [key, value] of formData.entries()) {
-          console.warn(key, value);
-        }
-
-        console.warn("formData", formData.get("category"));
-        setDisable(false);
-        // AddProjects(formData)
-        //   .then((res) => {
-        //     toast.success(res?.message ?? "Projects added");
-        //     setDisable(false);
-        //     localStorage.removeItem(storageKey);
-        //     navigate("/projects");
-        //   })
-        //   .catch((err) => {
-        //     toast.error(err?.message ?? "Something went wrong");
-        //     setDisable(false);
-        //   });
+        AddProjects(formData)
+          .then((res) => {
+            toast.success(res?.message ?? "Projects added");
+            setDisable(false);
+            localStorage.removeItem(storageKey);
+            navigate("/projects");
+          })
+          .catch((err) => {
+            toast.error(err?.message ?? "Something went wrong");
+            setDisable(false);
+          });
       }
     } catch (error) {
       setDisable(false);
