@@ -66,12 +66,12 @@ const addProject = async (req, res) => {
       category,
       location,
       description,
-      ExpertOpinions,
+      expertOpinions,
       questions,
       answer,
       builder,
-      Bedrooms,
-      Areas,
+      bedrooms,
+      areas,
       reviewsName,
       reviewsRating,
       reviewsReview,
@@ -84,8 +84,8 @@ const addProject = async (req, res) => {
       features,
       imageGalleryTitle,
       imageGalleryDesc,
-      floorPlansTitle,
-      floorPlansDesc,
+      plansTitle,
+      plansDesc,
       accommodationUnit,
       accommodationArea,
       accommodationPrice,
@@ -126,7 +126,7 @@ const addProject = async (req, res) => {
       faqsValue = faqsInside[0]?.questions ? faqsInside : undefined;
     }
 
-    let reviewValue = [];
+    let testimonialValue = [];
     if (reviewsName) {
       const reviewsNameArray = Array.isArray(reviewsName)
         ? reviewsName
@@ -144,7 +144,7 @@ const addProject = async (req, res) => {
         image: req.files.reviews && req.files.reviews[index].filename,
       }));
 
-      reviewValue = configurationInside[0]?.name
+      testimonialValue = configurationInside[0]?.name
         ? configurationInside
         : undefined;
     }
@@ -166,16 +166,16 @@ const addProject = async (req, res) => {
           src: req.files.imageGallery && req.files.imageGallery[0].filename,
         };
 
-    const floorPlans = Array.isArray(floorPlansTitle)
-      ? floorPlansTitle.map((item, i) => ({
+    const plans = Array.isArray(plansTitle)
+      ? plansTitle.map((item, i) => ({
           title: item,
-          desc: floorPlansDesc[i],
-          src: req.files.floorPlans && req.files.floorPlans[i].filename,
+          desc: plansDesc[i],
+          src: req.files.plans && req.files.plans[i].filename,
         }))
       : {
-          title: floorPlansTitle,
-          desc: floorPlansDesc,
-          src: req.files.floorPlans && req.files.floorPlans[0].filename,
+          title: plansTitle,
+          desc: plansDesc,
+          src: req.files.plans && req.files.plans[0].filename,
         };
     const accommodation = Array.isArray(accommodationUnit)
       ? accommodationUnit.map((item, i) => ({
@@ -195,11 +195,11 @@ const addProject = async (req, res) => {
       category,
       builder,
       description,
-      expertOpinions: ExpertOpinions,
+      expertOpinions,
       location,
-      testimonials: reviewValue,
-      bedrooms: Bedrooms,
-      areas: Areas,
+      testimonials: testimonialValue,
+      bedrooms,
+      areas,
       faqs: faqsValue,
       minPrice,
       maxPrice,
@@ -207,7 +207,7 @@ const addProject = async (req, res) => {
       href,
       masterPlan: masterPlanTitle && masterPlan,
       imageGallery: imageGalleryTitle && imageGallery,
-      plans: floorPlansTitle && floorPlans,
+      plans: plansTitle && plans,
       accommodation: accommodationUnit && accommodation,
       features: featuresArray,
       metaTitle,
@@ -306,7 +306,8 @@ const updateProject = async (req, res) => {
       }));
       faqsValue = faqsInside[0]?.questions ? faqsInside : undefined;
     }
-    let reviewValue = [];
+
+    let testimonialValue = [];
     let k = 0;
     if (reviewsName) {
       const reviewsNameArray = Array.isArray(reviewsName)
@@ -331,7 +332,7 @@ const updateProject = async (req, res) => {
           : req?.body?.reviewsImagePocision,
       }));
 
-      reviewValue = configurationInside[0]?.name
+      testimonialValue = configurationInside[0]?.name
         ? configurationInside
         : undefined;
     }
@@ -414,7 +415,7 @@ const updateProject = async (req, res) => {
           builder,
           imageGallery: imageGalleryTitle && imageGallery,
           plans: floorPlansTitle && floorPlans,
-          testimonials: reviewValue,
+          testimonials: testimonialValue,
           accommodation: accommodationUnit && accommodation,
           metaTitle,
           metaDescription,

@@ -21,16 +21,8 @@ const EditorJSON = ({ details, setDetails }) => {
   const schemaExample = {
     title: "string (required)",
     subtitle: "string (required)",
-    builder: {
-      _id: "string (required)",
-      title: "string",
-      image: "string",
-    },
-    category: {
-      _id: "string (required)",
-      name: "string",
-      image: "string",
-    },
+    builder: "ObjectId (required)",
+    category: "ObjectId (required)",
     description: "string (required)",
     minPrice: "number (required)",
     maxPrice: "number (required)",

@@ -31,14 +31,14 @@ const AddProjects = () => {
   const storageKey = "addProjectData";
   const initialDetails = {
     status: "Pre Launch",
-    ExpertOpinions: [""],
-    Bedrooms: [""],
-    Areas: [""],
-    FAQs: [{ questions: "", answer: "" }],
-    reviews: [{ name: "", rating: 0, review: "", src: "" }],
+    expertOpinions: [""],
+    bedrooms: [""],
+    areas: [""],
+    faqs: [{ questions: "", answer: "" }],
+    testimonials: [{ name: "", rating: 0, review: "", src: "" }],
     masterPlan: { title: "", desc: "", src: "" },
     imageGallery: [{ title: "", desc: "", src: "" }],
-    floorPlans: [{ title: "", desc: "", src: "" }],
+    plans: [{ title: "", desc: "", src: "" }],
     accommodation: [{ unit: "", area: "", price: "" }],
     features: [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
     metaTitle: "",
@@ -91,7 +91,7 @@ const AddProjects = () => {
       if (!builder?._id) {
         return toast.error("builder is required");
       }
-      if (!details?.imageGallery[0]?.title) {
+      if (!details?.imageGallery?.[0]?.title) {
         return toast.error("imageGallery is required");
       }
       if (!details?.href) {
@@ -115,14 +115,16 @@ const AddProjects = () => {
         if (
           details.hasOwnProperty(key) &&
           ![
-            "ExpertOpinions",
-            "Bedrooms",
-            "Areas",
+            "category",
+            "builder",
+            "expertOpinions",
+            "bedrooms",
+            "areas",
             "features",
-            "FAQs",
-            "reviews",
+            "faqs",
+            "testimonials",
             "imageGallery",
-            "floorPlans",
+            "plans",
             "accommodation",
             "masterPlan",
           ].includes(key)
@@ -130,55 +132,68 @@ const AddProjects = () => {
           formData.append(key, details[key]);
         }
       }
-      formData.append("category", category?._id);
-      formData.append("builder", builder?._id);
+      if (category?._id) {
+        formData.append("category", category._id);
+      }
+      if (builder?._id) {
+        formData.append("builder", builder._id);
+      }
 
-      details.features.forEach((feature) => {
-        feature.items.forEach((item) => {
-          formData.append(`features[${feature.title}][]`, JSON.stringify(item));
-        });
-      });
-      ["ExpertOpinions", "Bedrooms", "Areas"].forEach((field) => {
-        details[field].forEach((value) => {
-          if (value) {
-            formData.append(field, value);
+      if (details?.features) {
+        details.features.forEach((feature) => {
+          if (feature?.items) {
+            feature.items.forEach((item) => {
+              formData.append(`features[${feature.title}][]`, JSON.stringify(item));
+            });
           }
         });
-      });
+      }
 
-      details?.FAQs?.forEach((si) => {
-        if (si.questions === "") {
-        } else {
-          formData.append("questions", si.questions);
-          formData.append("answer", si.answer);
-        }
-      });
-      details?.reviews?.forEach((review, i) => {
-        if (review.name === "") {
-        } else {
-          if (review.src) {
-            formData.append(`reviewsName`, review.name);
-            formData.append(`reviewsRating`, review.rating);
-            formData.append(`reviewsReview`, review.review);
-            if (
-              review.src &&
-              typeof review.src === "string" &&
-              review.src.startsWith("data:image/")
-            ) {
-              const blob = dataURLtoFile(review.src, `file-${i}.png`);
-              // formData.append(`reviews`, review.src);
-              formData.append(`reviews`, blob);
+      ["expertOpinions", "bedrooms", "areas"].forEach((field) => {
+        if (details?.[field]) {
+          details[field].forEach((value) => {
+            if (value) {
+              formData.append(field, value);
             }
-          } else {
-            toast.error(`reviews ${i + 1} field image is required`);
-            flag = false;
-            setDisable(false);
-          }
+          });
         }
       });
+
+      if (details?.faqs) {
+        details.faqs.forEach((si) => {
+          if (si.questions) {
+            formData.append("questions", si.questions);
+            formData.append("answer", si.answer);
+          }
+        });
+      }
+
+      if (details?.testimonials) {
+        details.testimonials.forEach((testimonial, i) => {
+          if (testimonial.name) {
+            if (testimonial.src) {
+              formData.append(`reviewsName`, testimonial.name);
+              formData.append(`reviewsRating`, testimonial.rating);
+              formData.append(`reviewsReview`, testimonial.review);
+              if (
+                testimonial.src &&
+                typeof testimonial.src === "string" &&
+                testimonial.src.startsWith("data:image/")
+              ) {
+                const blob = dataURLtoFile(testimonial.src, `file-${i}.png`);
+                formData.append(`reviews`, blob);
+              }
+            } else {
+              toast.error(`testimonial ${i + 1} field image is required`);
+              flag = false;
+              setDisable(false);
+            }
+          }
+        });
+      }
+
       if (details?.masterPlan) {
-        if (details.masterPlan.title === "") {
-        } else {
+        if (details.masterPlan.title) {
           if (details.masterPlan.src) {
             if (
               details.masterPlan.src &&
@@ -186,78 +201,91 @@ const AddProjects = () => {
               details.masterPlan.src.startsWith("data:image/")
             ) {
               const blob = dataURLtoFile(details.masterPlan.src, `file-0.png`);
-              // formData.append(`masterPlan`, details.masterPlan.src);
               formData.append(`masterPlan`, blob);
             }
             formData.append(`masterPlanTitle`, details.masterPlan.title);
             formData.append(`masterPlanDesc`, details.masterPlan.desc);
           } else {
-            return toast.error(" masterPlan image is required");
             setDisable(false);
+            return toast.error(" masterPlan image is required");
           }
         }
       }
-      details?.imageGallery?.forEach((Gallery, i) => {
-        if (Gallery.title === "") {
-        } else {
-          if (Gallery.src) {
-            if (
-              Gallery.src &&
-              typeof Gallery.src === "string" &&
-              Gallery.src.startsWith("data:image/")
-            ) {
-              const blob = dataURLtoFile(Gallery.src, `file-${i}.png`);
-              // formData.append(`imageGallery`, Gallery.src);
-              formData.append(`imageGallery`, blob);
+
+      if (details?.imageGallery) {
+        details.imageGallery.forEach((Gallery, i) => {
+          if (Gallery.title) {
+            if (Gallery.src) {
+              if (
+                Gallery.src &&
+                typeof Gallery.src === "string" &&
+                Gallery.src.startsWith("data:image/")
+              ) {
+                const blob = dataURLtoFile(Gallery.src, `file-${i}.png`);
+                formData.append(`imageGallery`, blob);
+              }
+              formData.append(`imageGalleryTitle`, Gallery.title);
+              formData.append(`imageGalleryDesc`, Gallery.desc);
+            } else {
+              toast.error(`image Gallery ${i + 1} field image is required`);
+              flag = false;
+              setDisable(false);
             }
-            formData.append(`imageGalleryTitle`, Gallery.title);
-            formData.append(`imageGalleryDesc`, Gallery.desc);
-          } else {
-            toast.error(`image Gallery ${i + 1} field image is required`);
-            flag = false;
-            setDisable(false);
           }
-        }
-      });
-      details?.floorPlans?.forEach((Plans, i) => {
-        if (Plans.title === "") {
-        } else {
-          if (Plans.src) {
-            if (Plans.src && typeof Plans.src === "string" && Plans.src.startsWith("data:image/")) {
-              const blob = dataURLtoFile(Plans.src, `file-${i}.png`);
-              // formData.append(`floorPlans`, Plans.src);
-              formData.append(`floorPlans`, blob);
+        });
+      }
+
+      if (details?.plans) {
+        details.plans.forEach((Plans, i) => {
+          if (Plans.title) {
+            if (Plans.src) {
+              if (
+                Plans.src &&
+                typeof Plans.src === "string" &&
+                Plans.src.startsWith("data:image/")
+              ) {
+                const blob = dataURLtoFile(Plans.src, `file-${i}.png`);
+                formData.append(`plans`, blob);
+              }
+              formData.append(`plansTitle`, Plans.title);
+              formData.append(`plansDesc`, Plans.desc);
+            } else {
+              toast.error(`plans Plans ${i + 1} field image is required`);
+              flag = false;
+              setDisable(false);
             }
-            formData.append(`floorPlansTitle`, Plans.title);
-            formData.append(`floorPlansDesc`, Plans.desc);
-          } else {
-            toast.error(`floor Plans ${i + 1} field image is required`);
-            flag = false;
-            setDisable(false);
           }
-        }
-      });
-      details?.accommodation?.forEach((unit) => {
-        if (unit.unit === "") {
-        } else {
-          formData.append(`accommodationUnit`, unit.unit);
-          formData.append(`accommodationArea`, unit.area);
-          formData.append(`accommodationPrice`, unit.price);
-        }
-      });
+        });
+      }
+
+      if (details?.accommodation) {
+        details.accommodation.forEach((unit) => {
+          if (unit.unit) {
+            formData.append(`accommodationUnit`, unit.unit);
+            formData.append(`accommodationArea`, unit.area);
+            formData.append(`accommodationPrice`, unit.price);
+          }
+        });
+      }
 
       if (flag) {
-        AddProjects(formData)
-          .then((res) => {
-            toast.success(res?.message ?? "Projects added");
-            setDisable(false);
-            localStorage.removeItem(storageKey);
-            navigate("/projects");
-          })
-          .catch((err) => {
-            toast.error(err?.message ?? "Something went wrong");
-            setDisable(false);
-          });
+        for (const [key, value] of formData.entries()) {
+          console.warn(key, value);
+        }
+
+        console.warn("formData", formData.get("category"));
+        setDisable(false);
+        // AddProjects(formData)
+        //   .then((res) => {
+        //     toast.success(res?.message ?? "Projects added");
+        //     setDisable(false);
+        //     localStorage.removeItem(storageKey);
+        //     navigate("/projects");
+        //   })
+        //   .catch((err) => {
+        //     toast.error(err?.message ?? "Something went wrong");
+        //     setDisable(false);
+        //   });
       }
     } catch (error) {
       setDisable(false);
@@ -290,7 +318,9 @@ const AddProjects = () => {
 
   const handleFeaturesChange = (index, key, value) => {
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       const updatedFeatures = [...currentFeatures];
       if (!updatedFeatures[index]) {
         updatedFeatures[index] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
@@ -302,12 +332,19 @@ const AddProjects = () => {
 
   const handleFeatureItemsChange = (featureIndex, itemIndex, key, value) => {
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       const updatedFeatures = [...currentFeatures];
       if (!updatedFeatures[featureIndex]) {
-        updatedFeatures[featureIndex] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+        updatedFeatures[featureIndex] = {
+          title: "",
+          items: [{ text: "", helpertext: "", icon: "" }],
+        };
       }
-      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      const currentItems = updatedFeatures[featureIndex].items || [
+        { text: "", helpertext: "", icon: "" },
+      ];
       const updatedItems = [...currentItems];
       if (!updatedItems[itemIndex]) {
         updatedItems[itemIndex] = { text: "", helpertext: "", icon: "" };
@@ -320,80 +357,105 @@ const AddProjects = () => {
 
   const handleAddFeature = () => {
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       return {
         ...prev,
-        features: [...currentFeatures, { title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+        features: [
+          ...currentFeatures,
+          { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+        ],
       };
     });
   };
 
   const handleRemoveFeature = (index) => {
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       const updatedFeatures = currentFeatures.filter((_, i) => i !== index);
       return {
         ...prev,
-        features: updatedFeatures.length ? updatedFeatures : [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
+        features: updatedFeatures.length
+          ? updatedFeatures
+          : [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }],
       };
     });
   };
 
   const handleAddFeatureItem = (featureIndex) => {
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       const updatedFeatures = [...currentFeatures];
       if (!updatedFeatures[featureIndex]) {
-        updatedFeatures[featureIndex] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+        updatedFeatures[featureIndex] = {
+          title: "",
+          items: [{ text: "", helpertext: "", icon: "" }],
+        };
       }
-      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
-      updatedFeatures[featureIndex].items = [...currentItems, { text: "", helpertext: "", icon: "" }];
+      const currentItems = updatedFeatures[featureIndex].items || [
+        { text: "", helpertext: "", icon: "" },
+      ];
+      updatedFeatures[featureIndex].items = [
+        ...currentItems,
+        { text: "", helpertext: "", icon: "" },
+      ];
       return { ...prev, features: updatedFeatures };
     });
   };
 
   const handleRemoveFeatureItem = (featureIndex, itemIndex) => {
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       const updatedFeatures = [...currentFeatures];
       if (!updatedFeatures[featureIndex]) {
         return prev;
       }
-      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      const currentItems = updatedFeatures[featureIndex].items || [
+        { text: "", helpertext: "", icon: "" },
+      ];
       const updatedItems = currentItems.filter((_, i) => i !== itemIndex);
-      updatedFeatures[featureIndex].items = updatedItems.length ? updatedItems : [{ text: "", helpertext: "", icon: "" }];
+      updatedFeatures[featureIndex].items = updatedItems.length
+        ? updatedItems
+        : [{ text: "", helpertext: "", icon: "" }];
       return { ...prev, features: updatedFeatures };
     });
   };
 
   const handleAddFAQs = () => {
     setDetails((prevData) => {
-      const currentFAQs = prevData.FAQs || [{ questions: "", answer: "" }];
+      const currentFAQs = prevData.faqs || [{ questions: "", answer: "" }];
       return {
         ...prevData,
-        FAQs: [...currentFAQs, { questions: "", answer: "" }],
+        faqs: [...currentFAQs, { questions: "", answer: "" }],
       };
     });
   };
   const handleFAQsChange = (index, field, value) => {
     setDetails((prevData) => {
-      const currentFAQs = prevData.FAQs || [{ questions: "", answer: "" }];
+      const currentFAQs = prevData.faqs || [{ questions: "", answer: "" }];
       const newFAQs = [...currentFAQs];
       if (!newFAQs[index]) {
         newFAQs[index] = { questions: "", answer: "" };
       }
       newFAQs[index] = { ...newFAQs[index], [field]: value };
-      return { ...prevData, FAQs: newFAQs };
+      return { ...prevData, faqs: newFAQs };
     });
   };
 
   const handleRemoveFAQs = (index) => {
     setDetails((prevData) => {
-      const currentFAQs = prevData.FAQs || [{ questions: "", answer: "" }];
+      const currentFAQs = prevData.faqs || [{ questions: "", answer: "" }];
       const newFAQs = currentFAQs.filter((_, i) => i !== index);
       return {
         ...prevData,
-        FAQs: newFAQs.length ? newFAQs : [{ questions: "", answer: "" }],
+        faqs: newFAQs.length ? newFAQs : [{ questions: "", answer: "" }],
       };
     });
   };
@@ -401,19 +463,19 @@ const AddProjects = () => {
   const handleAddReview = () => {
     setDetails((prevData) => ({
       ...prevData,
-      reviews: [...prevData.reviews, { name: "", rating: 0, review: "" }],
+      testimonials: [...prevData.testimonials, { name: "", rating: 0, review: "" }],
     }));
   };
 
   const handleReviewChange = (reviewIndex, field, value) => {
-    const newReviews = [...details.reviews];
-    newReviews[reviewIndex] = { ...newReviews[reviewIndex], [field]: value };
-    setDetails((prevData) => ({ ...prevData, reviews: newReviews }));
+    const newTestimonials = [...details.testimonials];
+    newTestimonials[reviewIndex] = { ...newTestimonials[reviewIndex], [field]: value };
+    setDetails((prevData) => ({ ...prevData, testimonials: newTestimonials }));
   };
 
   const handleRemoveReview = (reviewIndex) => {
-    const newReviews = details.reviews.filter((_, i) => i !== reviewIndex);
-    setDetails((prevData) => ({ ...prevData, reviews: newReviews }));
+    const newTestimonials = details.testimonials.filter((_, i) => i !== reviewIndex);
+    setDetails((prevData) => ({ ...prevData, testimonials: newTestimonials }));
   };
 
   const handleIconPickerOpen = (featureIndex, itemIndex) => {
@@ -428,12 +490,19 @@ const AddProjects = () => {
   const handleIconSelect = (iconName) => {
     const { featureIndex, itemIndex } = selectedIconField;
     setDetails((prev) => {
-      const currentFeatures = prev.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }];
+      const currentFeatures = prev.features || [
+        { title: "", items: [{ text: "", helpertext: "", icon: "" }] },
+      ];
       const updatedFeatures = [...currentFeatures];
       if (!updatedFeatures[featureIndex]) {
-        updatedFeatures[featureIndex] = { title: "", items: [{ text: "", helpertext: "", icon: "" }] };
+        updatedFeatures[featureIndex] = {
+          title: "",
+          items: [{ text: "", helpertext: "", icon: "" }],
+        };
       }
-      const currentItems = updatedFeatures[featureIndex].items || [{ text: "", helpertext: "", icon: "" }];
+      const currentItems = updatedFeatures[featureIndex].items || [
+        { text: "", helpertext: "", icon: "" },
+      ];
       const updatedItems = [...currentItems];
       if (!updatedItems[itemIndex]) {
         updatedItems[itemIndex] = { text: "", helpertext: "", icon: "" };
@@ -747,7 +816,9 @@ const AddProjects = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h6">Property Features</Typography>
-            {(details?.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }]).map((feature, index) => (
+            {(
+              details?.features || [{ title: "", items: [{ text: "", helpertext: "", icon: "" }] }]
+            ).map((feature, index) => (
               <Box key={index} mt={2} p={2} border={1}>
                 <Typography variant="h6">Feature {index + 1}</Typography>
                 <Input
@@ -756,37 +827,39 @@ const AddProjects = () => {
                   value={feature?.title || ""}
                   onChange={(e) => handleFeaturesChange(index, "title", e.target.value)}
                 />
-                {(feature?.items || [{ text: "", helpertext: "", icon: "" }]).map((item, itemIndex) => (
-                  <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
-                    <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
-                      {Icons[item?.icon] ? (
-                        Icons[item.icon]({ width: "24px", height: "24px" })
-                      ) : (
-                        <Add />
-                      )}
-                    </IconButton>
-                    <Input
-                      placeholder="Text"
-                      style={{ marginRight: "5px" }}
-                      value={item?.text || ""}
-                      onChange={(e) =>
-                        handleFeatureItemsChange(index, itemIndex, "text", e.target.value)
-                      }
-                      fullWidth
-                    />
-                    <Input
-                      placeholder="Helpertext"
-                      value={item?.helpertext || ""}
-                      onChange={(e) =>
-                        handleFeatureItemsChange(index, itemIndex, "helpertext", e.target.value)
-                      }
-                      fullWidth
-                    />
-                    <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                ))}
+                {(feature?.items || [{ text: "", helpertext: "", icon: "" }]).map(
+                  (item, itemIndex) => (
+                    <Box key={itemIndex} display="flex" alignItems="center" mt={1}>
+                      <IconButton onClick={() => handleIconPickerOpen(index, itemIndex)}>
+                        {Icons[item?.icon] ? (
+                          Icons[item.icon]({ width: "24px", height: "24px" })
+                        ) : (
+                          <Add />
+                        )}
+                      </IconButton>
+                      <Input
+                        placeholder="Text"
+                        style={{ marginRight: "5px" }}
+                        value={item?.text || ""}
+                        onChange={(e) =>
+                          handleFeatureItemsChange(index, itemIndex, "text", e.target.value)
+                        }
+                        fullWidth
+                      />
+                      <Input
+                        placeholder="Helpertext"
+                        value={item?.helpertext || ""}
+                        onChange={(e) =>
+                          handleFeatureItemsChange(index, itemIndex, "helpertext", e.target.value)
+                        }
+                        fullWidth
+                      />
+                      <IconButton onClick={() => handleRemoveFeatureItem(index, itemIndex)}>
+                        <Delete />
+                      </IconButton>
+                    </Box>
+                  )
+                )}
                 <Button onClick={() => handleAddFeatureItem(index)}>Add Item</Button>
                 <Button onClick={() => handleRemoveFeature(index)}>Remove Feature</Button>
               </Box>
@@ -805,25 +878,25 @@ const AddProjects = () => {
           </Grid>
           <FieldSection
             label="Expert Opinions"
-            values={Array.isArray(details?.ExpertOpinions) ? details.ExpertOpinions : [""]}
-            onChange={(index, value) => handleFieldChange("ExpertOpinions", index, value)}
-            onAdd={() => handleAddFields("ExpertOpinions")}
-            onRemove={(index) => handleRemoveFields("ExpertOpinions", index)}
+            values={Array.isArray(details?.expertOpinions) ? details.expertOpinions : [""]}
+            onChange={(index, value) => handleFieldChange("expertOpinions", index, value)}
+            onAdd={() => handleAddFields("expertOpinions")}
+            onRemove={(index) => handleRemoveFields("expertOpinions", index)}
           />
           <FieldSection
             label="Bedrooms (BHK)"
-            values={Array.isArray(details?.Bedrooms) ? details.Bedrooms : [""]}
-            onChange={(index, value) => handleFieldChange("Bedrooms", index, value)}
-            onAdd={() => handleAddFields("Bedrooms")}
-            onRemove={(index) => handleRemoveFields("Bedrooms", index)}
+            values={Array.isArray(details?.bedrooms) ? details.bedrooms : [""]}
+            onChange={(index, value) => handleFieldChange("bedrooms", index, value)}
+            onAdd={() => handleAddFields("bedrooms")}
+            onRemove={(index) => handleRemoveFields("bedrooms", index)}
           />
 
           <FieldSection
             label="Area (sq/ft)"
-            values={Array.isArray(details?.Areas) ? details.Areas : [""]}
-            onChange={(index, value) => handleFieldChange("Areas", index, value)}
-            onAdd={() => handleAddFields("Areas")}
-            onRemove={(index) => handleRemoveFields("Areas", index)}
+            values={Array.isArray(details?.areas) ? details.areas : [""]}
+            onChange={(index, value) => handleFieldChange("areas", index, value)}
+            onAdd={() => handleAddFields("areas")}
+            onRemove={(index) => handleRemoveFields("areas", index)}
           />
 
           <Grid item xs={12}>
@@ -877,7 +950,7 @@ const AddProjects = () => {
               )}
             </Box>
           </Grid>
-          {["imageGallery", "floorPlans", "accommodation"].map((field) => (
+          {["imageGallery", "plans", "accommodation"].map((field) => (
             <Grid item xs={12} key={field}>
               <Typography variant="h6" sx={{ textTransform: "capitalize" }}>
                 {field.replace(/([A-Z])/g, " $1").trim()}
@@ -986,37 +1059,35 @@ const AddProjects = () => {
 
           <Grid item xs={12}>
             <Grid container direction="row">
-              {(Array.isArray(details?.FAQs) ? details.FAQs : [{ questions: "", answer: "" }]).map((FAQ, index) => (
-                <Grid item xs={12} key={`faq-${index}`}>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    style={{ marginBottom: "10px" }}
-                  >
-                    <Input
-                      placeholder={`Question ${index + 1}`}
-                      value={FAQ?.questions || ""}
-                      onChange={(e) => handleFAQsChange(index, "questions", e.target.value)}
-                      fullWidth
-                      required
-                      style={{ marginRight: "5px" }}
-                    />
-                    <Input
-                      placeholder="Answer"
-                      value={FAQ?.answer || ""}
-                      onChange={(e) => handleFAQsChange(index, "answer", e.target.value)}
-                      fullWidth
-                      required
-                    />
-                    <IconButton 
-                      onClick={() => handleRemoveFAQs(index)}
-                      disabled={details?.FAQs?.length <= 1}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                </Grid>
-              ))}
+              {(Array.isArray(details?.faqs) ? details.faqs : [{ questions: "", answer: "" }]).map(
+                (FAQ, index) => (
+                  <Grid item xs={12} key={`faq-${index}`}>
+                    <Box display="flex" alignItems="center" style={{ marginBottom: "10px" }}>
+                      <Input
+                        placeholder={`Question ${index + 1}`}
+                        value={FAQ?.questions || ""}
+                        onChange={(e) => handleFAQsChange(index, "questions", e.target.value)}
+                        fullWidth
+                        required
+                        style={{ marginRight: "5px" }}
+                      />
+                      <Input
+                        placeholder="Answer"
+                        value={FAQ?.answer || ""}
+                        onChange={(e) => handleFAQsChange(index, "answer", e.target.value)}
+                        fullWidth
+                        required
+                      />
+                      <IconButton
+                        onClick={() => handleRemoveFAQs(index)}
+                        disabled={details?.faqs?.length <= 1}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                )
+              )}
               <Button onClick={handleAddFAQs} variant="contained" color="primary" fullWidth>
                 Add FAQs
               </Button>
@@ -1025,7 +1096,7 @@ const AddProjects = () => {
 
           <Grid item xs={12}>
             <Typography variant="h6">Reviews</Typography>
-            {(details?.reviews || []).map((review, index) => (
+            {(details?.testimonials || []).map((testimonial, index) => (
               <Box
                 key={index}
                 mt={2}
@@ -1035,13 +1106,13 @@ const AddProjects = () => {
               >
                 <Input
                   placeholder="Reviewer Name"
-                  value={review.name}
+                  value={testimonial.name}
                   onChange={(e) => handleReviewChange(index, "name", e.target.value)}
                   fullWidth
                   style={{ marginBottom: "10px" }}
                 />
                 <Rating
-                  value={review.rating}
+                  value={testimonial.rating}
                   onChange={(e, value) => handleReviewChange(index, "rating", value)}
                   style={{ marginBottom: "10px" }}
                 />
@@ -1063,7 +1134,7 @@ const AddProjects = () => {
                         borderRadius: "10px",
                         overflow: "hidden",
                       }}
-                      onClick={(e) => handleFileChange("reviews", index, avatarFemale)}
+                      onClick={(e) => handleFileChange("testimonials", index, avatarFemale)}
                     >
                       <img style={{ width: 90, height: 80 }} src={avatarFemale} />
                     </Box>
@@ -1084,7 +1155,7 @@ const AddProjects = () => {
                         overflow: "hidden",
                         mx: 2,
                       }}
-                      onClick={(e) => handleFileChange("reviews", index, avatarMale)}
+                      onClick={(e) => handleFileChange("testimonials", index, avatarMale)}
                     >
                       <img style={{ width: 90, height: 80 }} src={avatarMale} />
                     </Box>
@@ -1111,11 +1182,11 @@ const AddProjects = () => {
                       <input
                         type="file"
                         hidden
-                        onChange={(e) => handleFileChange("reviews", index, e)}
+                        onChange={(e) => handleFileChange("testimonials", index, e)}
                       />
                     </Box>
                   </Box>
-                  {review.src && (
+                  {testimonial.src && (
                     <Box
                       sx={{
                         width: 110,
@@ -1129,9 +1200,9 @@ const AddProjects = () => {
                     >
                       <img
                         src={
-                          review.src.startsWith("data:image/")
-                            ? review.src
-                            : `${process.env.REACT_APP_API_URL}/uploads/${review.src}`
+                          testimonial.src.startsWith("data:image/")
+                            ? testimonial.src
+                            : `${process.env.REACT_APP_API_URL}/uploads/${testimonial.src}`
                         }
                         alt={`Review ${index + 1}`}
                         style={{ width: "100%", height: 80 }}
@@ -1141,14 +1212,14 @@ const AddProjects = () => {
                 </Box>
                 <Input
                   placeholder="Review"
-                  value={review.review}
+                  value={testimonial.review}
                   onChange={(e) => handleReviewChange(index, "review", e.target.value)}
                   fullWidth
                   multiline
                   rows={3}
                   style={{ marginTop: "10px" }}
                 />
-                {details.reviews.length > 1 && (
+                {details.testimonials.length > 1 && (
                   <IconButton onClick={() => handleRemoveReview(index)}>
                     <Delete />
                   </IconButton>
