@@ -12,7 +12,7 @@ const Banner: React.FC<{ data: ProjectType }> = ({ data }) => {
             {data?.title}
           </h1>
           <div className="flex justify-between md:justify-normal">
-            <p className="flex text-xs md:text-base items-center gap-1 md:gap-2 w-1/2 md:w-fit">
+            <p className="flex text-xs md:text-base items-center gap-1 md:gap-2 w-1/2 md:w-fit max-w-[20rem]">
               <Icons.location />
               {data?.location}
             </p>
@@ -20,7 +20,7 @@ const Banner: React.FC<{ data: ProjectType }> = ({ data }) => {
             <div className="flex items-center gap-2 p-[2px] pl-2 h-fit rounded-full border">
               <p className="text-xs md:text-base px-1">Status</p>
               <p
-                className={`text-xs md:text-base px-4 py-1 border rounded-full text-white font-semibold ${
+                className={`text-xs md:text-sm px-4 py-1 border rounded-full text-white font-semibold ${
                   data?.status === "Pre Launch"
                     ? "bg-yellow-500"
                     : data?.status === "Launch"

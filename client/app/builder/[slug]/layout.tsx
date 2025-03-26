@@ -2,7 +2,7 @@ import { getBuilderById } from "@/utils/api";
 import { generateImageUrl } from "@/utils/generateImageUrl";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
-
+import Fallback from "@/components/common/Fallback";
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -55,7 +55,7 @@ const page = ({
 }>) => {
   return (
     <main className="min-h-screen">
-      <Suspense>{children}</Suspense>
+      <Suspense fallback={<Fallback />}>{children}</Suspense>
     </main>
   );
 };

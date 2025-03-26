@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import React, { Suspense } from "react";
-
+import Fallback from "@/components/common/Fallback";
 export const metadata: Metadata = {
   title: "Privacy Policy | Map My Property",
   description: "Find your perfect property | Map My Property",
@@ -13,7 +13,7 @@ const page = ({
 }>) => {
   return (
     <main className="min-h-screen">
-      <Suspense>{children}</Suspense>
+      <Suspense fallback={<Fallback />}>{children}</Suspense>
     </main>
   );
 };

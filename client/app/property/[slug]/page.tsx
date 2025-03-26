@@ -16,6 +16,8 @@ import Overview from "@/components/Property/Overview";
 import { generateImageUrl } from "@/utils/generateImageUrl";
 import ProjectGallery from "@/components/Property/ProjectGallery";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string }>;
 }

@@ -12,6 +12,7 @@ const ProjectCard: React.FC<{ data: ProjectType }> = ({ data }) => {
     <Link
       href={`/property/${data?.href}`}
       key={data?.title}
+      prefetch={false}
       className="flex flex-col w-fit max-w-[17rem] items-center rounded-2xl md:rounded-3xl p-1 pt-0.5 border-2"
     >
       <div className="h-32 md:h-48 min-w-[45vw] md:min-w-[14rem] lg:min-w-[16.5rem] max-w-[16.5rem] rounded-2xl md:rounded-[20px] overflow-hidden border-2">

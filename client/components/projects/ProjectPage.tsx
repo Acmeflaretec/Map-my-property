@@ -99,7 +99,10 @@ const ProjectPage: React.FC = () => {
           <Filter filter={filter} setFilter={setFilter} />
         </div>
         {loading ? (
-          <p className="px-2 text-xs md:text-sm">loading...</p>
+          <p className="flex items-center px-2 text-xs md:text-sm">
+            <Icons.refresh className="w-10 h-10 animate-spin" /> &nbsp;
+            loading...
+          </p>
         ) : (
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-1 md:gap-2 lg:gap-4 justify-between">

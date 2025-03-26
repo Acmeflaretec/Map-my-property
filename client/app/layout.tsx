@@ -6,7 +6,7 @@ import Footer from "@/components/common/Footer";
 import CustomToaster from "@/components/ui/CustomToaster";
 import { Suspense } from "react";
 import Loading from "@/components/common/Loading";
-
+import Fallback from "@/components/common/Fallback";
 const questrial = Questrial({
   subsets: ["latin"],
   variable: "--font-questrial",
@@ -101,7 +101,7 @@ export default function RootLayout({
         className={`${questrial.variable} antialiased font-questrial flex flex-col items-center w-screen overflow-x-hidden`}
       >
         <CustomToaster />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Fallback />}>
           <Header />
           <Loading>
             {children}
