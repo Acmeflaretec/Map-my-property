@@ -1,3 +1,4 @@
+import Fallback from "@/components/common/Fallback";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
 
@@ -13,7 +14,7 @@ const page = ({
 }>) => {
   return (
     <main className="min-h-screen">
-      <Suspense>{children}</Suspense>
+      <Suspense fallback={<Fallback />}>{children}</Suspense>
     </main>
   );
 };

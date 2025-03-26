@@ -1,8 +1,7 @@
-"use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import { Icons } from "../common/Icons";
 import { generateImageUrl } from "@/utils/generateImageUrl";
+import Link from "next/link";
 
 interface BlogCardProps {
   data: {
@@ -17,12 +16,12 @@ interface BlogCardProps {
   };
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
-  const router = useRouter();
+const BlogCard = ({ data }: BlogCardProps) => {
   return (
-    <div
+    <Link
+      href={`blogs/${data?.url}`}
+      prefetch={false}
       className="relative rounded-2xl h-[14rem] flex justify-center items-center overflow-hidden group font-bricolage cursor-pointer"
-      onClick={() => router.push(`blogs/${data?.url}`)}
     >
       <img
         src={generateImageUrl(data?.image)}
@@ -48,7 +47,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ data }) => {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

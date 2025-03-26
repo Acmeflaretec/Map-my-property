@@ -1,3 +1,4 @@
+import Fallback from "@/components/common/Fallback";
 import { getBlogsById } from "@/utils/api";
 import { generateImageUrl } from "@/utils/generateImageUrl";
 import { Metadata } from "next";
@@ -55,7 +56,7 @@ const page = ({
 }>) => {
   return (
     <main className="min-h-screen">
-      <Suspense>{children}</Suspense>
+      <Suspense fallback={<Fallback />}>{children}</Suspense>
     </main>
   );
 };
