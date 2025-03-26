@@ -16,9 +16,9 @@ router.post(
   "/",
   upload.fields([
     { name: "masterPlan", maxCount: 1 },
-    { name: "imageGallery", maxCount: 10 },
-    { name: "floorPlans", maxCount: 10 },
-    { name: "reviews", maxCount: 10 },
+    { name: "imageGallery", maxCount: 50 },
+    { name: "floorPlans", maxCount: 50 },
+    { name: "reviews", maxCount: 50 },
   ]),
   addProject
 );
@@ -31,9 +31,9 @@ router.patch(
   "/",
   upload.fields([
     { name: "masterPlan", maxCount: 1 },
-    { name: "imageGallery", maxCount: 10 },
-    { name: "floorPlans", maxCount: 10 },
-    { name: "reviews", maxCount: 10 },
+    { name: "imageGallery", maxCount: 50 },
+    { name: "floorPlans", maxCount: 50 },
+    { name: "reviews", maxCount: 50 },
   ]),
   updateProject
 );
