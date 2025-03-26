@@ -102,6 +102,7 @@ const Builders: React.FC = () => {
                 <Link
                   href={`/builder/${item?.url}`}
                   key={item?.title}
+                  prefetch={false}
                   className="flex flex-col gap-2 bg-white w-full h-56 p-4 rounded-3xl border-2 border-stone-200"
                 >
                   <div className="flex items-center gap-2">

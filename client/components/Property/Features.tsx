@@ -15,7 +15,7 @@ const Features: React.FC<{ data: FeatureType[] }> = ({ data }) => {
               return (
                 <div
                   key={index}
-                  className="flex items-center justify-center gap-2 p-4 outline outline-1 outline-gray-200"
+                  className="flex items-center gap-2 p-4 outline outline-1 outline-gray-200"
                 >
                   {Icon && <Icon />}
                   <div className="min-w-28">
