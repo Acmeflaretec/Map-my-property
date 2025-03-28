@@ -119,7 +119,7 @@ const EditorJSON = ({ details, setDetails }) => {
       .catch(() => toast.error("Failed to copy JSON data"));
   };
 
-  if (!dev_mode) return null;
+  if (dev_mode === "false") return null;
 
   React.useEffect(() => {
     setJsonInput(JSON.stringify(details, null, 2));

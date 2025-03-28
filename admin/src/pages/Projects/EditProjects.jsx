@@ -336,9 +336,18 @@ const EditProjects = () => {
   };
 
   const handleNestedChange = (field, index, subField, value) => {
-    const updated = [...details[field]];
-    updated[index][subField] = value;
-    setDetails((prev) => ({ ...prev, [field]: updated }));
+    setDetails((prev) => {
+      const currentArray = prev[field] || [];
+      const updated = [...currentArray];
+      if (!updated[index]) {
+        updated[index] =
+          field === "accommodation"
+            ? { unit: "", area: "", price: "" }
+            : { title: "", desc: "", src: "" };
+      }
+      updated[index][subField] = value;
+      return { ...prev, [field]: updated };
+    });
   };
 
   const handleFileChange = async (field, index, e) => {
@@ -396,10 +405,7 @@ const EditProjects = () => {
                 *required
               </Typography>
             </Grid>
-            <EditorJSON 
-              details={details}
-              setDetails={setDetails}
-            />
+            <EditorJSON details={details} setDetails={setDetails} />
             <Grid item xs={12}>
               <Typography variant="caption">
                 Project Title <span style={{ color: "red" }}>*</span>
@@ -518,18 +524,21 @@ const EditProjects = () => {
               <Typography variant="caption">
                 Project Status <span style={{ color: "red" }}>*</span>
               </Typography>
-              <Select
-                name="status"
+              <Autocomplete
                 value={details?.status || ""}
-                onChange={handleChange}
-                fullWidth
-                variant="outlined"
-              >
-                <MenuItem value="Pre Launch">Pre Launch</MenuItem>
-                <MenuItem value="Launch">Launch</MenuItem>
-                <MenuItem value="Under Construction">Under Construction</MenuItem>
-                <MenuItem value="Ready to Move In">Ready to Move In</MenuItem>
-              </Select>
+                onChange={(event, newValue) => {
+                  setDetails((prev) => ({ ...prev, status: newValue }));
+                }}
+                options={["Pre Launch", "Launch", "Under Construction", "Ready to Move In"]}
+                renderInput={(params) => (
+                  <TextField {...params} placeholder="Select Status" required />
+                )}
+                sx={{
+                  "& .MuiAutocomplete-input": {
+                    padding: "10px 14px",
+                  },
+                }}
+              />
             </Grid>
             <Grid item xs={12} mb={2}>
               <Typography variant="caption">
