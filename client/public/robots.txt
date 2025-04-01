@@ -1,0 +1,6 @@
+# Allow all web crawlers to index the site
+User-agent: *
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://www.mapmyproperty.in/sitemap.xml

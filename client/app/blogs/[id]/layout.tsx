@@ -40,6 +40,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         creator: "@mapmyproperty",
         images: [generateImageUrl(data?.image)],
       },
+      alternates: {
+        canonical: `https://www.mapmyproperty.in/blogs/${_id}`,
+      },
     };
   }
 

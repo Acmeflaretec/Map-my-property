@@ -15,6 +15,11 @@ import ContactCard from "@/components/common/ContactCard";
 import Overview from "@/components/Property/Overview";
 import { generateImageUrl } from "@/utils/generateImageUrl";
 import ProjectGallery from "@/components/Property/ProjectGallery";
+import Schema from "@/components/Schema";
+import {
+  generatePropertySchema,
+  generateBreadcrumbSchema,
+} from "@/utils/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +72,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         creator: "@mapmyproperty",
         images: [generateImageUrl(data?.imageGallery[0]?.src)],
       },
+      alternates: {
+        canonical: `https://www.mapmyproperty.in/property/${_id}`,
+      },
     };
   }
 
@@ -89,40 +97,51 @@ const Page: React.FC<Props> = async ({ params }) => {
     );
   }
 
+  const propertySchema = generatePropertySchema(data);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Properties", url: "/property" },
+    { name: data?.title || "", url: `/property/${data?.href}` },
+  ]);
+
   return (
-    <main className="w-screen xl:max-w-screen-xl overflow-visible">
-      <div className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full">
-        {data && <Banner data={data} />}
-        <div className="flex flex-col lg:flex-row gap-4 w-full justify-between">
-          <div className="flex flex-col w-full lg:w-2/3 gap-8 md:gap-12">
-            {!!data?.description && <Overview data={data.description} />}
-            {!!data?.imageGallery && (
-              <ProjectGallery data={data.imageGallery} />
-            )}
-            {!!data?.features?.length && <Features data={data.features} />}
-            {!!data?.accommodation?.length && (
-              <Pricing data={data.accommodation} />
-            )}
-            {!!data?.plans?.length && <Plans data={data.plans} />}
-            {!!data?.masterPlan && <MasterPlan data={data.masterPlan} />}
-            {!!data?.faqs?.length && <Faqs data={data.faqs} />}
-            {!!data?.expertOpinions?.length && (
-              <ExpertOpinion data={data.expertOpinions} />
-            )}
-            {!!data?.builder && <AboutBuilder data={data.builder} />}
-            {!!data?.testimonials?.length && (
-              <Testimonials data={data.testimonials} />
-            )}
-          </div>
-          <div className="w-full flex flex-col gap-8 lg:w-1/3 min-h-screen">
-            <ContactForm data={data} />
-            <div className="sticky top-32">
-              <ContactCard />
+    <>
+      <Schema schema={propertySchema} />
+      <Schema schema={breadcrumbSchema} />
+      <main className="w-screen xl:max-w-screen-xl overflow-visible">
+        <div className="flex flex-col gap-4 mt-20 md:mt-28 lg:mt-32 mb-12 p-2 w-full">
+          {data && <Banner data={data} />}
+          <div className="flex flex-col lg:flex-row gap-4 w-full justify-between">
+            <div className="flex flex-col w-full lg:w-2/3 gap-8 md:gap-12">
+              {!!data?.description && <Overview data={data.description} />}
+              {!!data?.imageGallery && (
+                <ProjectGallery data={data.imageGallery} />
+              )}
+              {!!data?.features?.length && <Features data={data.features} />}
+              {!!data?.accommodation?.length && (
+                <Pricing data={data.accommodation} />
+              )}
+              {!!data?.plans?.length && <Plans data={data.plans} />}
+              {!!data?.masterPlan && <MasterPlan data={data.masterPlan} />}
+              {!!data?.faqs?.length && <Faqs data={data.faqs} />}
+              {!!data?.expertOpinions?.length && (
+                <ExpertOpinion data={data.expertOpinions} />
+              )}
+              {!!data?.builder && <AboutBuilder data={data.builder} />}
+              {!!data?.testimonials?.length && (
+                <Testimonials data={data.testimonials} />
+              )}
+            </div>
+            <div className="w-full flex flex-col gap-8 lg:w-1/3 min-h-screen">
+              <ContactForm data={data} />
+              <div className="sticky top-32">
+                <ContactCard />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 

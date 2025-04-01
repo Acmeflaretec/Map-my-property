@@ -5,6 +5,9 @@ import Fallback from "@/components/common/Fallback";
 export const metadata: Metadata = {
   title: "Contact | Map My Property",
   description: "Connect with us | Map My Property",
+  alternates: {
+    canonical: "https://www.mapmyproperty.in/contact",
+  },
 };
 
 const page = ({

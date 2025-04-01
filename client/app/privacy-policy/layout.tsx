@@ -4,6 +4,9 @@ import Fallback from "@/components/common/Fallback";
 export const metadata: Metadata = {
   title: "Privacy Policy | Map My Property",
   description: "Find your perfect property | Map My Property",
+  alternates: {
+    canonical: "https://www.mapmyproperty.in/privacy-policy",
+  },
 };
 
 const page = ({

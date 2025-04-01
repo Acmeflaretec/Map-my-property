@@ -5,6 +5,9 @@ import React, { Suspense } from "react";
 export const metadata: Metadata = {
   title: "Properties | Map My Property",
   description: "Find your perfect property | Map My Property",
+  alternates: {
+    canonical: "https://www.mapmyproperty.in/property",
+  },
 };
 
 const page = ({

@@ -1,6 +1,11 @@
 import BuilderPage from "@/components/builder/BuilderPage";
 import { getBuilderById } from "@/utils/api";
 import React from "react";
+import Schema from "@/components/Schema";
+import {
+  generateBuilderSchema,
+  generateBreadcrumbSchema,
+} from "@/utils/schema";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -18,10 +23,22 @@ const page: React.FC<Props> = async ({ params }) => {
       </main>
     );
   }
+
+  const builderSchema = generateBuilderSchema(data);
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Builders", url: "/builder" },
+    { name: data?.title || "", url: `/builder/${data?.url}` },
+  ]);
+
   return (
-    <main className="w-screen xl:max-w-screen-xl">
-      <BuilderPage data={data} />
-    </main>
+    <>
+      <Schema schema={builderSchema} />
+      <Schema schema={breadcrumbSchema} />
+      <main className="w-screen xl:max-w-screen-xl">
+        <BuilderPage data={data} />
+      </main>
+    </>
   );
 };
 

@@ -17,7 +17,7 @@ const questrial = Questrial({
 export const metadata: Metadata = {
   title: "Map My Property",
   description:
-    "Unlocking Your Properties Full Potential | Map My Property test",
+    "Unlocking Your Properties Full Potential | Map My Property - the trusted platform for property mapping",
   keywords:
     "property mapping, land survey, property measurement, real estate mapping, property documentation, land mapping services, property survey",
   authors: [{ name: "Map My Property" }],
@@ -75,8 +75,8 @@ export const metadata: Metadata = {
     images: ["https://www.mapmyproperty.in/og-logo.png"],
   },
   verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
+    google: "iNNGqFV0Hnmm6UV5h8MvOgXZrflOtPcNluXAGsZ9YUs",
+    yandex: "0730e3a6d15228c4",
     yahoo: "your-yahoo-verification-code",
   },
   category: "property mapping",
