@@ -15,7 +15,7 @@ const PlanCard: React.FC<{
   toggleModal: React.MouseEventHandler<HTMLButtonElement>;
 }> = ({ data, open, toggleModal }) => {
   const enquiry = localStorage.getItem("enquiry");
-  const [openContact, setOpen] = useState(enquiry ? false : true);
+  const [openContact, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
