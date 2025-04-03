@@ -357,10 +357,20 @@ const EditProjects = () => {
       const blob = await response.blob();
       file = new File([blob], "avatar.png", { type: blob.type });
     }
-    if (field === "testimonials") {
-      handleNestedChange(field, index, "image", file);
-    } else {
-      handleNestedChange(field, index, "src", file);
+    if (file) {
+      if (field === "testimonials") {
+        handleNestedChange(field, index, "image", file);
+      } else {
+        handleNestedChange(field, index, "src", file);
+      }
+      if (field === "plans" || field === "imageGallery") {
+        const fileName = file.name.replace(/\.[^/.]+$/, "");
+        const formattedTitle = fileName
+          .split(/[-_\s]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(" ");
+        handleNestedChange(field, index, "title", formattedTitle);
+      }
     }
   };
 

@@ -547,6 +547,14 @@ const AddProjects = () => {
       reader.onloadend = () => {
         const base64String = reader.result;
         handleNestedChange(field, index, "src", base64String);
+        if (field === "plans" || field === "imageGallery") {
+          const fileName = file.name.replace(/\.[^/.]+$/, "");
+          const formattedTitle = fileName
+            .split(/[-_\s]/)
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(" ");
+          handleNestedChange(field, index, "title", formattedTitle);
+        }
       };
       reader.readAsDataURL(file);
     }
