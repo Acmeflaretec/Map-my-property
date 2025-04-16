@@ -2,11 +2,11 @@ import { getBlogs, getBuilders, getProjects } from "@/utils/api";
 
 const fetchDynamicPages = async () => {
   try {
-    const propertyRes = await getProjects({});
+    const propertyRes = await getProjects({ perPage: 1000 });
     const properties = propertyRes?.data?.data?.docs || [];
-    const builderRes = await getBuilders({});
+    const builderRes = await getBuilders({ limit: 1000 });
     const builders = builderRes?.data?.data || [];
-    const blogRes = await getBlogs({});
+    const blogRes = await getBlogs({ limit: 1000 });
     const blogs = blogRes?.data?.data || [];
     return [
       ...properties.map((p: any) => `/property/${p.href}`),
